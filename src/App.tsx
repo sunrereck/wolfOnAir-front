@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import GlobalStyles from './globalStyles';
+import GlobalStyles from '@/globalStyles';
 
 const Home: React.SFC = () => {
   return <div>123456</div>
