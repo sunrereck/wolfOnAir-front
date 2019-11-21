@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from '@/styles/theme';
 
-// import HeaderContainer from '../../containers/layout/HeaderContainer';
+import HeaderContainer from '@/containers/HeaderContainer';
 import Footer from '@/components/layout/Footer';
 import ScrollTop from '@/components/layout/ScrollToTop';
 
@@ -20,7 +20,7 @@ const PageTemplate: React.SFC<PageTemplateProps> = ({ children }) => {
   return (
     <React.Fragment>
       <ScrollTop />
-      {/* <HeaderContainer /> */}
+      <HeaderContainer />
       <Wrapper>{children}</Wrapper>
       <Footer />
     </React.Fragment>
