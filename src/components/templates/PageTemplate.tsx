@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from '@/styles/theme';
 
-import HeaderContainer from '@/containers/HeaderContainer';
+import HeaderContainer from '@/containers/layout/HeaderContainer';
 import Footer from '@/components/layout/Footer';
 import ScrollTop from '@/components/layout/ScrollToTop';
 
