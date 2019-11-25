@@ -15,13 +15,35 @@ const Wrapper = styled.div`
 const ErrorText = styled.span`
   display: inline-block;
   width: 100%;
+  margin-bottom: 0.5px;
+  padding: 0 0.5px;
+  color: ${({ theme }) => theme.redColor};
+  font: ${({ theme }) => theme.font12};
 `;
 
-const ValidationInput = () => {
+interface ValidationInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  errorMessage: string;
+}
+
+const ValidationInput = ({
+  className,
+  errorMessage,
+  onChange,
+  type, 
+  value,
+  ...props
+}: ValidationInputProps): JSX.Element => {
   return (
-    <Wrapper>
-      <Input />
-      <ErrorText />
+    <Wrapper className={className}>
+      <Input 
+        onChange={onChange}
+        type={type}
+        value={value}      
+        {...props}
+      />
+      {
+        errorMessage && <ErrorText>{errorMessage}</ErrorText>
+      }
     </Wrapper>
   )
 }
