@@ -24,21 +24,7 @@ export interface ThemeProps {
   medium: string;
   large: string;
   xLarge: string;
-
-  breakPoints: {
-    mobileS: string;
-    mobile: string;
-    tablet: string;
-    desktop: string;
-    desktopL: string;
-  };
 }
-
-const xSmall = '320px';
-const small = '376px';
-const medium = '768px';
-const large = '992px';
-const xLarge = '1200px';
 
 const theme: ThemeProps = {
   // 색상
@@ -60,20 +46,12 @@ const theme: ThemeProps = {
   headerHeight: '50px',
   footerHeight: '50px',
 
-  // media query
-  xSmall,
-  small,
-  medium,
-  large,
-  xLarge,
-
-  breakPoints: {
-    mobileS: `(max-width: ${xSmall})`,
-    mobile: `(min-width: ${small})`,
-    tablet: `(min-width: ${medium})`,
-    desktop: `(min-width: ${large})`,
-    desktopL: `(min-width: ${xLarge})`
-  }
+  // 미디어쿼리
+  xSmall:'320px',
+  small:'376px',
+  medium: '768px',
+  large: '992px',
+  xLarge: '1200px'
 };
 
 export default theme;

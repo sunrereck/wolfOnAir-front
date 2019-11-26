@@ -21,7 +21,6 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
     font: inherit;
     vertical-align: baseline;
   }
@@ -36,6 +35,7 @@ const GlobalStyles = createGlobalStyle`
   *[hidden] {
       display: none;
   }
+  
   html,body {
     font-size: 16px;
   }

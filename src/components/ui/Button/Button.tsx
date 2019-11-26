@@ -28,10 +28,20 @@ function getColor(color: string = '', theme: ThemeProps) {
 }
 
 const Wrapper = styled.button<{ color: string; size: string; variant: string }>`
-  padding: ${({ size }) => (size === 'small' ? '8px' : '8px 16px')};
   border-radius: 5px;
   cursor: pointer;
-  font-size: ${({ theme }) => theme.font16};
+  font-size: 1.25rem;
+  padding: 0.5rem 1rem;
+
+  ${({size}) => size === 'small' && `
+    font-size: 1rem;
+    padding: 0.5rem;
+  `}
+
+  ${({size}) => size === 'large' && `
+    font-size: 1.75rem;
+    padding: 1rem 2rem;
+  `}
 
   ${({ color, theme, variant }) =>
     variant === 'contained' &&

@@ -6,18 +6,21 @@ import Input from '../Input';
 const Wrapper = styled.div<{isError?: boolean}>`
   display: flex;
   flex-wrap: wrap;
+  border-radius: 2px;
 
   input { 
     width: 100%;
-    height: 35px;
+    height: 40px;
     padding: 0 0.5rem;
-    font-size: 0.875rem;
-    line-height: 35px;
+    border: 1px solid ${({theme}) => theme.borderColor};
+    border-radius: 2px;
+    font-size: 1rem;
+    line-height: 40px;
+    
 
     ${({isError, theme}) => isError && `
-    border: 1px solid ${theme.redColor};
-  `}
-
+      border: 1px solid ${theme.redColor};
+    `
   }
 `;
 

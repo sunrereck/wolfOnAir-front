@@ -1,7 +1,7 @@
 import React from 'react';
 
-import PageTemplate from '@/components/templates/PageTemplate';
 import HomeContainer from '@/containers/HomeContainer';
+import PageTemplate from '@/components/templates/PageTemplate';
 
 export default function Home() {
   return (
