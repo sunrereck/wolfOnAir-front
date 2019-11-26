@@ -44,9 +44,6 @@ const GlobalStyles = createGlobalStyle`
     line-height: 1;
   }
 
-  a {
-    text-decoration: none;
-  }
   
   ol, ul {
     list-style: none;
@@ -65,6 +62,15 @@ const GlobalStyles = createGlobalStyle`
   table {
     border-collapse: collapse;
     border-spacing: 0;
+  }
+
+  a {
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  input {
+    outline: 0;
   }
 `;
 
