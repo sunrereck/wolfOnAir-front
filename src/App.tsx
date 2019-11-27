@@ -5,7 +5,7 @@ import GlobalStyles from '@/globalStyles';
 
 import Home from '@/pages/Home';
 import Join from '@/pages/Join'
-// import Login from '@/pages/Login'
+import Login from '@/pages/Login'
 import NotFound from '@/pages/NotFound';
 
 const App: React.FC = () => {
@@ -14,7 +14,7 @@ const App: React.FC = () => {
     <GlobalStyles/>
     <Switch>
       <Route exact path="/" component={Home} />
-      {/* <Route exact path="/user/login" component={Login} /> */}
+      <Route exact path="/user/login" component={Login} />
       <Route exact path="/user/join" component={Join} />
       <Route component={NotFound} />
     </Switch>
