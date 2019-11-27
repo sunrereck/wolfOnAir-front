@@ -14,18 +14,36 @@ const Title = styled.h2`
 const Form = styled.form`
   width: 100%;
   margin: 0 auto;
+  padding: 1rem;
   max-width: 440px;
+  box-sizing: border-box;
 
   .join-input {
     margin-bottom: 1rem;
   }
-`;
 
-const ButtonWrapper = styled.div`
   button {
-    width: 50%;
+    width: 100%;
   }
 `;
+
+interface JoinFormProps {
+  email: string;
+  errorEmail: string;
+  errorPassword: string;
+  errorPassword2: string;
+  errorUserName: string;
+  isSubmit: boolean;
+  isValid: boolean;
+  password: string;
+  password2: string;
+  userName: string;
+  onBlur: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onCancel: () => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+}
 
 const JoinForm = (): JSX.Element => {
   return (
@@ -36,10 +54,7 @@ const JoinForm = (): JSX.Element => {
         <ValidationInput className="join-input" placeholder="비밀번호" />
         <ValidationInput className="join-input"placeholder="비밀번호 재입력" />
         <ValidationInput className="join-input" placeholder="닉네임" />
-        <ButtonWrapper>
-          <Button type="button" variant="outline">취소</Button>
-          <Button type="submit">가입</Button>
-        </ButtonWrapper>
+        <Button type="submit">가입하기</Button>
       </Form>
     </>
   );
