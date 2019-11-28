@@ -35,6 +35,10 @@ const GlobalStyles = createGlobalStyle`
   *[hidden] {
       display: none;
   }
+
+  *, ::before, ::after {
+    box-sizing: border-box;
+  }
   
   html,body {
     font-size: 16px;
