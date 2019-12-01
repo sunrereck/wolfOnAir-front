@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-import EmailAuthFail from './EmailAuthFail'
-import EmailAuthSuccess from './EmailAuthSuccess'
+// import EmailAuthFail from './EmailAuthFail'
+import EmailAuthSuccess from './EmailAuthSuccess';
 
 const EmailAuthResult = () => {
-  if (true) {
-    return <EmailAuthFail/>
-  }
+  // if (true) {
+  //   return <EmailAuthFail/>
+  // }
 
   return <EmailAuthSuccess />
 }

@@ -1,13 +1,13 @@
 import React from 'react';
 
-import JoinResult from '@/components/user/EmailAuthResult';
+import EmailAuthResult from '@/components/user/EmailAuthResult';
 
 interface Props {
   email: string;
 }
 
 const EmailAuthResultContainer = ({email}: Props): JSX.Element => {
-  return <JoinResult />  
+  return <EmailAuthResult />  
 }
 
 export default EmailAuthResultContainer;
