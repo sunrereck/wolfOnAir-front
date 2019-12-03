@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import button from '@/styles/button';
-
-const Wrapper = styled.button<{ color: string; size: string; variant: string }>`
+const StyledButton = styled.button<{ color: string; size: string; variant: string }>`
   ${button}
 `;
 
@@ -26,7 +24,7 @@ const Button= ({
   variant,
   ...others
 }: ButtonProps): JSX.Element => (
-  <Wrapper
+  <StyledButton
     {...others}
     color={color || 'primary'}
     disabled={disabled}
@@ -35,7 +33,7 @@ const Button= ({
     variant={variant || 'contained'}
   >
     {children}
-  </Wrapper>
+  </StyledButton>
 );
 
 Button.defaultProps = {
