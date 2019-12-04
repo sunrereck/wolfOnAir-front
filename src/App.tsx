@@ -1,8 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import GlobalStyles from '@/globalStyles';
-
 import Home from '@/pages/Home';
 import Join from '@/pages/Join'
 import EmailAuthResult from '@/pages/EmailAuthResult';
@@ -11,8 +9,6 @@ import NotFound from '@/pages/NotFound';
 
 const App: React.FC = () => {
   return (
-    <>
-    <GlobalStyles/>
     <Switch>
       <Route exact path="/" component={Home} />
       <Route exact path="/user/login" component={Login} />
@@ -21,7 +17,6 @@ const App: React.FC = () => {
 
       <Route component={NotFound} />
     </Switch>
-    </>
   );
 }
 

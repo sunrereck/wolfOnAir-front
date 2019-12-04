@@ -11,6 +11,14 @@ const Wrapper = styled.header`
   border-bottom: 1px solid ${props => props.theme.borderColor};
   align-items: center;
   box-sizing: border-box;
+
+  a {
+    color: ${props => props.theme.primaryColor};
+
+    :visited {
+      color: ${props => props.theme.primaryColor};
+    }
+  }
 `;
 
 const Logo = styled.h1`
