@@ -1,8 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import Button from "@/components/ui/Button";
+import LinkButton from '@/components/ui/LinkButton';
 import ValidationInput from "@/components/ui/ValidationInput";
 
 const Title = styled.h2`
@@ -32,17 +32,6 @@ const Form = styled.form`
   button {
     margin-bottom: 1rem;
   }
-
-  a {
-    display: block;
-
-    padding: 0.5rem 1rem;
-    background: none;
-    border: 1px solid ${({ theme }) => theme.primaryColor};
-    border-radius: 5px;
-    font-size: 1.25rem;
-    color: ${({ theme }) => theme.primaryColor};
-  }
 `;
 
 interface LoginFormProps {
@@ -70,10 +59,10 @@ const LoginForm = () => {
           placeholder="비밀번호"
           // validations={[checkRequired]}
         />
-        <Button type="submit" size="medium" color="primary" variant="contained">
+        <Button type="submit" size="medium" color="primary">
           로그인
         </Button>
-        <Link to="/user/join">회원가입</Link>
+        <LinkButton color="primaryOutline" to="/user/join">회원가입</LinkButton>
       </Form>
     </>
   );
