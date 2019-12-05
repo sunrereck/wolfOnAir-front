@@ -31,13 +31,16 @@ const buttonColor: {
   }
 }
 
-const button = css<{ color: string; size: string; }>`
+const button = css<{ color: string; size: 'small' | 'medium' | 'large'; }>`
+  display: flex;
+  height: 3.5rem;
   padding: 0.5rem 1rem;
   border-radius: 2px;
   border: 1px solid;
   font-size: 1.25rem;
+  align-items: center;
   cursor: pointer;
-  height: 3.5rem;
+  justify-content: center;
 
   ${({color}) => `
     background-color: ${buttonColor[color].background};

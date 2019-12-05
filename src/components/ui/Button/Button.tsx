@@ -1,17 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledButton = styled.button<{ color: string; size: string; variant: string }>`
+import button from '@/styles/button';
+
+const StyledButton = styled.button<{ color: string; size:  'small' | 'medium' | 'large'; }>`
   ${button}
 `;
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children?: React.ReactNode;
+  children: React.ReactNode;
   className?: string;
   color?: string;
   size?: 'small' | 'medium' | 'large';
   readOnly?: boolean;
-  variant?: 'contained' | 'outline';
 }
 
 const Button= ({
@@ -21,7 +22,6 @@ const Button= ({
   disabled,
   size,
   type,
-  variant,
   ...others
 }: ButtonProps): JSX.Element => (
   <StyledButton
@@ -30,7 +30,6 @@ const Button= ({
     disabled={disabled}
     size={size || 'medium'}
     type={type || 'button'}
-    variant={variant || 'contained'}
   >
     {children}
   </StyledButton>
