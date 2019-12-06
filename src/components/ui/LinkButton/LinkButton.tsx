@@ -1,25 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, LinkProps } from 'react-router-dom';
 import styled from 'styled-components';
 
 import button from '@/styles/button';
 
-const StyledLink = styled(Link)<{ color: string; size: 'small' | 'medium' | 'large'; }>`
+const StyledLink = styled(Link)<{color: string; size: 'small' | 'medium' | 'large';} | any >`
   ${button}
 `;
 
-interface LinkButtonProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+interface LinkButtonProps extends LinkProps {
   children: React.ReactNode;
   className?: string;
   color?: string;
   search?: string
   size?: 'small' | 'medium' | 'large';
-  to: string | {
-    pathname: string;
-    search?: string;
-    hash?: string;
-    state?: object
-  };
 }
 
 const LinkButton = ({
