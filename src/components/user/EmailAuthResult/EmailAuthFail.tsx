@@ -2,13 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Button from '@/components/ui/Button';
-
-const Title = styled.h2`
-  margin: 2rem auto 1.5rem;
-  font-size: 1.75rem;
-  font-weight: 600;
-  text-align: center;
-`;
+import UserTitle from '../UserTitle';
 
 const Wrapper = styled.form`
   width: 100%;
@@ -31,9 +25,9 @@ const Wrapper = styled.form`
 const JoinFail = () => {
   return (
     <>
-    <Title>
+    <UserTitle>
       이메일 인증 실패
-    </Title>
+    </UserTitle>
     <Wrapper>
       <p>
         앗, 이메일 인증에 실패하였습니다 ㅠㅠ...

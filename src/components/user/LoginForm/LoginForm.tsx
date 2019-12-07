@@ -4,13 +4,7 @@ import styled from "styled-components";
 import Button from "@/components/ui/Button";
 import LinkButton from '@/components/ui/LinkButton';
 import ValidationInput from "@/components/ui/ValidationInput";
-
-const Title = styled.h2`
-  margin: 2rem auto 1.5rem;
-  font-size: 1.75rem;
-  font-weight: 600;
-  text-align: center;
-`;
+import UserTitle from '../UserTitle';
 
 const Form = styled.form`
   width: 100%;
@@ -43,7 +37,7 @@ interface LoginFormProps {
 const LoginForm = () => {
   return (
     <>
-      <Title>로그인</Title>
+      <UserTitle>로그인</UserTitle>
       <Form>
         <ValidationInput
           className="login-input"
