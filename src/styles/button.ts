@@ -33,14 +33,14 @@ const buttonColor: {
 
 const button = css<{ color: string; size: 'small' | 'medium' | 'large'; }>`
   display: flex;
-  height: 3.5rem;
-  padding: 0.5rem 1rem;
+  height: 3rem;
   border-radius: 2px;
   border: 1px solid;
   font-size: 1.25rem;
   align-items: center;
   cursor: pointer;
   justify-content: center;
+  outline: none;
 
   ${({color}) => `
     background-color: ${buttonColor[color].background};
@@ -56,7 +56,7 @@ const button = css<{ color: string; size: 'small' | 'medium' | 'large'; }>`
 
   ${({size}) => size === 'large' && `
     font-size: 1.75rem;
-    height: 4.75rem;
+    height: 3.5rem;
     padding: 1rem 2rem;
   `}
 }

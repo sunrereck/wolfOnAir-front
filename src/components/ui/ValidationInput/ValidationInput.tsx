@@ -10,13 +10,11 @@ const Wrapper = styled.div<{isError?: boolean}>`
 
   input { 
     width: 100%;
-    height: 40px;
+    height: 3rem;
     padding: 0 0.5rem;
     border: 1px solid ${({theme}) => theme.borderColor};
     border-radius: 2px;
     font-size: 1rem;
-    line-height: 40px;
-    
 
     ${({isError, theme}) => isError && `
       border: 1px solid ${theme.redColor};
