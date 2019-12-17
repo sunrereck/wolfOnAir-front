@@ -1,12 +1,13 @@
-import React from 'react'
+import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import JoinContainer from '@/containers/user/JoinContainer';
 import PageTemplate from '@/components/templates/PageTemplate';
 
-const Join = (): JSX.Element => {
+const Join = ({history}: RouteComponentProps): JSX.Element => {
   return (
     <PageTemplate>
-      <JoinContainer />
+      <JoinContainer history={history}/>
     </PageTemplate>
   )
 }

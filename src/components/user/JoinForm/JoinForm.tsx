@@ -33,21 +33,71 @@ interface JoinFormProps {
   password2: string;
   userName: string;
   onBlur: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onCancel: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const JoinForm = (): JSX.Element => {
+const JoinForm = ({
+  email,
+  errorEmail,
+  errorPassword,
+  errorPassword2,
+  errorUserName,
+  isSubmit,
+  isValid,
+  password,
+  password2,
+  userName,
+  onBlur,
+  onChange,
+  onChangePassword,
+  onSubmit
+}: JoinFormProps): JSX.Element => {
   return (
     <>
       <UserTitle>회원가입</UserTitle>
-      <Form>
-        <ValidationInput className="join-input" placeholder="이메일" />
-        <ValidationInput className="join-input" placeholder="비밀번호" />
-        <ValidationInput className="join-input"placeholder="비밀번호 재입력" />
-        <ValidationInput className="join-input" placeholder="닉네임" />
+      <Form onSubmit={onSubmit}>
+        <ValidationInput 
+          className="join-input" 
+          errorMessage={errorEmail}
+          name="email"
+          onBlur={onBlur} 
+          onChange={onChange} 
+          placeholder="이메일" 
+          type="text"
+          value={email}
+        />
+        <ValidationInput 
+          className="join-input" 
+          errorMessage={errorPassword}
+          name="password"
+          onBlur={onBlur} 
+          onChange={onChange} 
+          placeholder="비밀번호" 
+          type="password"
+          value={password}
+        />
+        <ValidationInput 
+          className="join-input" 
+          errorMessage={errorPassword2}
+          name="password2"
+          onBlur={onBlur} 
+          onChange={onChangePassword} 
+          placeholder="비밀번호 재입력" 
+          type="password"
+          value={password2}
+        />
+        <ValidationInput 
+          className="join-input" 
+          errorMessage={errorUserName}
+          name="userName"
+          onBlur={onBlur} 
+          onChange={onChange} 
+          placeholder="닉네임" 
+          type="text"
+          value={userName}
+        />
         <Button type="submit">가입하기</Button>
       </Form>
     </>

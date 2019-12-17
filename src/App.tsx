@@ -14,7 +14,6 @@ const App: React.FC = () => {
       <Route exact path="/user/login" component={Login} />
       <Route exact path="/user/join" component={Join} />
       <Route exact path="/user/join/auth/:email" component={EmailAuthResult} />
-
       <Route component={NotFound} />
     </Switch>
   );
