@@ -1,15 +1,27 @@
 import React from 'react';
 
-import JoinFail from './JoinFail';
-import JoinSuccess from './JoinSuccess';
+import PageLoader from '@/components/ui/PageLoader';
 
-const JoinResult = (): JSX.Element => {
-  if (true) {
-    return <JoinFail/>
+interface JoinResultProps {
+  isLoading: boolean;
+  isSuccess: boolean;
+}
+
+const JoinResult = ({
+  isLoading,
+  isSuccess
+}: JoinResultProps): JSX.Element => {
+
+  if (isLoading) {
+    return <PageLoader />
   }
 
   return (
-    <JoinSuccess />
+    <div>
+      {
+        isSuccess ? '인증메일을 전송하였습니다.' : '인증메일 전송에 실패하였습니다.'
+      }
+    </div>
   )
 }
 
