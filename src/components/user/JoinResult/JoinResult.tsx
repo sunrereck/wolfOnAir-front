@@ -2,6 +2,11 @@ import React from 'react';
 
 import PageLoader from '@/components/ui/PageLoader';
 
+import UserTitle from '../UserTitle';
+
+import SendEmailFail from './SendEmailFail';
+import SendEmailSuccess from './SendEmailSuccess';
+
 interface JoinResultProps {
   isLoading: boolean;
   isSuccess: boolean;
@@ -17,11 +22,14 @@ const JoinResult = ({
   }
 
   return (
-    <div>
-      {
-        isSuccess ? '인증메일을 전송하였습니다.' : '인증메일 전송에 실패하였습니다.'
-      }
-    </div>
+    <>
+      <UserTitle>회원가입 완료</UserTitle>
+      <div>
+        {
+          true ? <SendEmailSuccess /> : <SendEmailFail />
+        }
+      </div>
+    </>
   )
 }
 

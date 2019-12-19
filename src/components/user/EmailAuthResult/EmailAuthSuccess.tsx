@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Button from '@/components/ui/Button';
 import UserTitle from '../UserTitle';
 
-const Wrapper = styled.form`
+const Wrapper = styled.section`
   width: 100%;
   margin: 0 auto;
   max-width: 440px;
@@ -38,7 +38,7 @@ const EmailAuthSuccess = () => {
         <br/>
         이메일 인증이 완료 되었습니다!
       </p>
-      <Button type="button" variant="contained">로그인 하러 가기</Button>
+      <Button type="button" color="primaryOutline">로그인</Button>
     </Wrapper>
     </>
   )

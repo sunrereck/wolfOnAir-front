@@ -38,11 +38,9 @@ const Button= ({
 Button.defaultProps = {
   children: null,
   className: '',
-  color: 'primary',
-  disabled: false,
-  type: 'button',
+  color: '',
   size: 'medium',
-  variant: 'contained'
+  readOnly: false
 };
 
 export default Button;

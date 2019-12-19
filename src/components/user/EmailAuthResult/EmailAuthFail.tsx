@@ -34,8 +34,8 @@ const JoinFail = () => {
         <br/>
         문제가 지속되면 관리자에게 문의 부탁드립니다.
       </p>
-      <Button type="button" variant="contained">이메일 재전송</Button>
-      <Button type="button" variant="outline">관리자에게 문희하기</Button>
+      <Button type="button">인증 이메일 재전송</Button>
+      <Button type="button" color="primaryOutline">관리자에게 문의하기</Button>
     </Wrapper>
     </>
   )
