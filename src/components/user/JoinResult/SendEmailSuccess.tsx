@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import LinkButton from '@/components/ui/LinkButton';
+import Button from '@/components/ui/Button';
 
 const Wrapper = styled.section`
   text-align: center;
@@ -9,10 +9,11 @@ const Wrapper = styled.section`
   p {
     margin: 1rem auto;
     padding: 1rem;
-    line-height: 1.3;
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
-  a {
+  button {
     width: 100%;
     margin: 0 auto;
     max-width: 400px;
@@ -21,10 +22,18 @@ const Wrapper = styled.section`
 
 const SendEmailSuccess = () => {
   return (
+    <>
     <Wrapper>
-      <p>거의 다 됐습니다!<br/>인증 링크를 이메일로 전송하였습니다.<br/>인증을 마무리 해주세요.</p>
-      <LinkButton to="/user/login">로그인</LinkButton>
+      <p>
+      가입하신 이메일 주소<br/>
+      <strong>kyoungah@kyoungah.com</strong>로 인증 메일을 보내드렸습니다.<br/>
+      이메일 인증을 완료해주세요.
+      <br/><br/>
+      혹시 인증 메일을 못 받으셨나요?
+      </p>
+      <Button type="button">인증메일 재전송</Button>
     </Wrapper>
+    </>
   )
 }
 

@@ -27,7 +27,7 @@ const SendEmailFail = () => {
     <Wrapper>
       <p>앗, 회원가입은 완료하였으나 이메일 전송은 실패하였습니다.</p>
       <ButtonWrapper>
-        <Button type="button">인증 이메일 재전송</Button>
+        <Button type="button">인증메일 재전송</Button>
         <Button type="button" color="primaryOutline">관리자에게 문의하기</Button>
       </ButtonWrapper>
     </Wrapper>
