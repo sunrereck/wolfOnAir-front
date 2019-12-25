@@ -4,9 +4,17 @@ import { sendEmail } from '@/api/user';
 
 import JoinResult from '@/components/user/JoinResult';
 
-const JoinResultContainer = () => {
-  const [isLoading, setLoading ] = useState(false);
-  const [isSuccess, setSuccess ] = useState(false);
+interface JoinResultContainerProps {
+  email: string;
+}
+
+async function sendAuthEmail(email: string) {
+  await sendEmail(email);
+}
+
+const JoinResultContainer = ({ email }: JoinResultContainerProps): JSX.Element => {
+  const [isLoading, setLoading] = useState(false);
+  const [isSuccess, setSuccess] = useState(false);
   useEffect(() => {
     setLoading(isLoading);
   }, [isLoading]);
