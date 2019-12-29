@@ -42,6 +42,10 @@ const button = css<{ color: string; size: 'small' | 'medium' | 'large'; }>`
   justify-content: center;
   outline: none;
 
+  &:disabled {
+    opacity: 0.5;
+  }
+
   ${({color}) => `
     background-color: ${buttonColor[color].background};
     border-color: ${buttonColor[color].border};

@@ -98,7 +98,7 @@ const JoinForm = ({
           type="text"
           value={userName}
         />
-        <Button type="submit">가입하기</Button>
+        <Button type="submit" disabled={!isValid || isSubmit}>가입하기</Button>
       </Form>
     </>
   );

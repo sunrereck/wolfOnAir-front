@@ -26,7 +26,7 @@ const JoinResult = ({
       <UserTitle>회원가입 완료</UserTitle>
       <div>
         {
-          true ? <SendEmailSuccess /> : <SendEmailFail />
+          isSuccess ? <SendEmailSuccess /> : <SendEmailFail />
         }
       </div>
     </>

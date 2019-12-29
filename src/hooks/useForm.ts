@@ -49,8 +49,8 @@ export default function useForm(values: object, validate: Function) {
     },
     errors: {}
   });
-  const [isValid, setValid] = useState<boolean>(true);
-  const [isSubmit, setSubmit] = useState<boolean>(false);
+  const [isValid, setValid] = useState(false);
+  const [isSubmit, setSubmit] = useState(false);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
