@@ -43,14 +43,12 @@ function reducer(state: StateType, action: ActionType) {
 }
 
 export default function useForm(values: object, validate: Function) {
-  const [state, dispatch] = useReducer(reducer, {
-    values: {
-      ...values
-    },
-    errors: {}
-  });
   const [isValid, setValid] = useState(false);
   const [isSubmit, setSubmit] = useState(false);
+  const [state, dispatch] = useReducer(reducer, {
+    values: { ...values },
+    errors: {}
+  });
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
