@@ -28,6 +28,13 @@ function reducer(state: StateType, action: ActionType) {
         }
       };
     case 'CHECK_ERROR':
+      console.log({
+        ...state,
+        errors: {
+          ...state.errors,
+          [name]: value
+        }
+      });
       return {
         ...state,
         errors: {
@@ -61,18 +68,12 @@ export default function useForm(values: object, validate: Function) {
   };
 
   const onBlur = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    let willBeValid = true;
+    // let willBeValid = true;
     const { name, value } = e.target;
     const error = await validate(name, value, state.values, dispatch);
-    const keys = Object.keys(error);
+    // const keys = Object.keys(error);
 
-    keys.forEach(key => {
-      if (error[key] !== '') {
-        willBeValid = false;
-      }
-    });
-
-    setValid(willBeValid);
+    // setValid(willBeValid);
 
     dispatch({
       type: 'CHECK_ERROR',
