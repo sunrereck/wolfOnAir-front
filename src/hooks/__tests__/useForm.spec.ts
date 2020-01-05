@@ -1,5 +1,8 @@
-import { act, wait } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
+
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+
 
 import { checkUserName } from '@/api/user';
 
@@ -17,14 +20,10 @@ async function mockAsyncValidation(name: string, value: string) {
   let error = '';
 
   try {
-    const response = await checkUserName(value);
-  
-    if (!response.data.isOk) {
-      error = 'async error';
-    }
+    await checkUserName(value);
 
   } catch (e) {
-    error = '통신 에러';
+    error = 'async error';
   }
 
   return error;
@@ -64,10 +63,12 @@ describe("useForm Test", () => {
   })
 
   test('onBlur 함수가 정상적으로 작동한다.', async () => {
-    const { result } = renderHook(() => useForm({
+    const { result, wait } = renderHook(() => useForm({
       name: '',
       value: ''
     }, mockValidation, mockAsyncValidation));
+
+    // validation test
 
     act(() => {
       result.current[4]({target: {
@@ -76,12 +77,16 @@ describe("useForm Test", () => {
       }} as React.ChangeEvent<HTMLInputElement>);
     })
 
-    // // expect(result.current[1]).toBe(false);
+    expect(result.current[1]).toBe(false);
     expect(result.current[0].errors.name).toBe('error');
 
-    // mock.onGet('http://localhost:8000/user/join/availability-nickname/test').reply(200, {
-    //   isOk: false
-    // });
+    // async validation test
+
+    const mock = new MockAdapter(axios, { delayResponse: 200 }); // 200ms 가짜 딜레이 설정
+
+    mock.onGet('http://localhost:8080/user/join/availability-nickname/test').reply(404, {
+      isOk: false
+    });
 
     act(() => {
       result.current[4]({target: {
@@ -92,6 +97,7 @@ describe("useForm Test", () => {
     });
 
     await wait(() => {
+      expect(result.current[1]).toBe(false);
       expect(result.current[0].errors.name).toBe('async error');
     })
   })

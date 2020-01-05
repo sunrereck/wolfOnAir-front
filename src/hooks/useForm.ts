@@ -61,7 +61,7 @@ export default function useForm(values: object, validate?: Function, asyncValida
   };
 
   const onBlur = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // let willBeValid = true;
+    let willBeValid = true;
     let error = '';
     const { name, value } = e.target;
 
@@ -71,15 +71,24 @@ export default function useForm(values: object, validate?: Function, asyncValida
 
     if (!error && !!asyncValidation) {
       console.log(1, !error && !!asyncValidation);
-      console.log(2, await asyncValidation(name, value, state.values, dispatch));
 
       error = await asyncValidation(name, value, state.values, dispatch);
 
     }
 
-    // const keys = Object.keys(error);
+    const newErrors = {
+      ...state.errors,
+      [name]: error
+    };
+    const keys = Object.keys(newErrors);
 
-    // setValid(willBeValid);
+    keys.forEach((key) => {
+      if (!!newErrors[key]) {
+        willBeValid = false;
+      }
+    });
+
+    setValid(willBeValid);
 
     dispatch({
       type: 'CHECK_ERROR',
