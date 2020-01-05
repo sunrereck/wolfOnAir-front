@@ -28,13 +28,6 @@ function reducer(state: StateType, action: ActionType) {
         }
       };
     case 'CHECK_ERROR':
-      console.log({
-        ...state,
-        errors: {
-          ...state.errors,
-          [name]: value
-        }
-      });
       return {
         ...state,
         errors: {
@@ -49,7 +42,7 @@ function reducer(state: StateType, action: ActionType) {
   }
 }
 
-export default function useForm(values: object, validate: Function) {
+export default function useForm(values: object, validate?: Function, asyncValidation?: Function) {
   const [isValid, setValid] = useState(false);
   const [isSubmit, setSubmit] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
@@ -69,8 +62,21 @@ export default function useForm(values: object, validate: Function) {
 
   const onBlur = async (e: React.ChangeEvent<HTMLInputElement>) => {
     // let willBeValid = true;
+    let error = '';
     const { name, value } = e.target;
-    const error = await validate(name, value, state.values, dispatch);
+
+    if (!!validate){
+      error = validate(name, value, state.values, dispatch);
+    }
+
+    if (!error && !!asyncValidation) {
+      console.log(1, !error && !!asyncValidation);
+      console.log(2, await asyncValidation(name, value, state.values, dispatch));
+
+      error = await asyncValidation(name, value, state.values, dispatch);
+
+    }
+
     // const keys = Object.keys(error);
 
     // setValid(willBeValid);

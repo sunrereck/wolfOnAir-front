@@ -13,7 +13,7 @@ interface FormState {
   userName: string;
 }
 
-async function validateEmail(value: string) {
+function validateEmail(value: string) {
   if (value === '') {
     return '필수 정보입니다.';
   }
@@ -22,19 +22,7 @@ async function validateEmail(value: string) {
     return '이메일 형식이 아닙니다.';
   }
 
-  let awaitError = '';
-
-  try {
-    const response: AxiosResponse = await checkEmail(value);
-
-    if (!response.data.isOk) {
-      awaitError = '이미 사용하고 있는 이메일 입니다.';
-    }
-  } catch (e) {
-    awaitError = '통신 에러';
-  }
-
-  return awaitError;
+  return '';
 }
 
 function validatePassword(value: string) {
@@ -67,7 +55,7 @@ function validatePassword2(value: string, password: string) {
   return '';
 }
 
-async function validateUserName(value: string) {
+function validateUserName(value: string) {
   if (value === '') {
     return '필수 정보입니다.';
   }
@@ -76,24 +64,12 @@ async function validateUserName(value: string) {
     return '닉네임은 2글자 이상 8글자 이하여야 합니다.';
   }
 
-  let awaitError = '';
-
-  try {
-    const response: AxiosResponse = await checkUserName(value);
-
-    if (!response.data.isOk) {
-      awaitError = '이미 사용하고 있는 이메일 입니다.';
-    }
-  } catch (e) {
-    awaitError = '통신 에러';
-  }
-
-  return awaitError;
+  return '';
 }
 
-const validate = async (name: string, value: string, state: FormState) => {
+const validate = (name: string, value: string, state: FormState) => {
   if (name === 'email') {
-    const error = await validateEmail(value);
+    const error = validateEmail(value);
 
     return error;
   }
@@ -107,13 +83,43 @@ const validate = async (name: string, value: string, state: FormState) => {
   }
 
   if (name === 'userName') {
-    const error = await validateUserName(value);
+    const error = validateUserName(value);
 
     return error;
   }
 
   return '';
 };
+
+async function asyncValidation (name: string, value: string, state: FormState) {
+  let error = '';
+
+  if (name === 'email') {
+    try {
+      const response: AxiosResponse = await checkEmail(value);
+  
+      if (!response.data.isOk) {
+        error = '이미 사용하고 있는 이메일 입니다.';
+      }
+    } catch (e) {
+      error = '통신 에러';
+    }
+  }
+
+  if (name === 'userName') {
+    try {
+      const response = await checkUserName(value);
+  
+      if (!response.data.isOk) {
+        error = '이미 사용하고 있는 이메일 입니다.';
+      }
+    } catch (e) {
+      error = '통신 에러';
+    }
+  }
+
+  return error;
+}
 
 interface JoinContainerProps {
   history: History;
@@ -135,7 +141,8 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
       password2: '',
       userName: ''
     },
-    validate
+    validate,
+    asyncValidation
   );
 
   const onChagePassword = useCallback(
