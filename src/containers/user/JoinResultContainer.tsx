@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { sendEmail } from '@/api/user';
 
@@ -11,6 +11,15 @@ interface JoinResultContainerProps {
 const JoinResultContainer = ({ email }: JoinResultContainerProps): JSX.Element => {
   const [isLoading, setLoading] = useState(false);
   const [isSuccess, setSuccess] = useState(false);
+
+  const handleSendEmail = async () => {
+    try {
+      await sendEmail(email);
+
+    } catch(e) {
+//
+    }
+  }
 
   useEffect(() => {
     const initialize = async () => {
@@ -35,6 +44,7 @@ const JoinResultContainer = ({ email }: JoinResultContainerProps): JSX.Element =
     <JoinResult 
       isLoading={isLoading}
       isSuccess={isSuccess}
+      sendEmail={handleSendEmail}
     />
   )
 }

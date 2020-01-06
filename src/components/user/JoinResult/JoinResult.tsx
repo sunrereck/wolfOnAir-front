@@ -10,11 +10,13 @@ import SendEmailSuccess from './SendEmailSuccess';
 interface JoinResultProps {
   isLoading: boolean;
   isSuccess: boolean;
+  sendEmail: () => void;
 }
 
 const JoinResult = ({
   isLoading,
-  isSuccess
+  isSuccess,
+  sendEmail
 }: JoinResultProps): JSX.Element => {
 
   if (isLoading) {
@@ -26,7 +28,7 @@ const JoinResult = ({
       <UserTitle>회원가입 완료</UserTitle>
       <div>
         {
-          isSuccess ? <SendEmailSuccess /> : <SendEmailFail />
+          isSuccess ? <SendEmailSuccess /> : <SendEmailFail sendEmail={sendEmail} />
         }
       </div>
     </>
