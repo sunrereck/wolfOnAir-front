@@ -10,13 +10,15 @@ import SendEmailSuccess from './SendEmailSuccess';
 interface JoinResultProps {
   isLoading: boolean;
   isSuccess: boolean;
-  sendEmail: () => void;
+  onSendAuthMail: () => void;
+  onSendHelpMail: () => void;
 }
 
 const JoinResult = ({
   isLoading,
   isSuccess,
-  sendEmail
+  onSendAuthMail,
+  onSendHelpMail
 }: JoinResultProps): JSX.Element => {
 
   if (isLoading) {
@@ -28,7 +30,7 @@ const JoinResult = ({
       <UserTitle>회원가입 완료</UserTitle>
       <div>
         {
-          isSuccess ? <SendEmailSuccess /> : <SendEmailFail sendEmail={sendEmail} />
+          isSuccess ? <SendEmailSuccess /> : <SendEmailFail onSendAuthMail={onSendAuthMail} onSendHelpMail={onSendHelpMail}/>
         }
       </div>
     </>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { sendEmail } from '@/api/user';
+import { sendJoinAuthHelpEmail } from '@/api/help';
 
 import JoinResult from '@/components/user/JoinResult';
 
@@ -18,6 +19,14 @@ const JoinResultContainer = ({ email }: JoinResultContainerProps): JSX.Element =
 
     } catch(e) {
 //
+    }
+  }
+
+  const handleSendHelpEmail = async () => {
+    try {
+      await sendJoinAuthHelpEmail(email);
+    } catch(e) {
+
     }
   }
 
@@ -44,7 +53,8 @@ const JoinResultContainer = ({ email }: JoinResultContainerProps): JSX.Element =
     <JoinResult 
       isLoading={isLoading}
       isSuccess={isSuccess}
-      sendEmail={handleSendEmail}
+      onSendAuthMail={handleSendEmail}
+      onSendHelpMail={handleSendHelpEmail}
     />
   )
 }
