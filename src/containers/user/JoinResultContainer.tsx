@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { sendEmail } from '@/api/user';
 import { sendJoinAuthHelpEmail } from '@/api/help';
@@ -10,49 +10,39 @@ interface JoinResultContainerProps {
 }
 
 const JoinResultContainer = ({ email }: JoinResultContainerProps): JSX.Element => {
-  const [isLoading, setLoading] = useState(false);
-  const [isSuccess, setSuccess] = useState(false);
+  const [isAuthMailLoading, setAuthMailLoading] = useState(false);
+  const [isHelpMailLoading, setHelpEmailLoading] = useState(false);
 
   const handleSendEmail = async () => {
+    setAuthMailLoading(true);
+
     try {
       await sendEmail(email);
 
     } catch(e) {
 //
     }
+
+    setAuthMailLoading(false);
   }
 
   const handleSendHelpEmail = async () => {
+    setHelpEmailLoading(true);
+
     try {
       await sendJoinAuthHelpEmail(email);
     } catch(e) {
 
     }
+
+    setHelpEmailLoading(false);
   }
-
-  useEffect(() => {
-    const initialize = async () => {
-      setLoading(true);
-
-      try {
-        await sendEmail(email);
-
-        setSuccess(true);
-
-      } catch(e) {
-        setSuccess(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    initialize();
-  }, [email]);
 
   return (
     <JoinResult 
-      isLoading={isLoading}
-      isSuccess={isSuccess}
+      email={email}
+      isAuthMailLoading={isAuthMailLoading}
+      isHelpMailLoading={isHelpMailLoading}
       onSendAuthMail={handleSendEmail}
       onSendHelpMail={handleSendHelpEmail}
     />

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { History } from 'history';
 import { AxiosResponse } from 'axios';
 import JoinForm from '@/components/user/JoinForm';
-import { checkEmail, checkUserName, joinUser } from '@/api/user';
+import { checkEmail, checkUserName, joinUser, sendEmail } from '@/api/user';
 
 import useForm from '@/hooks/useForm';
 
@@ -176,6 +176,8 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
           password: string;
           userName: string;
         });
+
+        await sendEmail(formState.values.email);
 
         history.push(`/user/join/${formState.values.email}/send-email`);
       } catch (err) {
