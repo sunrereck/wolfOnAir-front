@@ -1,23 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import ValidationInput from '@/components/ui/ValidationInput';
-
+import Alert from '@/components/ui/Alert';
 const HomeContainer = () => {
+  const [isOpen, setOpen ] = useState(false);
   return (
       <div>
-        <ValidationInput 
-          type="text"
-          name="test"
-          onChange={() => {}}
-          value=""
-        />
-        <ValidationInput 
-          type="text"
-          name="test"
-          onChange={() => {}}
-          value=""
-          errorMessage="필수값 입니다."        
-        />
+        <button type="button" onClick={() => {
+          setOpen(prevState => !prevState);
+        }}>TEST</button>
+        <Alert 
+          onClick={() => {
+            setOpen(prevState => !prevState);
+          }}
+          onClose={() => {
+            setOpen(prevState => !prevState);
+          }}
+          isOpen={isOpen}
+          title="12345"
+        >
+          테스트
+        </Alert>
       </div>
   )
 }
