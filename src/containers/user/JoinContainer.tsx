@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { History } from 'history';
 import { AxiosResponse } from 'axios';
-import JoinForm from '@/components/user/JoinForm';
 import { checkEmail, checkUserName, joinUser, sendEmail } from '@/api/user';
 
 import useForm from '@/hooks/useForm';
+
+import JoinForm from '@/components/user/JoinForm';
 
 interface FormState {
   email: string;
@@ -126,6 +127,7 @@ interface JoinContainerProps {
 }
 
 const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
+  const [isOpenAlert, setAlert ] = useState(false);
   const [
     formState,
     isValid,
@@ -165,26 +167,23 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
   );
 
   const onClick = (e: React.FormEvent<HTMLFormElement>) => {
-    if (!isValid || isSubmit) {
-      return;
+    e.preventDefault();
+
+    // if (!isValid || isSubmit) {
+    //   return;
+    // }
+
+
+    try {
+      onSubmit();
+    } catch(e) {
+      handleToggleAlert();
     }
-
-    onSubmit(e)(async () => {
-      try {
-        await joinUser(formState.values as {
-          email: string;
-          password: string;
-          userName: string;
-        });
-
-        await sendEmail(formState.values.email);
-
-        history.push(`/user/join/${formState.values.email}/send-email`);
-      } catch (err) {
-        alert('회원가입에 실패하였습니다. 잠시 후 다시 시도해주세요.');
-      }
-    });
   };
+
+  const handleToggleAlert = () => {
+    setAlert(prevState => !prevState);
+  }
 
   return (
     <JoinForm
@@ -193,6 +192,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
       errorPassword={formState.errors.password || ''}
       errorPassword2={formState.errors.password2 || ''}
       errorUserName={formState.errors.userName || ''}
+      isOpenAlert={isOpenAlert}
       isSubmit={isSubmit}
       isValid={isValid}
       password={formState.values.password}
@@ -202,6 +202,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
       onChange={onChange}
       onChangePassword={onChagePassword}
       onSubmit={onClick}
+      onToggleAlert={handleToggleAlert}
     />
   );
 };

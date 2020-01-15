@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
+import Alert from '@/components/ui/Alert';
 import Button from '@/components/ui/Button';
 import ValidationInput from "@/components/ui/ValidationInput";
 import UserTitle from '../UserTitle';
@@ -27,6 +28,7 @@ interface JoinFormProps {
   errorPassword: string;
   errorPassword2: string;
   errorUserName: string;
+  isOpenAlert: boolean;
   isSubmit: boolean;
   isValid: boolean;
   password: string;
@@ -36,6 +38,7 @@ interface JoinFormProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onToggleAlert: () => void;
 }
 
 const JoinForm = ({
@@ -44,6 +47,7 @@ const JoinForm = ({
   errorPassword,
   errorPassword2,
   errorUserName,
+  isOpenAlert,
   isSubmit,
   isValid,
   password,
@@ -52,7 +56,8 @@ const JoinForm = ({
   onBlur,
   onChange,
   onChangePassword,
-  onSubmit
+  onSubmit,
+  onToggleAlert
 }: JoinFormProps): JSX.Element => {
   return (
     <>
@@ -100,6 +105,13 @@ const JoinForm = ({
         />
         <Button type="submit" disabled={!isValid || isSubmit}>가입하기</Button>
       </Form>
+      <Alert
+        isOpen={isOpenAlert}
+        onClick={onToggleAlert}
+        onClose={onToggleAlert}
+      >
+        회원가입에 실패하였습니다. 
+      </Alert>
     </>
   );
 };

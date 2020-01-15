@@ -70,10 +70,7 @@ export default function useForm(values: object, validate?: Function, asyncValida
     }
 
     if (!error && !!asyncValidation) {
-      console.log(1, !error && !!asyncValidation);
-
       error = await asyncValidation(name, value, state.values, dispatch);
-
     }
 
     const newErrors = {
@@ -97,22 +94,11 @@ export default function useForm(values: object, validate?: Function, asyncValida
     });
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => async (
+  const onSubmit = () => async (
     callback: Function
   ) => {
-    e.preventDefault();
-
     setSubmit(true);
-
-    try {
-      if (!isValid) {
-        throw new Error();
-      }
-
-      await callback();
-    } catch (error) {
-      //
-    }
+    
 
     setSubmit(false);
   };
