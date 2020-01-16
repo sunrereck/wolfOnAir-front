@@ -94,13 +94,28 @@ export default function useForm(values: object, validate?: Function, asyncValida
     });
   };
 
-  const onSubmit = () => async (
+  const onSubmit = async (
     callback: Function
   ) => {
     setSubmit(true);
-    
 
-    setSubmit(false);
+    try {
+      await callback();
+
+      setSubmit(false);
+
+      return {
+        success: true
+      }
+
+    } catch(e) {
+      setSubmit(false);
+
+      return {
+        success: false
+      }
+    }
+    
   };
 
   return [state, isValid, isSubmit, onChange, onBlur, onSubmit, dispatch] as [

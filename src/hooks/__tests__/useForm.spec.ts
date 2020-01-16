@@ -4,7 +4,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
 
-import { checkUserName } from '@/api/user';
+import { checkUserName, joinUser } from '@/api/user';
 
 import useForm from '../useForm';
 
@@ -93,12 +93,42 @@ describe("useForm Test", () => {
         name: 'name',
         value: 'test',
       }} as React.ChangeEvent<HTMLInputElement>);
-  
+
     });
 
     await wait(() => {
       expect(result.current[1]).toBe(false);
       expect(result.current[0].errors.name).toBe('async error');
+    })
+  })
+
+  test("onSubmit 함수가 정상적으로 작동한다.", async () => {
+    let response: any = null;
+    const { result, wait } = renderHook(() => useForm({
+      email: 'test@test.com',
+      password: 'test123!',
+      password2: 'test123!',
+      userName: 'test',
+
+    }));
+
+    const mock = new MockAdapter(axios, { delayResponse: 200 }); // 200ms 가짜 딜레이 설정
+
+    mock.onPost('http://localhost:8080/user/join').reply(200);
+
+    act(() => {
+      result.current[5](() => {
+        joinUser({
+          email: result.current[0].values.email,
+          password: result.current[0].values.password,
+          userName: result.current[0].values.userName
+        });
+      });
+    });
+
+    await wait(() => {
+      expect(response.data.success).toBe(true);
+      expect(result.current[2]).toBe(false);  
     })
   })
 });
