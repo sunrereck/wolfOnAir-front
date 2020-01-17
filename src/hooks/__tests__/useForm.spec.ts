@@ -111,10 +111,16 @@ describe("useForm Test", () => {
       userName: 'test',
 
     }));
+    const requestInstance = axios.create({
+      baseURL: 'http://localhost:8080',
+      timeout: 20000,
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+    })
+    const mock = new MockAdapter(requestInstance, { delayResponse: 200 }); // 200ms 가짜 딜레이 설정
 
-    const mock = new MockAdapter(axios, { delayResponse: 200 }); // 200ms 가짜 딜레이 설정
-
-    mock.onPost('http://localhost:8080/user/join').reply(200);
+    mock.onPost('/user/join').reply(200, {
+      success: true
+    });
 
     act(() => {
       result.current[5](() => {

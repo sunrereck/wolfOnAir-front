@@ -101,21 +101,11 @@ export default function useForm(values: object, validate?: Function, asyncValida
 
     try {
       await callback();
-
-      setSubmit(false);
-
-      return {
-        success: true
-      }
-
     } catch(e) {
+      //
+    } finally {
       setSubmit(false);
-
-      return {
-        success: false
-      }
     }
-    
   };
 
   return [state, isValid, isSubmit, onChange, onBlur, onSubmit, dispatch] as [
