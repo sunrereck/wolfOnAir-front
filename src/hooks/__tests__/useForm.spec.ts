@@ -34,7 +34,7 @@ describe("useForm Test", () => {
     value: '',
   };
 
-  test('form이 정상적으로 initialize 된다.', () => {
+  test('state 값들이 정상적으로 initialize 된다.', () => {
     const { result } = renderHook(() => useForm(values));
 
     // values check
@@ -102,38 +102,5 @@ describe("useForm Test", () => {
   })
 
   test("onSubmit 함수가 정상적으로 작동한다.", async () => {
-    let response: any = null;
-    const { result, wait } = renderHook(() => useForm({
-      email: 'test@test.com',
-      password: 'test123!',
-      password2: 'test123!',
-      userName: 'test',
-
-    }));
-    const requestInstance = axios.create({
-      baseURL: 'http://localhost:8080',
-      timeout: 20000,
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
-    })
-    const mock = new MockAdapter(requestInstance, { delayResponse: 200 }); // 200ms 가짜 딜레이 설정
-
-    mock.onPost('/user/join').reply(200, {
-      success: true
-    });
-
-    act(() => {
-      result.current[5](() => {
-        joinUser({
-          email: result.current[0].values.email,
-          password: result.current[0].values.password,
-          userName: result.current[0].values.userName
-        });
-      });
-    });
-
-    await wait(() => {
-      expect(response.data.success).toBe(true);
-      expect(result.current[2]).toBe(false);  
-    })
   })
 });
