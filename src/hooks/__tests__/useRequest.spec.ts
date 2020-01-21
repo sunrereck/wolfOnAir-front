@@ -27,7 +27,7 @@ describe("useRequest", () => {
     expect(result.current[0].isLoading).toBe(false);
   });
 
-  test("callback 함수 호출이 정상적으로 된다.", () => {
+  test("callback 함수 호출이 정상적으로 된다.", async () => {
     const mock = new MockAdapter(axios, { delayResponse: 200 }); // 200ms 가짜 딜레이 설정
 
     mock.onGet("https://jsonplaceholder.typicode.com/users").reply(200, {
@@ -51,15 +51,12 @@ describe("useRequest", () => {
       ]
     });
 
-    const { result } = renderHook(() => useRequest(testCallback, []));
+    const { result, wait } = renderHook(() => useRequest(testCallback, []));
+    
     const { data } = result.current[0];
-    let value = '';
 
-    console.log(result.current[0]);
-
-    // if (data) {
-    //   value = data.name
-    // }
-    expect(value).toBe('Leanne Graham');
+    await wait(() => {
+      expect(data[0].name).toBe('Leanne Graham');
+    });
   });
 });
