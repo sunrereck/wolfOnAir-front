@@ -12,9 +12,7 @@ async function testCallback() {
 
     return response.data;
   } catch (e) {
-    return {
-      error: "error!"
-    };
+    throw new Error('error!');
   }
 }
 
@@ -24,7 +22,7 @@ describe("useRequest", () => {
 
     expect(result.current[0].data).toBe(null);
     expect(result.current[0].error).toBe(null);
-    expect(result.current[0].isLoading).toBe(false);
+    expect(result.current[0].isLoading).toBe(true);
   });
 
   test("callback 함수 호출이 정상적으로 된다.", async () => {
@@ -51,12 +49,28 @@ describe("useRequest", () => {
       ]
     });
 
-    const { result, wait } = renderHook(() => useRequest(testCallback, []));
-    
-    const { data } = result.current[0];
+    const { result, waitForNextUpdate } = renderHook(() => useRequest(testCallback, []));
 
-    await wait(() => {
-      expect(data[0].name).toBe('Leanne Graham');
-    });
+    await waitForNextUpdate();
+
+    const { data, isLoading } = result.current[0];
+
+    expect(data[0].name).toBe('Leanne Graham');
+    expect(isLoading).toBe(false);
+  });
+
+  test("callback 함수 호추링 실패했을떄 에러를 제대로 반환한다.", async () => {
+    const mock = new MockAdapter(axios, { delayResponse: 200 }); // 200ms 가짜 딜레이 설정
+
+    mock.onGet("https://jsonplaceholder.typicode.com/users").reply(500);
+
+    const { result, waitForNextUpdate } = renderHook(() => useRequest(testCallback, []));
+
+    await waitForNextUpdate();
+
+    const { error, isLoading } = result.current[0];
+
+    expect(error).toBe('error!');
+    expect(isLoading).toBe(false);
   });
 });

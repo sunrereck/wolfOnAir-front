@@ -1,14 +1,30 @@
-import { useEffect, useReducer, useCallback } from 'react';
+import { useEffect, useReducer } from 'react';
 
 function reducer(state: any, action: any) {
   switch(action.type) {
     case 'SUCCESS': {
       return {
         data: action.data,
-        loading: false,
+        isLoading: false,
         error: null,
       }
     }
+    
+    case 'FAIL': {
+      return {
+        data: null,
+        isLoading: false,
+        error: action.error
+      }
+    }
+
+    case 'LOADING': {
+      return {
+        ...state,
+        isLoading: action.isLoading
+      }
+    }
+
     default: 
       return {
         data: null,
@@ -26,21 +42,34 @@ function useRequest (callback: any, deps: any =[]) {
   });
 
   useEffect(() => {
+    dispatch({
+      type: 'LOADING',
+      isLoading: true
+    });
+
+
     const fetchData = async () => {
       try {
         const response = await callback();
-  
         dispatch({
           type: 'SUCCESS',
-          data: response
+          data: response.data
         });
+
       } catch(e) {
-        //
+        dispatch({
+          type: 'FAIL',
+          error: e.message
+        })
+      } finally {
+
       }
     };
     
     fetchData();
-  }, [callback, deps]);
+
+    // eslint-disable-next-line
+  }, deps);
 
   return [state];
 }
