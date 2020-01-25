@@ -4,6 +4,7 @@ import { AxiosResponse } from 'axios';
 import { checkEmail, checkUserName, joinUser, sendEmail } from '@/api/user';
 
 import useForm from '@/hooks/useForm';
+import useRequet from '@/hooks/useRequest';
 
 import JoinForm from '@/components/user/JoinForm';
 
@@ -68,7 +69,7 @@ function validateUserName(value: string) {
   return '';
 }
 
-const validate = (name: string, value: string, state: FormState) => {
+function validate (name: string, value: string, state: FormState) {
   if (name === 'email') {
     const error = validateEmail(value);
 
@@ -127,7 +128,8 @@ interface JoinContainerProps {
 }
 
 const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
-  const [isOpenAlert, setAlert ] = useState(false);
+  const [isOpenAlert, setAlert] = useState(false);
+  const [state] = useRequet(, [], false);
   const [
     formState,
     isValid,

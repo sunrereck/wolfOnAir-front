@@ -34,7 +34,7 @@ function reducer(state: any, action: any) {
   }
 }
 
-function useRequest (callback: any, deps: any =[]) {
+function useRequest (callback: any, deps: any =[], isSkip = false) {
   const [state, dispatch] = useReducer(reducer, {
     data: null,
     error: null,
@@ -42,6 +42,10 @@ function useRequest (callback: any, deps: any =[]) {
   });
 
   useEffect(() => {
+    if (!isSkip) {
+      return;
+    }
+
     dispatch({
       type: 'LOADING',
       isLoading: true
