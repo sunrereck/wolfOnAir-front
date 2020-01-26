@@ -123,13 +123,17 @@ async function asyncValidation (name: string, value: string, state: FormState) {
   return error;
 }
 
+function join() {
+
+};
+
 interface JoinContainerProps {
   history: History;
 }
 
 const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
   const [isOpenAlert, setAlert] = useState(false);
-  const [state] = useRequet(, [], false);
+  const [state, fetchData] = useRequet(join, [], false);
   const [
     formState,
     isValid,
@@ -177,7 +181,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
 
 
     try {
-      onSubmit();
+ 
     } catch(e) {
       handleToggleAlert();
     }

@@ -41,41 +41,40 @@ function useRequest (callback: any, deps: any =[], isSkip = false) {
     isLoading: false
   });
 
-  useEffect(() => {
-    if (!isSkip) {
-      return;
-    }
-
+  const fetchData = async () => {
     dispatch({
       type: 'LOADING',
       isLoading: true
     });
+    
+    try {
+      const response = await callback();
+      dispatch({
+        type: 'SUCCESS',
+        data: response.data
+      });
 
+    } catch(e) {
+      dispatch({
+        type: 'FAIL',
+        error: e.message
+      })
+    } finally {
 
-    const fetchData = async () => {
-      try {
-        const response = await callback();
-        dispatch({
-          type: 'SUCCESS',
-          data: response.data
-        });
+    }
+  };
 
-      } catch(e) {
-        dispatch({
-          type: 'FAIL',
-          error: e.message
-        })
-      } finally {
-
-      }
-    };
+  useEffect(() => {
+    if (!isSkip) {
+      return;
+    }
     
     fetchData();
 
     // eslint-disable-next-line
   }, deps);
 
-  return [state];
+  return [state, fetchData];
 }
 
 export default useRequest;

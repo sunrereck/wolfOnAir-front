@@ -22,7 +22,7 @@ describe("useRequest", () => {
 
     expect(result.current[0].data).toBe(null);
     expect(result.current[0].error).toBe(null);
-    expect(result.current[0].isLoading).toBe(true);
+    expect(result.current[0].isLoading).toBe(false);
   });
 
   test("callback 함수 호출이 정상적으로 된다.", async () => {
@@ -49,7 +49,7 @@ describe("useRequest", () => {
       ]
     });
 
-    const { result, waitForNextUpdate } = renderHook(() => useRequest(testCallback, []));
+    const { result, waitForNextUpdate } = renderHook(() => useRequest(testCallback, [], true));
 
     await waitForNextUpdate();
 
@@ -64,7 +64,7 @@ describe("useRequest", () => {
 
     mock.onGet("https://jsonplaceholder.typicode.com/users").reply(500);
 
-    const { result, waitForNextUpdate } = renderHook(() => useRequest(testCallback, []));
+    const { result, waitForNextUpdate } = renderHook(() => useRequest(testCallback, [], true));
 
     await waitForNextUpdate();
 
