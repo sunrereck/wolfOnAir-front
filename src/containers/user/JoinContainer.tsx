@@ -123,8 +123,14 @@ async function asyncValidation (name: string, value: string, state: FormState) {
   return error;
 }
 
-function join() {
+async function join(values: FormState) {
+  try {
+    const response = await joinUser(values);
 
+    return response.data;
+  } catch (e) {
+    throw new Error('error!');
+  }
 };
 
 interface JoinContainerProps {
