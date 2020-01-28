@@ -139,7 +139,6 @@ interface JoinContainerProps {
 
 const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
   const [isOpenAlert, setAlert] = useState(false);
-  const [state, fetchData] = useRequet(join, [], false);
   const [
     formState,
     isValid,
@@ -158,6 +157,13 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
     validate,
     asyncValidation
   );
+  const [state, fetchData] = useRequet(() => join({
+    email: formState.values.email,
+    password: formState.values.pasword,
+    password2: formState.values.password2,
+    userName: formState.values.userName,
+  }), [], false);
+
 
   const onChagePassword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -185,9 +191,9 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
     //   return;
     // }
 
-
     try {
- 
+      onSubmit(fetchData);
+  
     } catch(e) {
       handleToggleAlert();
     }
