@@ -165,31 +165,34 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
   }), [], false);
 
 
-  const onChagePassword = useCallback(
+  const onChangePassword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch({
-        type: 'CHANGE_INPUT',
-        name: 'password2',
-        value: ''
-      });
-
-      dispatch({
-        type: 'CHECK_ERROR',
-        name: 'password2',
-        value: ''
-      });
+      if (formState.values.password2) {
+        dispatch({
+          type: 'CHANGE_INPUT',
+          name: 'password2',
+          value: ''
+        });
+  
+        dispatch({
+          type: 'CHECK_ERROR',
+          name: 'password2',
+          value: ''
+        });
+  
+      }
 
       onChange(e);
     },
-    [dispatch, onChange]
+    [dispatch, formState.values.password2, onChange]
   );
 
   const onClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // if (!isValid || isSubmit) {
-    //   return;
-    // }
+    if (!isValid || isSubmit) {
+      return;
+    }
 
     try {
       onSubmit(fetchData);
@@ -218,7 +221,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
       userName={formState.values.userName}
       onBlur={onBlur}
       onChange={onChange}
-      onChangePassword={onChagePassword}
+      onChangePassword={onChangePassword}
       onSubmit={onClick}
       onToggleAlert={handleToggleAlert}
     />
