@@ -123,6 +123,8 @@ async function asyncValidation (name: string, value: string, state: FormState) {
   return error;
 }
 
+// ---------------
+
 async function join(values: FormState) {
   try {
     const response = await joinUser(values);
@@ -187,20 +189,22 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
     [dispatch, formState.values.password2, onChange]
   );
 
-  const onClick = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onTest = () => {
 
-    if (!isValid || isSubmit) {
-      return;
-    }
+  //   if (!isValid || isSubmit) {
+  //     return;
+  //   }
 
-    try {
-      onSubmit(fetchData);
+  //   try {
+  //     onSubmit(fetchData);
   
-    } catch(e) {
-      handleToggleAlert();
-    }
-  };
+  //   } catch(e) {
+  //     handleToggleAlert();
+  //   }
+  // };
+
+    console.log('test');
+  }
 
   const handleToggleAlert = () => {
     setAlert(prevState => !prevState);
@@ -222,7 +226,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
       onBlur={onBlur}
       onChange={onChange}
       onChangePassword={onChangePassword}
-      onSubmit={onClick}
+      onSubmit={(e: React.FormEvent<HTMLFormElement>) => {onSubmit(onTest, e)}}
       onToggleAlert={handleToggleAlert}
     />
   );

@@ -43,7 +43,7 @@ function reducer(state: StateType, action: ActionType) {
 }
 
 export default function useForm(values: object, validate?: Function, asyncValidation?: Function) {
-  const [isValid, setValid] = useState(false);
+  const [isValid, setValid] = useState(true);
   const [isSubmit, setSubmit] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
     values: { ...values },
@@ -85,7 +85,7 @@ export default function useForm(values: object, validate?: Function, asyncValida
       }
     });
 
-    setValid(willBeValid);
+    // setValid(willBeValid);
 
     dispatch({
       type: 'CHECK_ERROR',
@@ -95,16 +95,18 @@ export default function useForm(values: object, validate?: Function, asyncValida
   };
 
   const onSubmit = async (
-    callback: Function
+    callback: Function, 
+    e: React.FormEvent<HTMLFormElement>
   ) => {
-    setSubmit(true);
+    e.preventDefault();
+    // setSubmit(true);
 
     try {
       await callback();
     } catch(e) {
       //
     } finally {
-      setSubmit(false);
+      // setSubmit(false);
     }
   };
 

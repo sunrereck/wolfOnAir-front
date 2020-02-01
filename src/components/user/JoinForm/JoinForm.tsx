@@ -37,7 +37,7 @@ interface JoinFormProps {
   onBlur: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: any;
   onToggleAlert: () => void;
 }
 
