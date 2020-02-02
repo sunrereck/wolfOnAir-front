@@ -159,12 +159,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
     validate,
     asyncValidation
   );
-  const [state, fetchData] = useRequet(() => join({
-    email: formState.values.email,
-    password: formState.values.pasword,
-    password2: formState.values.password2,
-    userName: formState.values.userName,
-  }), [], false);
+  const [state, fetchData] = useRequet(join);
 
 
   const onChangePassword = useCallback(
@@ -189,27 +184,27 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
     [dispatch, formState.values.password2, onChange]
   );
 
-  const onTest = () => {
+  const onTest = async () => {
+    const { email, password, userName } = formState.values;
 
-  //   if (!isValid || isSubmit) {
-  //     return;
-  //   }
-
-  //   try {
-  //     onSubmit(fetchData);
-  
-  //   } catch(e) {
-  //     handleToggleAlert();
-  //   }
-  // };
-
-    console.log('test');
+    try {
+      await fetchData({
+        email,
+        password,
+        userName
+      });
+    } catch(e) {
+      
+      handleToggleAlert();
+    } finally {
+      // console.log(state);
+    }
   }
 
   const handleToggleAlert = () => {
     setAlert(prevState => !prevState);
   }
-
+  
   return (
     <JoinForm
       email={formState.values.email}
@@ -217,7 +212,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
       errorPassword={formState.errors.password || ''}
       errorPassword2={formState.errors.password2 || ''}
       errorUserName={formState.errors.userName || ''}
-      isOpenAlert={isOpenAlert}
+      isOpenAlert={!!state.error}
       isSubmit={isSubmit}
       isValid={isValid}
       password={formState.values.password}

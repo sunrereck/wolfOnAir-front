@@ -1,10 +1,10 @@
-import { act, renderHook } from "@testing-library/react-hooks";
+import { renderHook, act } from "@testing-library/react-hooks";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 
 import useRequest from "../useRequest";
 
-async function testCallback() {
+async function testCallback(id?: number) {
   try {
     const response = await axios.get(
       "https://jsonplaceholder.typicode.com/users"
@@ -59,18 +59,25 @@ describe("useRequest", () => {
     expect(isLoading).toBe(false);
   });
 
-  test("callback 함수 호추링 실패했을떄 에러를 제대로 반환한다.", async () => {
+  test("callback 함수 호출이 실패했을떄 에러를 제대로 반환한다.", async () => {
     const mock = new MockAdapter(axios, { delayResponse: 200 }); // 200ms 가짜 딜레이 설정
 
     mock.onGet("https://jsonplaceholder.typicode.com/users").reply(500);
 
-    const { result, waitForNextUpdate } = renderHook(() => useRequest(testCallback, [], true));
+    const { result, waitForNextUpdate } = renderHook(() => useRequest(testCallback, [], false));
 
-    await waitForNextUpdate();
+    try {
+      await act(async () => {
+        await result.current[1]();
+      });
 
-    const { error, isLoading } = result.current[0];
+      await waitForNextUpdate();
+  
+    } catch(e) {
+      const { error, isLoading } = result.current[0];
 
-    expect(error).toBe('error!');
-    expect(isLoading).toBe(false);
-  });
+      expect(error).toBe('error!');
+      expect(isLoading).toBe(false);  
+    }
+  });  
 });

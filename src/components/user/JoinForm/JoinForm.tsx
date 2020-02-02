@@ -59,6 +59,7 @@ const JoinForm = ({
   onSubmit,
   onToggleAlert
 }: JoinFormProps): JSX.Element => {
+
   return (
     <>
       <UserTitle>회원가입</UserTitle>
