@@ -104,7 +104,7 @@ const JoinForm = ({
           type="text"
           value={userName}
         />
-        <Button type="submit" disabled={!isValid || isSubmit}>가입하기</Button>
+        <Button type="submit" disabled={!isValid || isSubmit}>{isSubmit ? '회원가입 중...' : '회원가입'}</Button>
       </Form>
       <Alert
         isOpen={isOpenAlert}

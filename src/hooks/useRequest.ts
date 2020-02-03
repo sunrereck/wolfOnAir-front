@@ -46,7 +46,7 @@ function useRequest (callback: any, deps: any =[], initialize = false) {
     isLoading: false
   });
 
-  const fetchData = async (...params: any ) => {
+  const fetchData = async (...params: any) => {
     dispatch({
       type: 'LOADING',
       isLoading: true

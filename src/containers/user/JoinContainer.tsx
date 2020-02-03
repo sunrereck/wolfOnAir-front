@@ -123,11 +123,19 @@ async function asyncValidation (name: string, value: string, state: FormState) {
   return error;
 }
 
-// ---------------
-
 async function join(values: FormState) {
   try {
     const response = await joinUser(values);
+
+    return response.data;
+  } catch (e) {
+    throw new Error('error!');
+  }
+};
+
+async function sendJoinEmail(email: string) {
+  try {
+    const response = await sendEmail(email);
 
     return response.data;
   } catch (e) {
@@ -159,8 +167,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
     validate,
     asyncValidation
   );
-  const [state, fetchData] = useRequet(join);
-
+  const [, fetchData] = useRequet(join, [], false);
 
   const onChangePassword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -184,7 +191,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
     [dispatch, formState.values.password2, onChange]
   );
 
-  const onTest = async () => {
+  const handleSubmit = async () => {
     const { email, password, userName } = formState.values;
 
     try {
@@ -193,11 +200,13 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
         password,
         userName
       });
+
+      await sendJoinEmail(email);
+
+      history.push(`/user/join/${email}/send-email`);
     } catch(e) {
       
       handleToggleAlert();
-    } finally {
-      // console.log(state);
     }
   }
 
@@ -212,7 +221,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
       errorPassword={formState.errors.password || ''}
       errorPassword2={formState.errors.password2 || ''}
       errorUserName={formState.errors.userName || ''}
-      isOpenAlert={!!state.error}
+      isOpenAlert={isOpenAlert}
       isSubmit={isSubmit}
       isValid={isValid}
       password={formState.values.password}
@@ -221,7 +230,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
       onBlur={onBlur}
       onChange={onChange}
       onChangePassword={onChangePassword}
-      onSubmit={(e: React.FormEvent<HTMLFormElement>) => {onSubmit(onTest, e)}}
+      onSubmit={(e: React.FormEvent<HTMLFormElement>) => {onSubmit(handleSubmit, e)}}
       onToggleAlert={handleToggleAlert}
     />
   );
