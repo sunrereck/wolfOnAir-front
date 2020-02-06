@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 const Input = ({type, value, onChange, ...props}: React.InputHTMLAttributes<HTMLInputElement>):JSX.Element => (
   <input 
@@ -15,4 +15,4 @@ Input.defaultProps = {
   value: ''
 };
 
-export default Input;
+export default memo(Input);

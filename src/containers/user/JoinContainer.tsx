@@ -148,6 +148,7 @@ interface JoinContainerProps {
 }
 
 const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
+  const [errorMessage, setError ] = useState('');
   const [isOpenAlert, setAlert] = useState(false);
   const [
     formState,
@@ -204,8 +205,16 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
       await onSendJoinEmail(email);
 
       history.push(`/user/join/${email}/send-email`);
-    } catch(e) {
-      
+    } catch(err) {
+      let errorMessage = "회원가입에 실패하였습니다.";
+
+      if (err.response && err.response.data) {
+        const { reason } = err.response.data;
+
+        errorMessage = reason;
+      }
+
+      setError(errorMessage);
       handleToggleAlert();
     }
   }
@@ -221,6 +230,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
       errorPassword={formState.errors.password || ''}
       errorPassword2={formState.errors.password2 || ''}
       errorUserName={formState.errors.userName || ''}
+      errorMessage={errorMessage}
       isOpenAlert={isOpenAlert}
       isSubmit={isSubmit}
       isValid={isValid}

@@ -28,6 +28,7 @@ interface JoinFormProps {
   errorPassword: string;
   errorPassword2: string;
   errorUserName: string;
+  errorMessage: string;
   isOpenAlert: boolean;
   isSubmit: boolean;
   isValid: boolean;
@@ -47,6 +48,7 @@ const JoinForm = ({
   errorPassword,
   errorPassword2,
   errorUserName,
+  errorMessage,
   isOpenAlert,
   isSubmit,
   isValid,
@@ -111,7 +113,7 @@ const JoinForm = ({
         onClick={onToggleAlert}
         onClose={onToggleAlert}
       >
-        회원가입에 실패하였습니다. 
+        {errorMessage}
       </Alert>
     </>
   );
