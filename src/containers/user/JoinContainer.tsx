@@ -123,7 +123,7 @@ async function asyncValidation (name: string, value: string, state: FormState) {
   return error;
 }
 
-async function join(values: FormState) {
+async function onJoinUser(values: FormState) {
   try {
     const response = await joinUser(values);
 
@@ -133,7 +133,7 @@ async function join(values: FormState) {
   }
 };
 
-async function sendJoinEmail(email: string) {
+async function onSendJoinEmail(email: string) {
   try {
     const response = await sendEmail(email);
 
@@ -167,7 +167,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
     validate,
     asyncValidation
   );
-  const [, fetchData] = useRequet(join, [], false);
+  const [, fetchData] = useRequet(onJoinUser, [], false);
 
   const onChangePassword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -201,7 +201,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
         userName
       });
 
-      await sendJoinEmail(email);
+      await onSendJoinEmail(email);
 
       history.push(`/user/join/${email}/send-email`);
     } catch(e) {

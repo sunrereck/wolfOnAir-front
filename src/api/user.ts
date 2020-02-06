@@ -29,3 +29,7 @@ export function sendEmail(email: string) {
 
   return axios.post('/user/join/send-email', formData);
 }
+
+export function updateUserAuth(email: string) {
+  return axios.put('/user/join/email-auth', {email});
+}
