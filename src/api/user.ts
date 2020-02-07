@@ -1,10 +1,10 @@
 import axios from './core';
 
-export function checkEmail(email: string) {
+export function checkAvailabilityEmail(email: string) {
   return axios.get(`/user/join/availability-email/${email}`);
 }
 
-export function checkUserName(userName: string) {
+export function checkAvailabiltyUser(userName: string) {
   return axios.get(`/user/join/availability-nickname/${userName}`);
 }
 
@@ -22,7 +22,7 @@ export function joinUser(values: {
   return axios.post('/user/join', formData);
 }
 
-export function sendEmail(email: string) {
+export function sendAuthEmail(email: string) {
   const formData = new FormData();
 
   formData.append('email', email);

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { History } from 'history';
 import { AxiosResponse } from 'axios';
-import { checkEmail, checkUserName, joinUser, sendEmail } from '@/api/user';
+import { checkAvailabilityEmail, checkAvailabiltyUser, joinUser, sendAuthEmail } from '@/api/user';
 
 import useForm from '@/hooks/useForm';
 import useRequet from '@/hooks/useRequest';
@@ -98,7 +98,7 @@ async function asyncValidation (name: string, value: string, state: FormState) {
 
   if (name === 'email') {
     try {
-      const response: AxiosResponse = await checkEmail(value);
+      const response: AxiosResponse = await checkAvailabilityEmail(value);
   
       if (!response.data.isOk) {
         error = '이미 사용하고 있는 이메일 입니다.';
@@ -110,7 +110,7 @@ async function asyncValidation (name: string, value: string, state: FormState) {
 
   if (name === 'userName') {
     try {
-      const response = await checkUserName(value);
+      const response = await checkAvailabiltyUser(value);
   
       if (!response.data.isOk) {
         error = '이미 사용하고 있는 이메일 입니다.';
@@ -135,7 +135,7 @@ async function onJoinUser(values: FormState) {
 
 async function onSendJoinEmail(email: string) {
   try {
-    const response = await sendEmail(email);
+    const response = await sendAuthEmail(email);
 
     return response.data;
   } catch (e) {
