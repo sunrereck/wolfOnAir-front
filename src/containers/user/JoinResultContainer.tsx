@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { sendEmail } from '@/api/user';
+import { sendAuthEmail } from '@/api/user';
 import { sendJoinAuthHelpEmail } from '@/api/help';
 
 import JoinResult from '@/components/user/JoinResult';
@@ -17,7 +17,7 @@ const JoinResultContainer = ({ email }: JoinResultContainerProps): JSX.Element =
     setAuthMailLoading(true);
 
     try {
-      await sendEmail(email);
+      await sendAuthEmail(email);
 
     } catch(e) {
 //

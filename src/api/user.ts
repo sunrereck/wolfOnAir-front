@@ -27,9 +27,9 @@ export function sendAuthEmail(email: string) {
 
   formData.append('email', email);
 
-  return axios.post('/user/join/send-email', formData);
+  return axios.post('/user/join/auth', formData);
 }
 
 export function updateUserAuth(email: string) {
-  return axios.put('/user/join/email-auth', {email});
+  return axios.put('/user/join/auth', {email});
 }
