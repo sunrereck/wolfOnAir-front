@@ -1,11 +1,10 @@
 import axios from 'axios';
 
-let apiPath = 'http://localhost:8080/api';
+const baseUrl = process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:8080/api';
 
-if (process.env.NODE_ENV === 'production') {
-  apiPath = 'ddd';
-}
+const customAxios = axios.create({
+  baseURL: baseUrl,
+  withCredentials: true
+});
 
-axios.defaults.baseURL = apiPath;
-
-export default axios;
+export default customAxios;

@@ -5,6 +5,6 @@ export function sendJoinAuthHelpEmail(email: string) {
 
   formData.append('email', email);
 
-  return axios.post(`/help/join/auth-email`, formData);
+  return axios.post(`/help/join/auth`, formData);
 }
 
