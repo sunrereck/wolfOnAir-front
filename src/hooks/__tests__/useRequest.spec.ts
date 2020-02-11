@@ -57,6 +57,11 @@ describe("useRequest", () => {
 
     expect(data[0].name).toBe('Leanne Graham');
     expect(isLoading).toBe(false);
+
+    result.current[2]();
+
+    expect(data).toBe(null);
+    expect(isLoading).toBe(false);
   });
 
   test("callback 함수 호출이 실패했을떄 에러를 제대로 반환한다.", async () => {
@@ -79,5 +84,12 @@ describe("useRequest", () => {
       expect(error).toBe('error!');
       expect(isLoading).toBe(false);  
     }
-  });  
+
+    const { error, isLoading } = result.current[0];
+
+    result.current[2]();
+
+    expect(error).toBe(null);
+    expect(isLoading).toBe(false);
+  });      
 });

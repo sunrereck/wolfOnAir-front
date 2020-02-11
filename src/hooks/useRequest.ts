@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
 
 function reducer(state: any, action: any) {
   switch(action.type) {
@@ -25,6 +25,14 @@ function reducer(state: any, action: any) {
       }
     }
 
+    case 'RESET': {
+      return {
+        data: null,
+        error: null,
+        isLoading: false
+      }
+    }
+
     default: 
       return {
         data: null,
@@ -46,7 +54,7 @@ function useRequest (callback: any, deps: any =[], initialize = false) {
     isLoading: false
   });
 
-  const fetchData = async (...params: any) => {
+  const onFetchData = useCallback(async (...params: any) => {
     dispatch({
       type: 'LOADING',
       isLoading: true
@@ -68,19 +76,25 @@ function useRequest (callback: any, deps: any =[], initialize = false) {
 
       throw e;
     }
-  };
+  }, [callback]);
+
+  const onReset = () => {
+    dispatch({
+      type: 'RESET'
+    })
+
+  }
 
   useEffect(() => {
     if (!initialize) {
       return;
     }
     
-    fetchData();
+    onFetchData();
 
-    // eslint-disable-next-line
-  }, deps);
+  }, [initialize, onFetchData]);
 
-  return [state, fetchData];
+  return [state, onFetchData, onReset];
 }
 
 export default useRequest;
