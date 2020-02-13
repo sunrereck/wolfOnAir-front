@@ -60,8 +60,10 @@ describe("useRequest", () => {
 
     result.current[2]();
 
-    expect(data).toBe(null);
-    expect(isLoading).toBe(false);
+    const { data: data2, isLoading: isLoading2 } = result.current[0];
+
+    expect(data2).toBe(null);
+    expect(isLoading2).toBe(false);
   });
 
   test("callback 함수 호출이 실패했을떄 에러를 제대로 반환한다.", async () => {
@@ -85,9 +87,9 @@ describe("useRequest", () => {
       expect(isLoading).toBe(false);  
     }
 
-    const { error, isLoading } = result.current[0];
-
     result.current[2]();
+
+    const { error, isLoading } = result.current[0];
 
     expect(error).toBe(null);
     expect(isLoading).toBe(false);
