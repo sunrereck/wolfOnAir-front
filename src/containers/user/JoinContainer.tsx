@@ -8,219 +8,92 @@ import useRequet from '@/hooks/useRequest';
 
 import JoinForm from '@/components/user/JoinForm';
 
-interface FormState {
+interface JoinContainerProps {
+  history: History;
+}
+
+interface JoinFormState {
   email: string;
   password: string;
   password2: string;
   userName: string;
 }
 
-function validateEmail(value: string) {
-  if (value === '') {
-    return '필수 정보입니다.';
-  }
-
-  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,8}$/i.test(value)) {
-    return '이메일 형식이 아닙니다.';
-  }
-
-  return '';
-}
-
-function validatePassword(value: string) {
-  if (value === '') {
-    return '필수 정보입니다.';
-  }
-
-  if (value.length < 8 || value.length > 16) {
-    return '비밀번호는 최소 8글자 이상 최대 16글자 이하이어야 합니다.';
-  }
-
-  if (
-    !value.match(/^.*(?=^.{8,16}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/)
-  ) {
-    return '비밀번호는 숫자, 영문자, 특수문자를 포함해야합니다.';
-  }
-
-  return '';
-}
-
-function validatePassword2(value: string, password: string) {
-  if (value === '') {
-    return '필수 정보입니다.';
-  }
-
-  if (value !== password) {
-    return '비밀번호가 일치하지 않습니다.';
-  }
-
-  return '';
-}
-
-function validateUserName(value: string) {
-  if (value === '') {
-    return '필수 정보입니다.';
-  }
-
-  if (value.length < 2 || value.length > 8) {
-    return '닉네임은 2글자 이상 8글자 이하여야 합니다.';
-  }
-
-  return '';
-}
-
-function validate (name: string, value: string, state: FormState) {
-  if (name === 'email') {
-    const error = validateEmail(value);
-
-    return error;
-  }
-
-  if (name === 'password') {
-    return validatePassword(value);
-  }
-
-  if (name === 'password2') {
-    return validatePassword2(value, state.password);
-  }
-
-  if (name === 'userName') {
-    const error = validateUserName(value);
-
-    return error;
-  }
-
-  return '';
-};
-
-async function asyncValidation (name: string, value: string, state: FormState) {
-  let error = '';
-
-  if (name === 'email') {
-    try {
-      const response: AxiosResponse = await checkAvailabilityEmail(value);
-  
-      if (!response.data.isOk) {
-        error = '이미 사용하고 있는 이메일 입니다.';
-      }
-    } catch (e) {
-      error = '통신 에러';
-    }
-  }
-
-  if (name === 'userName') {
-    try {
-      const response = await checkAvailabiltyUser(value);
-  
-      if (!response.data.isOk) {
-        error = '이미 사용하고 있는 이메일 입니다.';
-      }
-    } catch (e) {
-      error = '통신 에러';
-    }
-  }
-
-  return error;
-}
-
-async function onJoinUser(values: FormState) {
-  try {
-    const response = await joinUser(values);
-
-    return response.data;
-  } catch (e) {
-    throw new Error('error!');
-  }
-};
-
-async function onSendJoinEmail(email: string) {
-  try {
-    const response = await sendAuthEmail(email);
-
-    return response.data;
-  } catch (e) {
-    throw new Error('error!');
-  }
-};
-
-interface JoinContainerProps {
-  history: History;
-}
-
 const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
-  const [errorMessage, setError ] = useState('');
-  const [isOpenAlert, setAlert] = useState(false);
-  const [
-    formState,
-    isValid,
-    isSubmit,
-    onChange,
-    onBlur,
-    onSubmit,
-    dispatch
-  ] = useForm(
-    {
-      email: '',
-      password: '',
-      password2: '',
-      userName: ''
-    },
-    validate,
-    asyncValidation
-  );
-  const [, fetchData] = useRequet(onJoinUser, [], false);
+  // const [
+  //   formState,
+  //   isValid,
+  //   isSubmit,
+  //   onChange,
+  //   onBlur,
+  //   onSubmit,
+  //   dispatch
+  // ] = useForm(
+  //   {
+  //     email: '',
+  //     password: '',
+  //     password2: '',
+  //     userName: ''
+  //   },
+  //   validate,
+  //   asyncValidation
+  // );
+  // const [, onFetchJoinUser] = useRequet(onJoinUser, [], false); 
+  // const [, onFetchSendEmail] = useRequet(onSendAuthEmail, [], false);
+  // const [, onFetchJoinUser] = useRequet(onJoinUser, [], false);
+  // const [, onFetchJoinUser] = useRequet(onJoinUser, [], false);
 
-  const onChangePassword = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (formState.values.password2) {
-        dispatch({
-          type: 'CHANGE_INPUT',
-          name: 'password2',
-          value: ''
-        });
+  // const onChangePassword = useCallback(
+  //   (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     if (formState.values.password2) {
+  //       dispatch({
+  //         type: 'CHANGE_INPUT',
+  //         name: 'password2',
+  //         value: ''
+  //       });
   
-        dispatch({
-          type: 'CHECK_ERROR',
-          name: 'password2',
-          value: ''
-        });
+  //       dispatch({
+  //         type: 'CHECK_ERROR',
+  //         name: 'password2',
+  //         value: ''
+  //       });
   
-      }
+  //     }
 
-      onChange(e);
-    },
-    [dispatch, formState.values.password2, onChange]
-  );
+  //     onChange(e);
+  //   },
+  //   [dispatch, formState.values.password2, onChange]
+  // );
 
-  const handleSubmit = async () => {
+  const onSubmit = async () => {
     const { email, password, userName } = formState.values;
 
     try {
-      await fetchData({
-        email,
-        password,
-        userName
-      });
+      // await fetchData({
+      //   email,
+      //   password,
+      //   userName
+      // });
 
-      await onSendJoinEmail(email);
+      // await onSendJoinEmail(email);
 
       history.push(`/user/join/${email}/send-email`);
     } catch(err) {
-      let errorMessage = "회원가입에 실패하였습니다.";
+      // let errorMessage = "회원가입에 실패하였습니다.";
 
-      if (err.response && err.response.data) {
-        const { reason } = err.response.data;
+      // if (err.response && err.response.data) {
+      //   const { reason } = err.response.data;
 
-        errorMessage = reason;
-      }
+      //   errorMessage = reason;
+      // }
 
-      setError(errorMessage);
-      handleToggleAlert();
+      // setError(errorMessage);
+      // handleToggleAlert();
     }
   }
 
-  const handleToggleAlert = () => {
-    setAlert(prevState => !prevState);
+  const onCloseAlert = () => {
+    
   }
   
   return (
@@ -231,7 +104,7 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
       errorPassword2={formState.errors.password2 || ''}
       errorUserName={formState.errors.userName || ''}
       errorMessage={errorMessage}
-      isOpenAlert={isOpenAlert}
+      // isOpenAlert={isOpenAlert}
       isSubmit={isSubmit}
       isValid={isValid}
       password={formState.values.password}

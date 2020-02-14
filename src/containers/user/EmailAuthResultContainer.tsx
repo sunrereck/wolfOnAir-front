@@ -22,8 +22,6 @@ async function onUpdateUserAuth(email: string) {
 const EmailAuthResultContainer = ({email}: Props): JSX.Element => {
   const [state] = useRequet(() => onUpdateUserAuth(email), [], true);
 
-  useEffect(() => {}, []);
-
   return <EmailAuthResult isFail={state.error} />  
 }
 
