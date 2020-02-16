@@ -1,12 +1,16 @@
-import React, { useCallback, useState } from 'react';
-import { History } from 'history';
-import { AxiosResponse } from 'axios';
-import { checkAvailabilityEmail, checkAvailabiltyUser, joinUser, sendAuthEmail } from '@/api/user';
+import React, { useCallback, useState } from "react";
+import { History } from "history";
+import {
+  checkAvailabilityEmail,
+  checkAvailabiltyUser,
+  joinUser,
+  sendAuthEmail
+} from "@/api/user";
 
-import useForm from '@/hooks/useForm';
-import useRequet from '@/hooks/useRequest';
+import useForm from "@/hooks/useForm";
+import useRequet from "@/hooks/useRequest";
 
-import JoinForm from '@/components/user/JoinForm';
+import JoinForm from "@/components/user/JoinForm";
 
 interface JoinContainerProps {
   history: History;
@@ -19,93 +23,95 @@ interface JoinFormState {
   userName: string;
 }
 
-const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
-  // const [
-  //   formState,
-  //   isValid,
-  //   isSubmit,
-  //   onChange,
-  //   onBlur,
-  //   onSubmit,
-  //   dispatch
-  // ] = useForm(
-  //   {
-  //     email: '',
-  //     password: '',
-  //     password2: '',
-  //     userName: ''
-  //   },
-  //   validate,
-  //   asyncValidation
-  // );
-  // const [, onFetchJoinUser] = useRequet(onJoinUser, [], false); 
-  // const [, onFetchSendEmail] = useRequet(onSendAuthEmail, [], false);
-  // const [, onFetchJoinUser] = useRequet(onJoinUser, [], false);
-  // const [, onFetchJoinUser] = useRequet(onJoinUser, [], false);
+const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
+  const [errorMessage, setError] = useState('');
+  const [isOpenedAlert, setAlert] = useState(false); 
+  const [isSubmitting, setSubmit] = useState(false);
+  const [, onJoinUser] = useRequet(joinUser, [], false);
+  const [, onSendAuthEmail] = useRequet(sendAuthEmail, [], false);
+  const [
+    formState,
+    isValid,
+    onChange,
+    onBlur,
+    dispatch
+  ] = useForm(
+    {
+      email: "",
+      password: "",
+      password2: "",
+      userName: ""
+    }
+  );
 
-  // const onChangePassword = useCallback(
-  //   (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     if (formState.values.password2) {
-  //       dispatch({
-  //         type: 'CHANGE_INPUT',
-  //         name: 'password2',
-  //         value: ''
-  //       });
-  
-  //       dispatch({
-  //         type: 'CHECK_ERROR',
-  //         name: 'password2',
-  //         value: ''
-  //       });
-  
-  //     }
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (formState.values.password2) {
+      dispatch({
+        type: "CHANGE_INPUT",
+        name: "password2",
+        value: ""
+      });
 
-  //     onChange(e);
-  //   },
-  //   [dispatch, formState.values.password2, onChange]
-  // );
+      dispatch({
+        type: "CHECK_ERROR",
+        name: "password2",
+        value: ""
+      });
+    }
 
-  const onSubmit = async () => {
+    onChange(e);
+  };
+
+  const onSubmitJoinForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     const { email, password, userName } = formState.values;
 
-    try {
-      // await fetchData({
-      //   email,
-      //   password,
-      //   userName
-      // });
+    if (!isValid) {
+      return;
+    }
 
-      // await onSendJoinEmail(email);
+    setSubmit(true);
+
+    try {
+      await onJoinUser({
+        email,
+        password,
+        userName
+      });
+
+      await onSendAuthEmail(email);
 
       history.push(`/user/join/${email}/send-email`);
-    } catch(err) {
-      // let errorMessage = "회원가입에 실패하였습니다.";
 
-      // if (err.response && err.response.data) {
-      //   const { reason } = err.response.data;
-
-      //   errorMessage = reason;
-      // }
-
-      // setError(errorMessage);
-      // handleToggleAlert();
-    }
-  }
-
-  const onCloseAlert = () => {
+    } catch (err) {
+      let message = '통신이 불안정하여 회원가입을 완료하지 못하였습니다.';
     
+      if (err.response && err.response.status === 400) {
+        message = '필수값이 누락되어 회원가입을 완료하지 못하였습니다.';
+    
+      }
+
+      setAlert(true);
+      setError(message);
+      setSubmit(false);
+    }
+  };
+
+  const onToggleAlert = () => {
+    setAlert(prevState => !prevState);
   }
-  
+
   return (
     <JoinForm
       email={formState.values.email}
-      errorEmail={formState.errors.email || ''}
-      errorPassword={formState.errors.password || ''}
-      errorPassword2={formState.errors.password2 || ''}
-      errorUserName={formState.errors.userName || ''}
+      errorEmail={formState.errors.email || ""}
+      errorPassword={formState.errors.password || ""}
+      errorPassword2={formState.errors.password2 || ""}
+      errorUserName={formState.errors.userName || ""}
       errorMessage={errorMessage}
-      // isOpenAlert={isOpenAlert}
-      isSubmit={isSubmit}
+      isOpenAlert={isOpenedAlert}
+      isSubmit={isSubmitting}
       isValid={isValid}
       password={formState.values.password}
       password2={formState.values.password2}
@@ -113,8 +119,8 @@ const JoinContainer: React.FC<JoinContainerProps> = ({ history }) => {
       onBlur={onBlur}
       onChange={onChange}
       onChangePassword={onChangePassword}
-      onSubmit={(e: React.FormEvent<HTMLFormElement>) => {onSubmit(handleSubmit, e)}}
-      onToggleAlert={handleToggleAlert}
+      onSubmit={onSubmitJoinForm}
+      onToggleAlert={onToggleAlert}
     />
   );
 };

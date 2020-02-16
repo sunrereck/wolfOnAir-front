@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import styled from "styled-components";
 
 import Button from "../Button";
@@ -93,4 +93,4 @@ Alert.defaultProps = {
   title: ""
 };
 
-export default Alert;
+export default memo(Alert);

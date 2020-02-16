@@ -59,7 +59,7 @@ function useRequest (callback: Function, deps: any =[], isInitialized = false) {
       type: 'LOADING',
       isLoading: true
     });
-   
+
     try {
       const response = await callback(...params);
 
@@ -68,13 +68,13 @@ function useRequest (callback: Function, deps: any =[], isInitialized = false) {
         data: response.data
       });
 
-    } catch(e) {
+    } catch(err) {
       dispatch({
         type: 'FAIL',
-        error: e.message
+        error: err
       })
 
-      throw e;
+      throw err;
     }
   }, [callback]);
 

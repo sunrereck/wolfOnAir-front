@@ -44,7 +44,6 @@ function reducer(state: StateType, action: ActionType) {
 
 export default function useForm(values: object, validate?: Function, asyncValidation?: Function) {
   const [isValid, setValid] = useState(false);
-  const [isSubmit, setSubmit] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
     values: { ...values },
     errors: {}
@@ -65,20 +64,20 @@ export default function useForm(values: object, validate?: Function, asyncValida
     let error = '';
     const { name, value } = e.target;
 
-    if (!!validate){
-      error = validate(name, value, state.values, dispatch);
-    }
-
-    if (!error && !!asyncValidation) {
-      error = await asyncValidation(name, value, state.values, dispatch);
-    }
+    try {
+      if (!!validate){
+        error = validate(name, value, state.values, dispatch);
+      }
+  
+      if (!error && !!asyncValidation) {
+        error = await asyncValidation(name, value, state.values, dispatch);
+      }  
 
     const newErrors = {
       ...state.errors,
       [name]: error
     };
     const keys = Object.keys(newErrors);
-
 
     keys.forEach((key) => {
       if (!!newErrors[key]) {
@@ -93,38 +92,20 @@ export default function useForm(values: object, validate?: Function, asyncValida
       name,
       value: error
     });
-  };
-
-  const onSubmit = async (
-    callback: Function, 
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
-
-    if (!isValid) {
-      return;
-    }
-
-    setSubmit(true);
-
-    try {
-      await callback();
-
-      setSubmit(false);
     } catch(e) {
-      setSubmit(false);
-
-      throw e;
+      dispatch({
+        type: 'CHECK_ERROR',
+        name,
+        value: '통신에러'
+      });
     }
   };
 
-  return [state, isValid, isSubmit, onChange, onBlur, onSubmit, dispatch] as [
+  return [state, isValid, onChange, onBlur, dispatch] as [
     StateType,
-    boolean,
     boolean,
     typeof onChange,
     typeof onBlur,
-    typeof onSubmit,
     typeof dispatch
   ];
 }
