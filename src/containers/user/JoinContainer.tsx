@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { History } from "history";
 import {
   checkAvailabilityEmail,
@@ -7,7 +7,7 @@ import {
   sendAuthEmail
 } from "@/api/user";
 
-import useForm from "@/hooks/useForm";
+import useForm from "@/hooks/useInputs";
 import useRequet from "@/hooks/useRequest";
 
 import JoinForm from "@/components/user/JoinForm";
