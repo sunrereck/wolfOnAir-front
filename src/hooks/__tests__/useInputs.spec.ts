@@ -3,9 +3,9 @@ import { act, renderHook } from '@testing-library/react-hooks';
 
 import useInputs from '../useInputs';
 
-describe("useInputs Test", () => {
+describe("useInputs", () => {
   test('state 값들이 정상적으로 initialize 된다.', () => {
-    const { result } = renderHook(() => useInputs<{name: string; value: string}>({
+    const { result } = renderHook(() => useInputs({
       name: '',
       value: ''
     }));
@@ -16,7 +16,7 @@ describe("useInputs Test", () => {
   })
 
   test('onChange 함수가 정상적으로 작동한다.', () => {
-    const { result } = renderHook(() => useInputs<{name: string; value: string}>({
+    const { result } = renderHook(() => useInputs({
       name: '',
       value: ''
     }));

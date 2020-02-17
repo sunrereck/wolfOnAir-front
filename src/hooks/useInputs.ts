@@ -5,7 +5,7 @@ interface UseInputsAction {
   value: string;
 };
 
-function reducer<T>(state: T, action: UseInputsAction) {
+function reducer<T>(state: T, action: UseInputsAction): T {
   return {
     ...state,
     [action.name]: action.value
@@ -22,5 +22,5 @@ export default function useInputs<T>(values: T) {
     })
   }
  
-  return [state, onChange];
+  return [state, onChange] as [T, typeof onChange];
 }
