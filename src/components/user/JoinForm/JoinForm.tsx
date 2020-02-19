@@ -24,10 +24,7 @@ const Form = styled.form`
 
 interface JoinFormProps {
   email: string;
-  errorEmail: string;
-  errorPassword: string;
-  errorPassword2: string;
-  errorUserName: string;
+  emailError: string;
   errorMessage: string;
   isOpenAlert: boolean;
   isSubmit: boolean;
@@ -40,14 +37,14 @@ interface JoinFormProps {
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: any;
   onToggleAlert: () => void;
+  passwordError: string;
+  password2Error: string;
+  userNameError: string;
 }
 
 const JoinForm = ({
   email,
-  errorEmail,
-  errorPassword,
-  errorPassword2,
-  errorUserName,
+  emailError,
   errorMessage,
   isOpenAlert,
   isSubmit,
@@ -59,7 +56,10 @@ const JoinForm = ({
   onChange,
   onChangePassword,
   onSubmit,
-  onToggleAlert
+  onToggleAlert,
+  passwordError,
+  password2Error,
+  userNameError,
 }: JoinFormProps): JSX.Element => {
 
   return (
@@ -68,7 +68,7 @@ const JoinForm = ({
       <Form onSubmit={onSubmit}>
         <ValidationInput 
           className="join-input" 
-          errorMessage={errorEmail}
+          errorMessage={emailError}
           name="email"
           onBlur={onBlur} 
           onChange={onChange} 
@@ -78,7 +78,7 @@ const JoinForm = ({
         />
         <ValidationInput 
           className="join-input" 
-          errorMessage={errorPassword}
+          errorMessage={passwordError}
           name="password"
           onBlur={onBlur} 
           onChange={onChangePassword} 
@@ -88,7 +88,7 @@ const JoinForm = ({
         />
         <ValidationInput 
           className="join-input" 
-          errorMessage={errorPassword2}
+          errorMessage={password2Error}
           name="password2"
           onBlur={onBlur} 
           onChange={onChange} 
@@ -98,7 +98,7 @@ const JoinForm = ({
         />
         <ValidationInput 
           className="join-input" 
-          errorMessage={errorUserName}
+          errorMessage={userNameError}
           name="userName"
           onBlur={onBlur} 
           onChange={onChange} 

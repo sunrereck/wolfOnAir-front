@@ -7,7 +7,7 @@ import {
   sendAuthEmail
 } from "@/api/user";
 
-import useForm from "@/hooks/useInputs";
+import useValidationInput from "@/hooks/useValidationInput";
 import useRequet from "@/hooks/useRequest";
 
 import JoinForm from "@/components/user/JoinForm";
@@ -27,45 +27,15 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
   const [errorMessage, setError] = useState('');
   const [isOpenedAlert, setAlert] = useState(false); 
   const [isSubmitting, setSubmit] = useState(false);
+  const [email, emailError,,, onChangeEmail] = useValidationInput('');
+  const [password, passwordError,,, onChangePassword] = useValidationInput('');
+  const [password2, password2Error,,, onChangePassword2] = useValidationInput('');
+  const [userName, userNameError,,, onChangeUserName] = useValidationInput('');
   const [, onJoinUser] = useRequet(joinUser, [], false);
   const [, onSendAuthEmail] = useRequet(sendAuthEmail, [], false);
-  const [
-    formState,
-    isValid,
-    onChange,
-    onBlur,
-    dispatch
-  ] = useForm(
-    {
-      email: "",
-      password: "",
-      password2: "",
-      userName: ""
-    }
-  );
-
-  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (formState.values.password2) {
-      dispatch({
-        type: "CHANGE_INPUT",
-        name: "password2",
-        value: ""
-      });
-
-      dispatch({
-        type: "CHECK_ERROR",
-        name: "password2",
-        value: ""
-      });
-    }
-
-    onChange(e);
-  };
 
   const onSubmitJoinForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const { email, password, userName } = formState.values;
 
     if (!isValid) {
       return;
@@ -104,23 +74,23 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
 
   return (
     <JoinForm
-      email={formState.values.email}
-      errorEmail={formState.errors.email || ""}
-      errorPassword={formState.errors.password || ""}
-      errorPassword2={formState.errors.password2 || ""}
-      errorUserName={formState.errors.userName || ""}
+      email={email}
+      emailError={emailError}
       errorMessage={errorMessage}
       isOpenAlert={isOpenedAlert}
       isSubmit={isSubmitting}
       isValid={isValid}
-      password={formState.values.password}
-      password2={formState.values.password2}
-      userName={formState.values.userName}
+      password={password}
+      password2={password2}
+      userName={userName}
       onBlur={onBlur}
       onChange={onChange}
       onChangePassword={onChangePassword}
       onSubmit={onSubmitJoinForm}
       onToggleAlert={onToggleAlert}
+      passwordError={passwordError}
+      password2Error={password2Error}
+      userNameError={userNameError}
     />
   );
 };

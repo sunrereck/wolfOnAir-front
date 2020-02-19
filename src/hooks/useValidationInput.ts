@@ -1,12 +1,22 @@
-import { renderHook, act } from "@testing-library/react-hooks";
+import { useState } from "react";
 
-import useValidationInput from './useValidationInput';
+function useValidationInput(defaultValue: string) {
+  const [value, setValue] = useState(defaultValue);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isValid, setValid] = useState(false);
+  const [isError, setError] = useState(false);
 
-describe('useValidationInput', () => {
-  test('state, error 값들이 정상적으로 initialize 된다.', () => {
-    const { result } = renderHook(() => useValidationInput(''));
-    const [name] = result.current;
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
 
-    expect(name).toEqual('');
-  });
-});
+  return [value, errorMessage, isValid, isError, onChange] as [
+    string,
+    string,
+    boolean,
+    boolean,
+    typeof onChange
+  ];
+}
+
+export default useValidationInput;
