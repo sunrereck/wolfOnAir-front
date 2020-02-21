@@ -25,18 +25,20 @@ const Form = styled.form`
 interface JoinFormProps {
   email: string;
   emailError: string;
-  errorMessage: string;
-  isOpenAlert: boolean;
+  isFailedJoin: boolean;
   isSubmit: boolean;
   isValid: boolean;
+  joinFailMessage: string;
   password: string;
   password2: string;
   userName: string;
   onBlur: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangePassword2: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeUserName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: any;
-  onToggleAlert: () => void;
+  onToggleJoinFailAlert: () => void;
   passwordError: string;
   password2Error: string;
   userNameError: string;
@@ -45,18 +47,20 @@ interface JoinFormProps {
 const JoinForm = ({
   email,
   emailError,
-  errorMessage,
-  isOpenAlert,
+  isFailedJoin,
   isSubmit,
   isValid,
+  joinFailMessage,
   password,
   password2,
   userName,
   onBlur,
-  onChange,
+  onChangeEmail,
   onChangePassword,
+  onChangePassword2,
+  onChangeUserName
   onSubmit,
-  onToggleAlert,
+  onToggleJoinFailAlert,
   passwordError,
   password2Error,
   userNameError,
@@ -71,7 +75,7 @@ const JoinForm = ({
           errorMessage={emailError}
           name="email"
           onBlur={onBlur} 
-          onChange={onChange} 
+          onChange={onChangeEmail} 
           placeholder="이메일" 
           type="text"
           value={email}
@@ -91,7 +95,7 @@ const JoinForm = ({
           errorMessage={password2Error}
           name="password2"
           onBlur={onBlur} 
-          onChange={onChange} 
+          onChange={onChangePassword2} 
           placeholder="비밀번호 재입력" 
           type="password"
           value={password2}
@@ -101,7 +105,7 @@ const JoinForm = ({
           errorMessage={userNameError}
           name="userName"
           onBlur={onBlur} 
-          onChange={onChange} 
+          onChange={onChangeUserName} 
           placeholder="닉네임" 
           type="text"
           value={userName}
@@ -109,11 +113,11 @@ const JoinForm = ({
         <Button type="submit" disabled={!isValid || isSubmit}>{isSubmit ? '회원가입 중...' : '회원가입'}</Button>
       </Form>
       <Alert
-        isOpen={isOpenAlert}
-        onClick={onToggleAlert}
-        onClose={onToggleAlert}
+        isOpen={isFailedJoin}
+        onClick={onToggleJoinFailAlert}
+        onClose={onToggleJoinFailAlert}
       >
-        {errorMessage}
+        {joinFailMessage}
       </Alert>
     </>
   );

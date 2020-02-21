@@ -37,10 +37,6 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
   const onSubmitJoinForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!isValid) {
-      return;
-    }
-
     setSubmit(true);
 
     try {
@@ -79,13 +75,15 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
       errorMessage={errorMessage}
       isOpenAlert={isOpenedAlert}
       isSubmit={isSubmitting}
-      isValid={isValid}
+      isValid={}
       password={password}
       password2={password2}
       userName={userName}
-      onBlur={onBlur}
-      onChange={onChange}
+      // onBlur={onBlur}
+      onChangeEmail={onChangeEmail}
       onChangePassword={onChangePassword}
+      onChangePassword2={onChangePassword2}
+      onChangeUserName={onChangeUserName}
       onSubmit={onSubmitJoinForm}
       onToggleAlert={onToggleAlert}
       passwordError={passwordError}
