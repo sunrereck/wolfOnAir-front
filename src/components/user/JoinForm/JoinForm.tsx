@@ -58,7 +58,7 @@ const JoinForm = ({
   onChangeEmail,
   onChangePassword,
   onChangePassword2,
-  onChangeUserName
+  onChangeUserName,
   onSubmit,
   onToggleJoinFailAlert,
   passwordError,

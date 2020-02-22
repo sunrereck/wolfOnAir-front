@@ -23,14 +23,23 @@ interface JoinFormState {
   userName: string;
 }
 
+
+async function validateEmail() {}
+
+function validatePassword() {}
+
+function validatePassword2() {}
+
+async function validateUserName() {}
+
 const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
   const [errorMessage, setError] = useState('');
-  const [isOpenedAlert, setAlert] = useState(false); 
+  const [isFailedJoin, setJoinResult] = useState(false); 
   const [isSubmitting, setSubmit] = useState(false);
-  const [email, emailError,,, onChangeEmail] = useValidationInput('');
-  const [password, passwordError,,, onChangePassword] = useValidationInput('');
-  const [password2, password2Error,,, onChangePassword2] = useValidationInput('');
-  const [userName, userNameError,,, onChangeUserName] = useValidationInput('');
+  const [email, emailError,,, onChangeEmail] = useValidationInput('', validateEmail);
+  const [password, passwordError,,, onChangePassword] = useValidationInput('', validatePassword);
+  const [password2, password2Error,,, onChangePassword2] = useValidationInput('', validatePassword2);
+  const [userName, userNameError,,, onChangeUserName] = useValidationInput('', validateUserName);
   const [, onJoinUser] = useRequet(joinUser, [], false);
   const [, onSendAuthEmail] = useRequet(sendAuthEmail, [], false);
 
@@ -58,34 +67,34 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
     
       }
 
-      setAlert(true);
+      setJoinResult(true);
       setError(message);
-      setSubmit(false);
+      setJoinResult(false);
     }
   };
 
-  const onToggleAlert = () => {
-    setAlert(prevState => !prevState);
+  const onToggleJoinFailAlert = () => {
+    setJoinResult(prevState => !prevState);
   }
 
   return (
     <JoinForm
       email={email}
       emailError={emailError}
-      errorMessage={errorMessage}
-      isOpenAlert={isOpenedAlert}
+      isFailedJoin={isFailedJoin}
       isSubmit={isSubmitting}
-      isValid={}
+      isValid
+      joinFailMessage={errorMessage}
       password={password}
       password2={password2}
       userName={userName}
-      // onBlur={onBlur}
+      onBlur={() => {}}
       onChangeEmail={onChangeEmail}
       onChangePassword={onChangePassword}
       onChangePassword2={onChangePassword2}
       onChangeUserName={onChangeUserName}
       onSubmit={onSubmitJoinForm}
-      onToggleAlert={onToggleAlert}
+      onToggleJoinFailAlert={onToggleJoinFailAlert}
       passwordError={passwordError}
       password2Error={password2Error}
       userNameError={userNameError}
