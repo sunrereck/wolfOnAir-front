@@ -13,21 +13,18 @@ export function joinUser(values: {
   password: string;
   userName: string;
 }) {
-  const formData = new FormData();
+  // const formData = new FormData();
 
-  formData.append('email', values.email);
-  formData.append('password', values.password);
-  formData.append('userName', values.userName);
+  // formData.append('email', values.email);
+  // formData.append('password', values.password);
+  // formData.append('userName', values.userName);
 
-  return axios.post('/user/join', formData);
+  return axios.post('/user/join', values);
 }
 
 export function sendAuthEmail(email: string) {
-  const formData = new FormData();
 
-  formData.append('email', email);
-
-  return axios.post('/user/join/auth', formData);
+  return axios.post('/user/join/auth', {email});
 }
 
 export function updateUserAuth(email: string) {

@@ -32,7 +32,10 @@ interface JoinFormProps {
   password: string;
   password2: string;
   userName: string;
-  onBlur: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlurEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlurPassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlurPassword2: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlurUserName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword2: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -54,7 +57,10 @@ const JoinForm = ({
   password,
   password2,
   userName,
-  onBlur,
+  onBlurEmail,
+  onBlurPassword,
+  onBlurPassword2,
+  onBlurUserName,
   onChangeEmail,
   onChangePassword,
   onChangePassword2,
@@ -74,7 +80,7 @@ const JoinForm = ({
           className="join-input" 
           errorMessage={emailError}
           name="email"
-          onBlur={onBlur} 
+          onBlur={onBlurEmail} 
           onChange={onChangeEmail} 
           placeholder="이메일" 
           type="text"
@@ -84,7 +90,7 @@ const JoinForm = ({
           className="join-input" 
           errorMessage={passwordError}
           name="password"
-          onBlur={onBlur} 
+          onBlur={onBlurPassword} 
           onChange={onChangePassword} 
           placeholder="비밀번호" 
           type="password"
@@ -94,7 +100,7 @@ const JoinForm = ({
           className="join-input" 
           errorMessage={password2Error}
           name="password2"
-          onBlur={onBlur} 
+          onBlur={onBlurPassword2} 
           onChange={onChangePassword2} 
           placeholder="비밀번호 재입력" 
           type="password"
@@ -104,7 +110,7 @@ const JoinForm = ({
           className="join-input" 
           errorMessage={userNameError}
           name="userName"
-          onBlur={onBlur} 
+          onBlur={onBlurUserName} 
           onChange={onChangeUserName} 
           placeholder="닉네임" 
           type="text"
