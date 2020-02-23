@@ -1,28 +1,28 @@
-import React, { useEffect } from 'react';
+import React from "react";
 
-import useRequet from '@/hooks/useRequest';
+import useRequet from "@/hooks/useRequest";
 
-import EmailAuthResult from '@/components/user/EmailAuthResult';
-import { updateUserAuth } from '@/api/user';
+import EmailAuthResult from "@/components/user/EmailAuthResult";
+import { updateUserAuth } from "@/api/user";
 
-interface Props {
+interface EmailAuthResultContainerProps {
   email: string;
 }
 
-async function onUpdateUserAuth(email: string) {
-  try {
-    const response = await updateUserAuth(email);
+const EmailAuthResultContainer = ({
+  email
+}: EmailAuthResultContainerProps): JSX.Element => {
+  const [state] = useRequet(() => updateUserAuth(email), [], true);
 
-    return response.data;
-  } catch (e) {
-    throw new Error('error!');
-  }
+  return (
+    <EmailAuthResult
+      email={email}
+      error={state.error}
+      isFail={!!state.error}
+      isLoading={state.isLoading}
+      isSuccess={!!state.data}
+    />
+  );
 };
-
-const EmailAuthResultContainer = ({email}: Props): JSX.Element => {
-  const [state] = useRequet(() => onUpdateUserAuth(email), [], true);
-
-  return <EmailAuthResult isFail={state.error} />  
-}
 
 export default EmailAuthResultContainer;

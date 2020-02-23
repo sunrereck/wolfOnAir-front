@@ -40,6 +40,7 @@ const Body = styled.div`
 
   p {
     font-size: 1rem;
+    line-height: 1.5;
     text-align: center;
   }
 `;

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Button from '@/components/ui/Button';
+import LinkButton from '@/components/ui/LinkButton';
 import UserTitle from '../UserTitle';
 
 const Wrapper = styled.section`
@@ -26,7 +26,11 @@ const Wrapper = styled.section`
   }
 `;
 
-const EmailAuthSuccess = () => {
+interface EmailAuthSuccessProps {
+  email: string
+}
+
+const EmailAuthSuccess = ({email}: EmailAuthSuccessProps): JSX.Element => {
   return (
     <>
     <UserTitle>
@@ -34,11 +38,11 @@ const EmailAuthSuccess = () => {
     </UserTitle>
     <Wrapper>
       <p>
-        <strong>test@test.com</strong>
+        <strong>{email}</strong>
         <br/>
         이메일 인증이 완료 되었습니다!
       </p>
-      <Button type="button" color="primaryOutline">로그인</Button>
+      <LinkButton color="primaryOutline" to="/user/login">로그인하러 가기</LinkButton>
     </Wrapper>
     </>
   )
