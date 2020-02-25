@@ -15,7 +15,7 @@ const HomeContainer = () => {
           onClose={() => {
             setOpen(prevState => !prevState);
           }}
-          isOpen={isOpen}
+          isShown={isOpen}
           title="12345"
         >
           테스트

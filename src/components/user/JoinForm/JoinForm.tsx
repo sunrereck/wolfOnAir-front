@@ -119,7 +119,7 @@ const JoinForm = ({
         <Button type="submit" disabled={!isValid || isSubmit}>{isSubmit ? '회원가입 중...' : '회원가입'}</Button>
       </Form>
       <Alert
-        isOpen={isFailedJoin}
+        isShown={isFailedJoin}
         onClick={onToggleJoinFailAlert}
         onClose={onToggleJoinFailAlert}
       >

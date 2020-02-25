@@ -54,23 +54,23 @@ const ButtonWrap = styled.div`
 
 interface AlertProps {
   children: React.ReactNode;
+  isShown: boolean;
   onClick: () => void;
   onClose: () => void;
-  isOpen: boolean;
   title: string;
 }
 
 const Alert = ({
   children,
+  isShown,
   onClick,
   onClose,
-  isOpen,
   title
 }: AlertProps): JSX.Element | null => {
   return (
     <>
       <Portal>
-        <Fade isOpen={isOpen} timeout={200}>
+        <Fade isShown={isShown} timeout={200}>
           <Modal>
             <Title>{title}</Title>
             <Body>

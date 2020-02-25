@@ -3,7 +3,7 @@ import { Transition } from "react-transition-group";
 
 interface FadeProps {
   children: React.ReactNode;
-  isOpen: boolean;
+  isShown: boolean;
   timeout: number;
 }
 
@@ -15,9 +15,9 @@ function getOpacity(state: string): number {
   return 0;
 }
 
-const Fade = ({ children, isOpen, timeout }: FadeProps): JSX.Element => {
+const Fade = ({ children, isShown, timeout }: FadeProps): JSX.Element => {
   return (
-    <Transition in={isOpen} timeout={timeout} mountOnEnter unmountOnExit>
+    <Transition in={isShown} timeout={timeout} mountOnEnter unmountOnExit>
       {state => (
         <div
           style={{

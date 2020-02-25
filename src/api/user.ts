@@ -13,12 +13,6 @@ export function joinUser(values: {
   password: string;
   userName: string;
 }) {
-  // const formData = new FormData();
-
-  // formData.append('email', values.email);
-  // formData.append('password', values.password);
-  // formData.append('userName', values.userName);
-
   return axios.post('/user/join', values);
 }
 
@@ -29,4 +23,8 @@ export function sendAuthEmail(email: string) {
 
 export function updateUserAuth(email: string) {
   return axios.put('/user/join/auth', {email});
+}
+
+export function login(email: string, password: string) {
+  return axios.post('/user/loign', { email, password });
 }
