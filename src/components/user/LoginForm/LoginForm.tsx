@@ -34,6 +34,7 @@ interface LoginFormProps {
   email: string;
   emailError: string;
   isFailedLogin: boolean;
+  isLoading: boolean;
   isValid: boolean;
   loginFailMessage: string;
   onBlurEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -50,6 +51,7 @@ const LoginForm = ({
   email,
   emailError,
   isFailedLogin,
+  isLoading,
   isValid,
   loginFailMessage,
   onBlurEmail,
@@ -86,7 +88,7 @@ const LoginForm = ({
           value={password}
         />
         <Button type="submit" size="medium" color="primary" disabled={!isValid}>
-          로그인
+          { isLoading ? '로그인' : '로그인 중...' }
         </Button>
         <LinkButton color="primaryOutline" to="/user/join">
           회원가입

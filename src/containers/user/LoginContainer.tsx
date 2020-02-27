@@ -33,8 +33,9 @@ interface LoginContainerProps {
 }
 
 const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
-  const [loginFailMessage, setFailMessage] = useState('');
   const [isFailedLogin, setFailedLogin] = useState(false); 
+  const [isLoading, setLoading] = useState(false);
+  const [loginFailMessage, setFailMessage] = useState('');
 
   const [
     email,
@@ -55,6 +56,12 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!isValidEmail || !isValidPassword) {
+      return;
+    }
+
+    setLoading(true);
+
     try {
       await onFetchLogin(email, password);  
 
@@ -66,6 +73,7 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
         errorMessage = err.response.data.reason;
       }
 
+      setLoading(false);
       setFailedLogin(true);
       setFailMessage(errorMessage);
     }
@@ -80,6 +88,7 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
       email={email}
       emailError={emailError}
       isFailedLogin={isFailedLogin}
+      isLoading={isLoading}
       isValid={isValidEmail && isValidPassword}
       loginFailMessage={loginFailMessage}
       onBlurEmail={onBlurEmail}
