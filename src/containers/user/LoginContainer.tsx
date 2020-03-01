@@ -34,7 +34,7 @@ interface LoginContainerProps {
 
 const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
   const [isFailedLogin, setFailedLogin] = useState(false); 
-  const [isLoading, setLoading] = useState(false);
+  const [isFetching, setFetching] = useState(false);
   const [loginFailMessage, setFailMessage] = useState('');
 
   const [
@@ -42,25 +42,43 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
     emailError,
     isValidEmail,
     onChangeEmail,
-    onBlurEmail
+    onBlurEmail,
+    onSetErrorEmail
   ] = useValidationInput("", validateEmail);
   const [
     password,
     passwordError,
     isValidPassword,
     onChangePassword,
-    onBlurPassword
+    onBlurPassword,
+    onSetErrorPassword
   ] = useValidationInput("", validatePassword);
   const [, onFetchLogin] = useReqeust(login, [], false);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    let isValid = true;
+
     e.preventDefault();
 
-    if (!isValidEmail || !isValidPassword) {
+    if (!isValidEmail) {
+      const errorMessage = validateEmail(email);
+
+      isValid = !errorMessage;
+      onSetErrorEmail(!!errorMessage, errorMessage);
+    }
+
+    if (!isValidPassword) {
+      const errorMessage = validatePassword(password);
+
+      isValid = !errorMessage;
+      onSetErrorPassword(!!errorMessage, errorMessage);
+    }
+
+    if (!isValid) {
       return;
     }
 
-    setLoading(true);
+    setFetching(true);
 
     try {
       await onFetchLogin(email, password);  
@@ -73,7 +91,7 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
         errorMessage = err.response.data.reason;
       }
 
-      setLoading(false);
+      setFetching(false);
       setFailedLogin(true);
       setFailMessage(errorMessage);
     }
@@ -88,8 +106,7 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
       email={email}
       emailError={emailError}
       isFailedLogin={isFailedLogin}
-      isLoading={isLoading}
-      isValid={isValidEmail && isValidPassword}
+      isFetching={isFetching}
       loginFailMessage={loginFailMessage}
       onBlurEmail={onBlurEmail}
       onBlurPassword={onBlurPassword}

@@ -32,11 +32,13 @@ const ErrorText = styled.span`
 
 interface ValidationInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
+  inputEl?: React.RefObject<HTMLInputElement>
 }
 
 const ValidationInput = ({
   className,
   errorMessage,
+  inputEl,
   onChange,
   type, 
   value,
@@ -45,6 +47,7 @@ const ValidationInput = ({
   return (
     <Wrapper className={className} isError={!!errorMessage}>
       <Input 
+        inputEl={inputEl}
         onChange={onChange}
         type={type}
         value={value}      

@@ -113,13 +113,13 @@ async function validateUserName(userName: string) {
 }
 
 const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
-  const [errorMessage, setError] = useState('');
+  const [joinFailMessage, setJoinFailMessage] = useState('');
   const [isFailedJoin, setFaildJoin] = useState(false); 
   const [isSubmitting, setSubmit] = useState(false);
-  const [email, emailError, isValidEmail, onChangeEmail, onBlurEmail] = useValidationInput('', validateEmail);
-  const [password, passwordError, isValidPassword, onChangePassword, onBlurPassowrd] = useValidationInput('', validatePassword);
-  const [password2, password2Error, isValidPassword2, onChangePassword2,, onSetValid, onResetPassword2] = useValidationInput('');
-  const [userName, userNameError, isValidUserName, onChangeUserName, onBlurUserName] = useValidationInput('', validateUserName);
+  const [email, emailError, isValidEmail, onChangeEmail, onBlurEmail, onSetEmailError] = useValidationInput('', validateEmail);
+  const [password, passwordError, isValidPassword, onChangePassword, onBlurPassowrd, onSetPasswordError] = useValidationInput('', validatePassword);
+  const [password2, password2Error, isValidPassword2, onChangePassword2,, onSetPassword2Error, onResetPassword2] = useValidationInput('');
+  const [userName, userNameError, isValidUserName, onChangeUserName, onBlurUserName, onSetUserNameError] = useValidationInput('', validateUserName);
   const [, onJoinUser] = useRequet(joinUser, [], false);
   const [, onSendAuthEmail] = useRequet(sendAuthEmail, [], false);
 
@@ -131,11 +131,43 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
   const onBlurPassword2 = (e: React.ChangeEvent<HTMLInputElement>) => {
     const errorPassword2 = validatePassword2(e.target.value, password);
 
-    onSetValid(!errorPassword2, errorPassword2);
+    onSetPassword2Error(!errorPassword2, errorPassword2);
   }
 
   const onSubmitJoinForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    if (!isValidEmail) {
+      const errorMessage = await validateEmail(email);
+
+      onSetEmailError(errorMessage === '', errorMessage);
+
+      return;
+    }
+
+    if (!isValidPassword) {
+      const errorMessage = validatePassword(password);
+
+      onSetPasswordError(errorMessage === '', errorMessage);
+
+      return;
+    }
+
+    if (!isValidPassword2) {
+      const errorMessage = validatePassword2(password2, password);
+
+      onSetPassword2Error(errorMessage === '', errorMessage);
+
+      return;
+    }
+
+    if (!isValidUserName) {
+      const errorMessage = await validateUserName(userName);
+
+      onSetUserNameError(errorMessage === '', errorMessage);
+
+      return;
+    }
 
     setSubmit(true);
 
@@ -158,7 +190,7 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
       }
 
       setFaildJoin(true);
-      setError(message);
+      setJoinFailMessage(message);
       setSubmit(false);
     }
   };
@@ -173,8 +205,7 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
       emailError={emailError}
       isFailedJoin={isFailedJoin}
       isSubmit={isSubmitting}
-      isValid={isValidEmail && isValidPassword && isValidPassword2 && isValidUserName}
-      joinFailMessage={errorMessage}
+      joinFailMessage={joinFailMessage}
       password={password}
       password2={password2}
       userName={userName}

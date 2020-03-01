@@ -34,8 +34,7 @@ interface LoginFormProps {
   email: string;
   emailError: string;
   isFailedLogin: boolean;
-  isLoading: boolean;
-  isValid: boolean;
+  isFetching: boolean;
   loginFailMessage: string;
   onBlurEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlurPassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -51,8 +50,7 @@ const LoginForm = ({
   email,
   emailError,
   isFailedLogin,
-  isLoading,
-  isValid,
+  isFetching,
   loginFailMessage,
   onBlurEmail,
   onBlurPassword,
@@ -87,8 +85,8 @@ const LoginForm = ({
           placeholder="비밀번호"
           value={password}
         />
-        <Button type="submit" size="medium" color="primary" disabled={!isValid}>
-          { isLoading ? '로그인' : '로그인 중...' }
+        <Button type="submit" size="medium" color="primary">
+          { isFetching ? '로그인 중...' : '로그인' }
         </Button>
         <LinkButton color="primaryOutline" to="/user/join">
           회원가입

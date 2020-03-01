@@ -26,5 +26,5 @@ export function updateUserAuth(email: string) {
 }
 
 export function login(email: string, password: string) {
-  return axios.post('/user/loign', { email, password });
+  return axios.post('/user/login', { email, password });
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 import Alert from '@/components/ui/Alert';
@@ -27,7 +27,6 @@ interface JoinFormProps {
   emailError: string;
   isFailedJoin: boolean;
   isSubmit: boolean;
-  isValid: boolean;
   joinFailMessage: string;
   password: string;
   password2: string;
@@ -52,7 +51,6 @@ const JoinForm = ({
   emailError,
   isFailedJoin,
   isSubmit,
-  isValid,
   joinFailMessage,
   password,
   password2,
@@ -116,7 +114,7 @@ const JoinForm = ({
           type="text"
           value={userName}
         />
-        <Button type="submit" disabled={!isValid || isSubmit}>{isSubmit ? '회원가입 중...' : '회원가입'}</Button>
+        <Button type="submit" disabled={isSubmit}>{isSubmit ? '회원가입 중...' : '회원가입'}</Button>
       </Form>
       <Alert
         isShown={isFailedJoin}
