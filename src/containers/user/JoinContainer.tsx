@@ -16,14 +16,6 @@ interface JoinContainerProps {
   history: History;
 }
 
-interface JoinFormState {
-  email: string;
-  password: string;
-  password2: string;
-  userName: string;
-}
-
-
 async function validateEmail(email: string) {
   if (!email) {
     return '필수 항목 입니다.';

@@ -43,7 +43,7 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
     isValidEmail,
     onChangeEmail,
     onBlurEmail,
-    onSetErrorEmail
+    onSetEmailError
   ] = useValidationInput("", validateEmail);
   const [
     password,
@@ -51,30 +51,26 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
     isValidPassword,
     onChangePassword,
     onBlurPassword,
-    onSetErrorPassword
+    onSetPasswordError
   ] = useValidationInput("", validatePassword);
   const [, onFetchLogin] = useReqeust(login, [], false);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    let isValid = true;
-
     e.preventDefault();
 
     if (!isValidEmail) {
       const errorMessage = validateEmail(email);
 
-      isValid = !errorMessage;
-      onSetErrorEmail(!!errorMessage, errorMessage);
+      onSetEmailError(errorMessage === '', errorMessage);
+
+      return;
     }
 
     if (!isValidPassword) {
       const errorMessage = validatePassword(password);
 
-      isValid = !errorMessage;
-      onSetErrorPassword(!!errorMessage, errorMessage);
-    }
+      onSetPasswordError(errorMessage === '', errorMessage);
 
-    if (!isValid) {
       return;
     }
 
