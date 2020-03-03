@@ -32,6 +32,7 @@ const Form = styled.form`
 
 interface LoginFormProps {
   email: string;
+  emailEl: React.RefObject<HTMLInputElement>;
   emailError: string;
   isFailedLogin: boolean;
   isFetching: boolean;
@@ -43,11 +44,13 @@ interface LoginFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onToggleFailAlert: () => void;
   password: string;
+  passwordEl: React.RefObject<HTMLInputElement>;
   passwordError: string;
 }
 
 const LoginForm = ({
   email,
+  emailEl,
   emailError,
   isFailedLogin,
   isFetching,
@@ -59,6 +62,7 @@ const LoginForm = ({
   onSubmit,
   onToggleFailAlert,
   password,
+  passwordEl,
   passwordError
 }: LoginFormProps): JSX.Element => {
   return (
@@ -69,6 +73,7 @@ const LoginForm = ({
           className="login-input"
           type="email"
           name="email"
+          inputEl={emailEl}
           errorMessage={emailError}
           onBlur={onBlurEmail}
           onChange={onChangeEmail}
@@ -82,6 +87,7 @@ const LoginForm = ({
           errorMessage={passwordError}
           onBlur={onBlurPassword}
           onChange={onChangePassword}
+          inputEl={passwordEl}
           placeholder="비밀번호"
           value={password}
         />
@@ -103,9 +109,5 @@ const LoginForm = ({
     </>
   );
 };
-
-// LoginForm.defaultProps = {
-
-// }
 
 export default LoginForm;

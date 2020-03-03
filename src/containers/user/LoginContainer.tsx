@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { History } from 'history';
 
 import { login } from "@/api/user";
@@ -28,6 +28,14 @@ function validatePassword(password: string) {
   return "";
 }
 
+function setFocus(ref: React.RefObject<HTMLInputElement>) {
+  if (!ref || !ref.current) {
+    return;
+  }
+
+  ref.current.focus();
+}
+
 interface LoginContainerProps {
   history: History;
 }
@@ -36,7 +44,8 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
   const [isFailedLogin, setFailedLogin] = useState(false); 
   const [isFetching, setFetching] = useState(false);
   const [loginFailMessage, setFailMessage] = useState('');
-
+  const emailEl = useRef(null);
+  const passwordEl = useRef(null);
   const [
     email,
     emailError,
@@ -62,6 +71,7 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
       const errorMessage = validateEmail(email);
 
       onSetEmailError(errorMessage === '', errorMessage);
+      setFocus(emailEl);
 
       return;
     }
@@ -70,6 +80,7 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
       const errorMessage = validatePassword(password);
 
       onSetPasswordError(errorMessage === '', errorMessage);
+      setFocus(passwordEl);
 
       return;
     }
@@ -100,6 +111,7 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
   return (
     <LoginForm
       email={email}
+      emailEl={emailEl}
       emailError={emailError}
       isFailedLogin={isFailedLogin}
       isFetching={isFetching}
@@ -111,6 +123,7 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
       onToggleFailAlert={onToggleloginFailAlert}
       onSubmit={onSubmit}
       password={password}
+      passwordEl={passwordEl}
       passwordError={passwordError}
     />
   );
