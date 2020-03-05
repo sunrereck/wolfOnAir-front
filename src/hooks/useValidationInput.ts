@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 type valitationFuncType = (value: string, compareValue?: string) => string;
 type valitationAsyncFuncType = (value: string) => Promise<string>;
@@ -10,6 +10,7 @@ function useValidationInput(
   const [value, setValue] = useState(defaultValue);
   const [errorMessage, setErrorMessage] = useState("");
   const [isValid, setValid] = useState(false);
+  const inputEl = useRef(null);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -25,6 +26,7 @@ function useValidationInput(
 
       setErrorMessage(errorMessage);
       setValid(errorMessage === '');
+      
     } catch (e) {
       setErrorMessage("알수없는 오류가 발생하였습니다.");
       setValid(false);
@@ -34,6 +36,11 @@ function useValidationInput(
   const onSetError = (isValid: boolean, errorMessage: string) => {
     setErrorMessage(errorMessage);
     setValid(isValid);
+
+    if (!isValid && (inputEl && inputEl.current)) {
+      // @ts-ignore
+      inputEl.current.focus();
+    }
   };
 
   const onReset = () => {
@@ -45,6 +52,7 @@ function useValidationInput(
   return [
     value,
     errorMessage,
+    inputEl,
     isValid,
     onChange,
     onBlur,
@@ -53,6 +61,7 @@ function useValidationInput(
   ] as [
     string,
     string,
+    React.RefObject<HTMLInputElement>,
     boolean,
     typeof onChange,
     typeof onBlur,

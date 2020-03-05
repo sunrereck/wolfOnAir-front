@@ -15,7 +15,7 @@ const Form = styled.form`
   max-width: 440px;
   box-sizing: border-box;
 
-  .login-input {
+  div {
     margin-bottom: 1rem;
   }
 
@@ -70,7 +70,6 @@ const LoginForm = ({
       <UserTitle>로그인</UserTitle>
       <Form onSubmit={onSubmit}>
         <ValidationInput
-          className="login-input"
           type="email"
           name="email"
           inputEl={emailEl}
@@ -81,7 +80,6 @@ const LoginForm = ({
           value={email}
         />
         <ValidationInput
-          className="login-input"
           type="password"
           name="password"
           errorMessage={passwordError}

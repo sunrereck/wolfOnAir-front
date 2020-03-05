@@ -13,7 +13,7 @@ const Form = styled.form`
   max-width: 440px;
   box-sizing: border-box;
 
-  .join-input {
+  div {
     margin-bottom: 1rem;
   }
 
@@ -24,13 +24,17 @@ const Form = styled.form`
 
 interface JoinFormProps {
   email: string;
+  emailEl: React.RefObject<HTMLInputElement>
   emailError: string;
   isFailedJoin: boolean;
   isSubmit: boolean;
   joinFailMessage: string;
   password: string;
+  passwordEl: React.RefObject<HTMLInputElement>
   password2: string;
+  password2El: React.RefObject<HTMLInputElement>
   userName: string;
+  userNameEl: React.RefObject<HTMLInputElement>
   onBlurEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlurPassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlurPassword2: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -48,13 +52,17 @@ interface JoinFormProps {
 
 const JoinForm = ({
   email,
+  emailEl,
   emailError,
   isFailedJoin,
   isSubmit,
   joinFailMessage,
   password,
+  passwordEl,
   password2,
+  password2El,
   userName,
+  userNameEl,
   onBlurEmail,
   onBlurPassword,
   onBlurPassword2,
@@ -75,8 +83,8 @@ const JoinForm = ({
       <UserTitle>회원가입</UserTitle>
       <Form onSubmit={onSubmit}>
         <ValidationInput 
-          className="join-input" 
           errorMessage={emailError}
+          inputEl={emailEl}
           name="email"
           onBlur={onBlurEmail} 
           onChange={onChangeEmail} 
@@ -85,8 +93,8 @@ const JoinForm = ({
           value={email}
         />
         <ValidationInput 
-          className="join-input" 
           errorMessage={passwordError}
+          inputEl={passwordEl}
           name="password"
           onBlur={onBlurPassword} 
           onChange={onChangePassword} 
@@ -95,8 +103,8 @@ const JoinForm = ({
           value={password}
         />
         <ValidationInput 
-          className="join-input" 
           errorMessage={password2Error}
+          inputEl={password2El}
           name="password2"
           onBlur={onBlurPassword2} 
           onChange={onChangePassword2} 
@@ -105,8 +113,8 @@ const JoinForm = ({
           value={password2}
         />
         <ValidationInput 
-          className="join-input" 
           errorMessage={userNameError}
+          inputEl={userNameEl}
           name="userName"
           onBlur={onBlurUserName} 
           onChange={onChangeUserName} 
