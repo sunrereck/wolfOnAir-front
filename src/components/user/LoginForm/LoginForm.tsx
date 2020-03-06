@@ -65,6 +65,10 @@ const LoginForm = ({
   passwordEl,
   passwordError
 }: LoginFormProps): JSX.Element => {
+  const onIgnoreBlurEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+  };
+  
   return (
     <>
       <UserTitle>로그인</UserTitle>
@@ -89,7 +93,7 @@ const LoginForm = ({
           placeholder="비밀번호"
           value={password}
         />
-        <Button type="submit" size="medium" color="primary">
+        <Button type="submit" size="medium" color="primary" onMouseDown={onIgnoreBlurEvent}>
           { isFetching ? '로그인 중...' : '로그인' }
         </Button>
         <LinkButton color="primaryOutline" to="/user/join">
