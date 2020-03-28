@@ -39,6 +39,7 @@ Button.defaultProps = {
   children: null,
   className: '',
   color: '',
+  disabled: false,
   size: 'medium',
   readOnly: false
 };

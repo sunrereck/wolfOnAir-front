@@ -16,7 +16,7 @@ interface JoinContainerProps {
   history: History;
 }
 
-async function validateEmail(email: string) {
+async function validateEmail(email: string): Promise<string> {
   if (!email) {
     return "필수 항목 입니다.";
   }
@@ -44,7 +44,7 @@ async function validateEmail(email: string) {
   }
 }
 
-function validatePassword(password: string) {
+function validatePassword(password: string): string {
   if (password === "") {
     return "필수 정보입니다.";
   }
@@ -64,7 +64,7 @@ function validatePassword(password: string) {
   return "";
 }
 
-function validatePassword2(password2: string, password: string) {
+function validatePassword2(password2: string, password: string): string {
   if (!password2) {
     return "필수 정보입니다.";
   }
@@ -76,7 +76,7 @@ function validatePassword2(password2: string, password: string) {
   return "";
 }
 
-async function validateUserName(userName: string) {
+async function validateUserName(userName: string): Promise<string> {
   if (!userName) {
     return "필수 항목 입니다.";
   }
@@ -158,34 +158,31 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
   const onSubmitJoinForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!isValidEmail) {
-      const errorMessage = await validateEmail(email);
+    const emailError = await validateEmail(email);
+    const passwordError = validatePassword(password);
+    const password2Error = validatePassword2(password2, password);
+    const userNameError = await validateUserName(userName);
 
-      onSetEmailError(errorMessage === "", errorMessage);
-
-      return;
-    }
-
-    if (!isValidPassword) {
-      const errorMessage = validatePassword(password);
-
-      onSetPasswordError(errorMessage === "", errorMessage);
+    if (emailError) {
+      onSetEmailError(emailError === "", emailError);
 
       return;
     }
 
-    if (!isValidPassword2) {
-      const errorMessage = validatePassword2(password2, password);
-
-      onSetPassword2Error(errorMessage === "", errorMessage);
+    if (passwordError) {
+      onSetPasswordError(passwordError === "", passwordError);
 
       return;
     }
 
-    if (!isValidUserName) {
-      const errorMessage = await validateUserName(userName);
+    if (password2Error) {
+      onSetPassword2Error(password2Error === "", password2Error);
 
-      onSetUserNameError(errorMessage === "", errorMessage);
+      return;
+    }
+
+    if (userNameError) {
+      onSetUserNameError(userNameError === "", userNameError);
 
       return;
     }

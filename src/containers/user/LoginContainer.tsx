@@ -8,7 +8,7 @@ import useValidationInput from "@/hooks/useValidationInput";
 
 import LoginForm from "@/components/user/LoginForm";
 
-function validateEmail(email: string) {
+function validateEmail(email: string): string {
   if (!email) {
     return "필수 항목 입니다.";
   }
@@ -20,7 +20,7 @@ function validateEmail(email: string) {
   return "";
 }
 
-function validatePassword(password: string) {
+function validatePassword(password: string): string {
   if (!password) {
     return "필수 항목 입니다.";
   }
@@ -40,7 +40,7 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
     email,
     emailError,
     emailEl,
-    isValidEmail,
+    ,
     onChangeEmail,
     onBlurEmail,
     onSetEmailError
@@ -49,7 +49,7 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
     password,
     passwordError,
     passwordEl,
-    isValidPassword,
+    ,
     onChangePassword,
     onBlurPassword,
     onSetPasswordError
@@ -59,19 +59,18 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const emailError = validateEmail(email);
+    const passwordError = validatePassword(password);
 
-    if (!isValidEmail) {
-      const errorMessage = validateEmail(email);
-
-      onSetEmailError(errorMessage === '', errorMessage);
+    if (!!emailError) {
+      onSetEmailError(emailError === '', emailError);
 
       return;
     }
 
-    if (!isValidPassword) {
-      const errorMessage = validatePassword(password);
+    if (!!passwordError) {
 
-      onSetPasswordError(errorMessage === '', errorMessage);
+      onSetPasswordError(passwordError === '', passwordError);
 
       return;
     }
