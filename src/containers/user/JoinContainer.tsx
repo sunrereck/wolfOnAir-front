@@ -112,7 +112,7 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
     email,
     emailError,
     emailEl,
-    isValidEmail,
+    ,
     onChangeEmail,
     onBlurEmail,
     onSetEmailError
@@ -121,7 +121,7 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
     password,
     passwordError,
     passwordEl,
-    isValidPassword,
+    ,
     onChangePassword,
     onBlurPassowrd,
     onSetPasswordError
@@ -130,7 +130,7 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
     password2,
     password2Error,
     password2El,
-    isValidPassword2,
+    ,
     onChangePassword2,
     onBlurPassword2,
     onSetPassword2Error,
@@ -142,7 +142,7 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
     userName,
     userNameError,
     userNameEl,
-    isValidUserName,
+    ,
     onChangeUserName,
     onBlurUserName,
     onSetUserNameError

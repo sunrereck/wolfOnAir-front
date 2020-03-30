@@ -1,15 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import saga from 'redux-saga';
+import { configureStore } from '@reduxjs/toolkit'
 
 import { ThemeProvider } from 'styled-components';
 
 import theme from '@/styles/theme';
 
+import rootReducer from '@/modules';
+
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+
 import './index.scss';
+
+// const store = configureStore({
+//   reducer: rootReducer,
+//   middleware: [saga]
+// });
 
 ReactDOM.render(
   <>
