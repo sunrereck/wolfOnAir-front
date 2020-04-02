@@ -10,11 +10,12 @@ import theme from '@/styles/theme';
 
 import rootReducer from '@/modules';
 
+import GlobalStyles from '@/styles/GlobalStyles';
+
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 
-import './index.scss';
 
 // const store = configureStore({
 //   reducer: rootReducer,
@@ -24,6 +25,7 @@ import './index.scss';
 ReactDOM.render(
   <>
     <ThemeProvider theme={theme}>
+      <GlobalStyles />
       <BrowserRouter>
         <App />
       </BrowserRouter>
