@@ -4,8 +4,8 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import createSagaMiddleware from "redux-saga";
 import { configureStore } from "@reduxjs/toolkit";
-
 import { ThemeProvider } from "styled-components";
+
 
 import theme from "@/styles/theme";
 
@@ -22,6 +22,7 @@ const sagaMiddleware = createSagaMiddleware();
 const store = configureStore({
   reducer: rootReducer,
   middleware: [sagaMiddleware],
+  devTools: process.env.NODE_ENV !== 'production'
 });
 
 ReactDOM.render(
