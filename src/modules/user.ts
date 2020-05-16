@@ -34,7 +34,7 @@ const user = createReducer<UserState, UserAction>(initialState, {
     uid: action.payload.uid,
     userName: action.payload.userName
   }),
-  [REMOVE_USER]: state => ({
+  [REMOVE_USER]: (state) => ({
     uid: 0,
     userName: ''
   })

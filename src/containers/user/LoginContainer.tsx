@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { History } from 'history';
 
 import { login } from "@/api/user";
+
+import { setUser } from '@/modules/user';
 
 import useReqeust from "@/hooks/useRequest";
 import useValidationInput from "@/hooks/useValidationInput";
@@ -33,6 +36,7 @@ interface LoginContainerProps {
 }
 
 const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
+  const dispatch = useDispatch();
   const [isFailedLogin, setFailedLogin] = useState(false); 
   const [isFetching, setFetching] = useState(false);
   const [loginFailMessage, setFailMessage] = useState('');
@@ -54,7 +58,7 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
     onBlurPassword,
     onSetPasswordError
   ] = useValidationInput("", validatePassword);
-  const [, onFetchLogin] = useReqeust(login, [], false);
+  const [state, onFetchLogin] = useReqeust(login, [], false);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -78,7 +82,7 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
     setFetching(true);
 
     try {
-      await onFetchLogin(email, password);  
+     await onFetchLogin(email, password);  
 
       history.replace('/');
     } catch (err) {
@@ -93,10 +97,23 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
       setFailMessage(errorMessage);
     }
   };
-  
+
+  const onSetUser = (uid: number, userName: string) => {
+    dispatch(setUser({
+      uid,
+      userName
+    }));
+  }
+
   const onToggleloginFailAlert = () => {
     setFailedLogin(prevState => !prevState);
   }
+
+  useEffect(() => {
+    if (state.data && state.data.uid) {
+      onSetUser(state.data.uid, state.data.userName);
+    }
+  }, [state.data])
 
   return (
     <LoginForm
