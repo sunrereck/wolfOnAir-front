@@ -12,8 +12,6 @@ import NotFound from '@/pages/NotFound';
 const App: React.FC = () => {
   const uid = useSelector((state: any) => state.user.uid);
 
-  console.log(uid);
-
   return (
     <Switch>
       <Route exact path="/" component={Home} />

@@ -6,7 +6,6 @@ import { login } from "@/api/user";
 
 import { setUser } from '@/modules/user';
 
-import useReqeust from "@/hooks/useRequest";
 import useValidationInput from "@/hooks/useValidationInput";
 
 import LoginForm from "@/components/user/LoginForm";
@@ -58,7 +57,6 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
     onBlurPassword,
     onSetPasswordError
   ] = useValidationInput("", validatePassword);
-  const [state, onFetchLogin] = useReqeust(login, [], false);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,7 +80,13 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
     setFetching(true);
 
     try {
-     await onFetchLogin(email, password);  
+      const response = await login(email, password);  
+      const { uid, userName } = response.data;
+
+      dispatch(setUser({
+        uid,
+        userName
+      }));
 
       history.replace('/');
     } catch (err) {
@@ -98,22 +102,9 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
     }
   };
 
-  const onSetUser = (uid: number, userName: string) => {
-    dispatch(setUser({
-      uid,
-      userName
-    }));
-  }
-
   const onToggleloginFailAlert = () => {
     setFailedLogin(prevState => !prevState);
   }
-
-  useEffect(() => {
-    if (state.data && state.data.uid) {
-      onSetUser(state.data.uid, state.data.userName);
-    }
-  }, [state.data])
 
   return (
     <LoginForm
