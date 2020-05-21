@@ -1,6 +1,12 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import Cookies from 'universal-cookie';
+
+import { checkStatus } from '@/api/user';
+
+import useRequest from '@/hooks/useRequest';
+
+import { setUser } from '@/modules/user';
  
 import Home from '@/pages/Home';
 import Join from '@/pages/Join';
@@ -9,27 +15,28 @@ import EmailAuthResult from '@/pages/EmailAuthResult';
 import Login from '@/pages/Login'
 import NotFound from '@/pages/NotFound';
 
-function getCookie(name: string) {
-  var value = "; " + document.cookie;
-  var parts = value.split("; " + name + "=");
-
-  // @ts-ignore
-  if (!!parts && parts.length === 2) return parts.pop().split(";").shift();
-}
-
 const App: React.FC = () => {
-  
+  const [state, onCheckStatus] = useRequest(checkStatus, [], true);  
+  const dispatch = useDispatch();
+  const uid = useSelector((state: any) => state.user.uid);
+
   useEffect(() => {
-    const cookies = new Cookies();
-    const token = cookies.get('');
+    onCheckStatus();
+  }, [onCheckStatus]);
 
-    console.log(cookies, getCookie('access_token'));
+  useEffect(() => {
+    if (!state.data || !!state.error) {
+      return;
+    }
 
-   if (!cookies) {
-     return;
-   }
-
-  }, []);
+    if (uid !== state.data.uid) {
+      dispatch(setUser({
+        uid: state.data.uid,
+        userName: state.data.userName
+      }))
+    }
+    
+  }, [state, dispatch, uid]);
 
   return (
     <Switch>

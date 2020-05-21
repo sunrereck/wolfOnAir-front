@@ -91,7 +91,6 @@ function useRequest (callback: Function, deps: any =[], isInitialized = false) {
     
     onFetchData();
 
-  // eslint-disable-next-line 
   }, [...deps]);
 
   return [state, onFetchData, onReset];
