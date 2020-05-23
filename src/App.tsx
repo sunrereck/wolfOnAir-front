@@ -6,7 +6,8 @@ import { checkStatus } from '@/api/user';
 
 import useRequest from '@/hooks/useRequest';
 
-import { setUser } from '@/modules/user';
+import { RootState } from '@/modules';
+import { removeUser, setUser } from '@/modules/user';
  
 import Home from '@/pages/Home';
 import Join from '@/pages/Join';
@@ -18,7 +19,7 @@ import NotFound from '@/pages/NotFound';
 const App: React.FC = () => {
   const [state, onCheckStatus] = useRequest(checkStatus, [], true);  
   const dispatch = useDispatch();
-  const uid = useSelector((state: any) => state.user.uid);
+  const uid = useSelector((state: RootState) => state.user.uid);
 
   useEffect(() => {
     onCheckStatus();
@@ -26,6 +27,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (!state.data || !!state.error) {
+      dispatch(removeUser());
       return;
     }
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import SignUpNav from './SignUpNav';
+import UserNav from './UserNav';
 
 const Wrapper = styled.header`
   display: flex;
@@ -28,15 +29,21 @@ const Logo = styled(Link)`
   font-size: 1rem;
 `;
 
-const Header = (): JSX.Element => (
+interface HeaderProps {
+  isLoggedIn: boolean;
+  userName: string;
+}
+
+const Header = ({
+  isLoggedIn,
+  userName
+}: HeaderProps): JSX.Element => (
   <Wrapper>
     <Logo to="/">늑대 온에어</Logo>
-    <SignUpNav />
+    {
+      isLoggedIn ? <UserNav userName={userName} /> : <SignUpNav />
+    }
   </Wrapper>
 );
-
-// Header.propTypes = {
-//   isLoggedIn: PropTypes.bool
-// }
 
 export default Header;

@@ -20,21 +20,25 @@ const actionTypes = { setUser, removeUser };
 type UserAction = ActionType<typeof actionTypes>
 
 type UserState = {
+  isLoggedIn: boolean;
   uid: number;
   userName: string;
 };
 
 const initialState: UserState = {
+  isLoggedIn: false,
   uid: 0,
   userName: ''
 };
 
 const user = createReducer<UserState, UserAction>(initialState, {
   [SET_USER]: (state, action) => ({
+    isLoggedIn: true,
     uid: action.payload.uid,
     userName: action.payload.userName
   }),
   [REMOVE_USER]: (state) => ({
+    isLoggedIn: false,
     uid: 0,
     userName: ''
   })

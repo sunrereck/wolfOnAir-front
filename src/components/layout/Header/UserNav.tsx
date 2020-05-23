@@ -1,9 +1,15 @@
 import React from 'react'
 
-const UserNav = () => {
+interface UserNavProps {
+  userName: string;
+}
+
+const UserNav = ({
+  userName
+}: UserNavProps): JSX.Element => {
   return (
     <div>
-      
+      {userName}
     </div>
   )
 }
