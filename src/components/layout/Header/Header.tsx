@@ -31,17 +31,19 @@ const Logo = styled(Link)`
 
 interface HeaderProps {
   isLoggedIn: boolean;
+  onLogout: () => void;
   userName: string;
 }
 
 const Header = ({
   isLoggedIn,
+  onLogout,
   userName
 }: HeaderProps): JSX.Element => (
   <Wrapper>
     <Logo to="/">늑대 온에어</Logo>
     {
-      isLoggedIn ? <UserNav userName={userName} /> : <SignUpNav />
+      isLoggedIn ? <UserNav onLogout={onLogout} userName={userName} /> : <SignUpNav />
     }
   </Wrapper>
 );
