@@ -29,6 +29,10 @@ export function login(email: string, password: string) {
   return axios.post('/user/login', { email, password });
 }
 
+export function logout() {
+  return axios.post('/user/logout');
+}
+
 export function checkStatus() {
   return axios.get('/user/check-status');
 }

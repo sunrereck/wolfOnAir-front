@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { AxiosError } from 'axios';
 import { History } from 'history';
 
 import { login } from "@/api/user";
 
 import { setUser } from '@/modules/user';
 
+import useRequest from '@/hooks/useRequest';
 import useValidationInput from "@/hooks/useValidationInput";
 
 import LoginForm from "@/components/user/LoginForm";
@@ -30,15 +32,22 @@ function validatePassword(password: string): string {
   return "";
 }
 
+function getErrorMessage(err: AxiosError): string {
+  if (err.response && err.response.data) {
+    return err.response.data.reason;
+  }
+
+  return "통신이 불안정하여 로그인을 완료하지 못하였습니다.";
+}
+
 interface LoginContainerProps {
   history: History;
 }
 
 const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
   const dispatch = useDispatch();
-  const [isFailedLogin, setFailedLogin] = useState(false); 
-  const [isFetching, setFetching] = useState(false);
   const [loginFailMessage, setFailMessage] = useState('');
+  const [state, onFetchLogin, onReset] = useRequest(login, [], true);
   const [
     email,
     emailError,
@@ -77,48 +86,50 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
       return;
     }
 
-    setFetching(true);
-
     try {
-      const response = await login(email, password);  
-      const { uid, userName } = response.data;
-
-      dispatch(setUser({
-        uid,
-        userName
-      }));
-
-      history.replace('/');
+      await onFetchLogin(email, password);  
+      
     } catch (err) {
-      let errorMessage = "통신이 불안정하여 로그인을 완료하지 못하였습니다.";
-
-      if (err.response && err.response.data) {
-        errorMessage = err.response.data.reason;
-      }
-
-      setFetching(false);
-      setFailedLogin(true);
-      setFailMessage(errorMessage);
+      setFailMessage(getErrorMessage(err));
     }
   };
 
-  const onToggleloginFailAlert = () => {
-    setFailedLogin(prevState => !prevState);
-  }
+  useEffect(() => {
+    if (!state) {
+      return;
+    }
+
+    const { data, error } = state;
+
+    if (error) {
+      return;
+    }
+
+    if (data) {
+      dispatch(setUser({
+        uid: data.uid,
+        userName: data.userName
+      }))
+
+      history.replace('/');
+    }
+
+  // eslint-disable-next-line
+  }, [state]);
 
   return (
     <LoginForm
       email={email}
       emailEl={emailEl}
       emailError={emailError}
-      isFailedLogin={isFailedLogin}
-      isFetching={isFetching}
+      isFailedLogin={!!state && !!state.error}
+      isFetching={state.isLoading}
       loginFailMessage={loginFailMessage}
       onBlurEmail={onBlurEmail}
       onBlurPassword={onBlurPassword}
       onChangeEmail={onChangeEmail}
       onChangePassword={onChangePassword}
-      onToggleFailAlert={onToggleloginFailAlert}
+      onToggleFailAlert={onReset}
       onSubmit={onSubmit}
       password={password}
       passwordEl={passwordEl}

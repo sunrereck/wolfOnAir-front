@@ -17,13 +17,13 @@ import Login from '@/pages/Login'
 import NotFound from '@/pages/NotFound';
 
 const App: React.FC = () => {
-  const [state, onCheckStatus] = useRequest(checkStatus, [], true);  
+  const [state, onCheckStatus] = useRequest(checkStatus, [], false);  
   const dispatch = useDispatch();
   const uid = useSelector((state: RootState) => state.user.uid);
 
   useEffect(() => {
     onCheckStatus();
-  }, [onCheckStatus]);
+  }, [uid, onCheckStatus]);
 
   useEffect(() => {
     if (!state.data || !!state.error) {

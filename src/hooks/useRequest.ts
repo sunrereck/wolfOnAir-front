@@ -45,9 +45,9 @@ function reducer(state: any, action: any) {
 /**
  * @param callback 호출할 api 함수
  * @param deps useEffect에서 didupdate 시킬 값
- * @param isInitialized hooks를 선언하자마자 실행할지 말지 여부
+ * @param isSkiped hooks를 선언하자마자 실행할지 말지 여부
  */
-function useRequest (callback: Function, deps: any =[], isInitialized = false) {
+function useRequest (callback: Function, deps: any = [], isSkiped = false) {
   const [state, dispatch] = useReducer(reducer, {
     data: null,
     error: null,
@@ -76,7 +76,7 @@ function useRequest (callback: Function, deps: any =[], isInitialized = false) {
 
       throw err;
     }
-  }, [callback]);
+  }, [callback, dispatch]);
 
   const onReset = () => {
     dispatch({
@@ -85,13 +85,14 @@ function useRequest (callback: Function, deps: any =[], isInitialized = false) {
   }
 
   useEffect(() => {
-    if (!isInitialized) {
+    if (isSkiped) {
       return;
     }
     
     onFetchData();
 
-  }, [...deps]);
+  // eslint-disable-next-line
+  }, deps);
 
   return [state, onFetchData, onReset];
 }

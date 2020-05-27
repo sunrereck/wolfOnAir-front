@@ -147,8 +147,8 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
     onBlurUserName,
     onSetUserNameError
   ] = useValidationInput("", validateUserName);
-  const [, onJoinUser] = useRequet(joinUser, [], false);
-  const [, onSendAuthEmail] = useRequet(sendAuthEmail, [], false);
+  const [, onJoinUser] = useRequet(joinUser, [], true);
+  const [, onSendAuthEmail] = useRequet(sendAuthEmail, [], true);
 
   const onChangePasswords = (e: React.ChangeEvent<HTMLInputElement>) => {
     onResetPassword2();

@@ -12,7 +12,7 @@ interface EmailAuthResultContainerProps {
 const EmailAuthResultContainer = ({
   email
 }: EmailAuthResultContainerProps): JSX.Element => {
-  const [state] = useRequet(() => updateUserAuth(email), [], true);
+  const [state] = useRequet(() => updateUserAuth(email), [], false);
 
   return (
     <EmailAuthResult
