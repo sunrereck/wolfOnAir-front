@@ -18,29 +18,27 @@ import Lobby from '@/pages/Lobby';
 import NotFound from '@/pages/NotFound';
 
 const App: React.FC = () => {
-  const [isCheckAuth, setCheck] = useState(false);
+  const [isCheckedAuth, setCheckAuth] = useState(false);
   const dispatch = useDispatch();
-  const uid = useSelector((state: RootState) => state.user.uid);
+  const uid = useSelector((state: RootState) => (state.user.uid));
   const [state] = useRequest(checkStatus, [uid], false);  
 
   useEffect(() => {
-    if (!state.data || !!state.error) {
-      setCheck(true);
+    if (!!state.error) {
       dispatch(removeUser());
+      setCheckAuth(true);
       return;
     }
 
-    if (uid !== state.data.uid) {
-      setCheck(true);
+    if (state.data  && (uid !== state.data.uid)) {
+      setCheckAuth(true);
       dispatch(setUser({
         uid: state.data.uid,
         userName: state.data.userName
       }))
     }
-    
-  }, [state, dispatch, uid]);
 
-  console.log(1, isCheckAuth, state);
+  }, [state, dispatch, uid]);
 
   return (
     <Switch>
@@ -49,7 +47,7 @@ const App: React.FC = () => {
       <Route exact path="/user/join" component={Join} />
       <Route exact path="/user/join/:email/send-email" component={JoinResult} />
       <Route exact path="/user/join/:email/send-email/auth" component={EmailAuthResult} />
-      <Route exact path='/lobby' render={() => <Lobby isAuthLoading={!isCheckAuth || state.isLoading} />} />
+      <Route exact path='/lobby' render={() => <Lobby isCheckingAuth={!isCheckedAuth || state.isLoading} />} />
       <Route component={NotFound} />
     </Switch>
   );

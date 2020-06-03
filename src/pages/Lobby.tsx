@@ -4,16 +4,16 @@ import PageTemplate from '@/components/templates/PageTemplate';
 import RedirectHome from '@/components/layout/RedirectHome';
 import LobbyContainer from '@/containers/chat/LobbyContainer';
 
-interface LobbyProps {
-  isAuthLoading: boolean;
+interface ILobbyProps {
+  isCheckingAuth: boolean;
 }
 
 const Lobby = ({
-  isAuthLoading
-}: LobbyProps): JSX.Element => {
+  isCheckingAuth
+}: ILobbyProps): JSX.Element => {
   return (
     <PageTemplate>
-      <RedirectHome isAuthLoading={isAuthLoading}/>
+      <RedirectHome isCheckingAuth={isCheckingAuth}/>
       <LobbyContainer />
     </PageTemplate>
   );
