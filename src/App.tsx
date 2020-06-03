@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
@@ -18,21 +18,20 @@ import Lobby from '@/pages/Lobby';
 import NotFound from '@/pages/NotFound';
 
 const App: React.FC = () => {
-  const [state, onCheckStatus] = useRequest(checkStatus, [], false);  
+  const [isCheckAuth, setCheck] = useState(false);
   const dispatch = useDispatch();
   const uid = useSelector((state: RootState) => state.user.uid);
-
-  useEffect(() => {
-    onCheckStatus();
-  }, [uid, onCheckStatus]);
+  const [state] = useRequest(checkStatus, [uid], false);  
 
   useEffect(() => {
     if (!state.data || !!state.error) {
+      setCheck(true);
       dispatch(removeUser());
       return;
     }
 
     if (uid !== state.data.uid) {
+      setCheck(true);
       dispatch(setUser({
         uid: state.data.uid,
         userName: state.data.userName
@@ -41,6 +40,8 @@ const App: React.FC = () => {
     
   }, [state, dispatch, uid]);
 
+  console.log(1, isCheckAuth, state);
+
   return (
     <Switch>
       <Route exact path="/" component={Home} />
@@ -48,7 +49,7 @@ const App: React.FC = () => {
       <Route exact path="/user/join" component={Join} />
       <Route exact path="/user/join/:email/send-email" component={JoinResult} />
       <Route exact path="/user/join/:email/send-email/auth" component={EmailAuthResult} />
-      <Route exact path='/lobby' component={Lobby} />
+      <Route exact path='/lobby' render={() => <Lobby isAuthLoading={!isCheckAuth || state.isLoading} />} />
       <Route component={NotFound} />
     </Switch>
   );

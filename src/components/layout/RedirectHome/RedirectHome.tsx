@@ -1,23 +1,33 @@
-import React from 'react';
-import { Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import { RootState } from '@/modules';
+import { RootState } from "@/modules";
 
-const RedirectHome = () => {
-  const isLoaded = useSelector((state: RootState) => (state.user.isLoggedIn));
-  const isLoggedIn = useSelector((state: RootState) => (state.user.isLoggedIn));
+interface RedirectHomeProps {
+  isAuthLoading: boolean;
+}
 
-  if (!isLoaded) {
+const RedirectHome = ({ isAuthLoading }: RedirectHomeProps) => {
+  const user = useSelector((state: RootState) => state.user);
+  const isLoggedIn = useSelector(
+    (state: any) => state.user.isLoggedIn,
+    (state: RootState, prevState: RootState) => {
+      return state.user.isLoggedIn !== prevState.user.isLoggedIn;
+    }
+  );
+
+  console.log(isAuthLoading, user);
+
+  if (isAuthLoading) {
     return null;
   }
 
   if (isLoggedIn) {
     return null;
   }
-  
 
-  return <Redirect to="/user/login" />
-}
+  return <Redirect to="/user/login" />;
+};
 
 export default RedirectHome;
