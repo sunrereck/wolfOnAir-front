@@ -25,8 +25,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (!!state.error) {
-      dispatch(removeUser());
       setCheckAuth(true);
+      dispatch(removeUser());
       return;
     }
 

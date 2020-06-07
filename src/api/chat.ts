@@ -7,6 +7,10 @@ const customAxios = axios.create({
   withCredentials: true
 });
 
-export function connectChat() {
-  return customAxios.get('/chat');
+export function connectLobby(uid: number) {
+  return customAxios.get('/chat/lobby', {
+    params: {
+      uid
+    }
+  });
 }
