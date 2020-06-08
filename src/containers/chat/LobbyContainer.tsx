@@ -24,7 +24,7 @@ const LobbyContainer = (): JSX.Element => {
   }, [isLoggedIn]);
 
   return (
-    <Lobby />
+    <Lobby chatList={[]}/>
   );
 };
 

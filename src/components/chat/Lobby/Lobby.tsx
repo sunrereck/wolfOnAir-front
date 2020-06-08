@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import { Room } from '@/types';
+
 import ChatList from './ChatList';
 import EmptyChat from './EmptyChat';
 
