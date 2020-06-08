@@ -7,6 +7,8 @@ import { RootState } from '@/modules';
 
 import useRequest from '@/hooks/useRequest';
 
+import Lobby from '@/components/chat/Lobby';
+
 const LobbyContainer = (): JSX.Element => {
   const {isLoggedIn, uid } = useSelector((state: RootState) => ({
     isLoggedIn: state.user.isLoggedIn,
@@ -22,7 +24,7 @@ const LobbyContainer = (): JSX.Element => {
   }, [isLoggedIn]);
 
   return (
-    <div>로비</div>
+    <Lobby />
   );
 };
 
