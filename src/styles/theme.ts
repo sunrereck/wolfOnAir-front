@@ -48,7 +48,7 @@ const theme: ThemeProps = {
 
   // 미디어쿼리
   xSmall:'320px',
-  small:'376px',
+  small:'375px',
   medium: '768px',
   large: '992px',
   xLarge: '1200px'

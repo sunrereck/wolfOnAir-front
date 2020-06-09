@@ -1,15 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Room } from '@/types';
+import { Room } from '@/interface/chat/room';
 
 import ChatList from './ChatList';
 import EmptyChat from './EmptyChat';
+import LobbyRoom from './LobbyRoom';
 
-const Lobby = ({ chatList }) => {
+const Lobby = ({ chatList }: {
+  chatList: Room[]
+}): JSX.Element => {
   return (
     <LobbyWrapper>
       {chatList.length > 0 ? <ChatList /> : <EmptyChat />}
+      <LobbyRoom />
     </LobbyWrapper>
   );
 };
