@@ -17,7 +17,6 @@ function useValidationInput(
   };
 
   const onBlur = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('???');
     if (!valitationFunc) {
       return;
     }

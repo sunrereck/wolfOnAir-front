@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-import Input from "@/components/ui/Input";
+const LobbyRoom = () => {
+  const [test, setTest] = useState("");
 
-const LobbyRoom = () => (
-  <LobbyRoomWrapper>
-    <Room />
-    <div>
-      <StyledInput />
-    </div>
-  </LobbyRoomWrapper>
-);
+  return (
+    <LobbyRoomWrapper>
+      <Room />
+      <div>
+      </div>
+    </LobbyRoomWrapper>
+  );
+};
 
 const LobbyRoomWrapper = styled.div`
   width: 100%;
@@ -26,12 +27,6 @@ const Room = styled.div`
   width: 100%;
   border: 1px solid #000000;
   min-height: 150px;
-`;
-
-const StyledInput = styled(Input)`
-  width: 100%;
-  border: 1px solid #000000;
-  max-size:   
 `;
 
 export default LobbyRoom;
