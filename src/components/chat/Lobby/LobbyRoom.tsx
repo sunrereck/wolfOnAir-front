@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import Textarea from '@/components/ui/Textarea';
+import Textarea from "@/components/ui/Textarea";
 
 const LobbyRoom = () => {
   const [test, setTest] = useState("");
@@ -9,9 +9,16 @@ const LobbyRoom = () => {
   return (
     <LobbyRoomWrapper>
       <Room />
-      <div>
-        <Textarea width="100%" value={test} onChange={(e: any) => {setTest(e.target.value)}} />
-      </div>
+      <LobbyRoomInput>
+        <Textarea
+          width="100%"
+          value={test}
+          onChange={(e: any) => {
+            setTest(e.target.value);
+          }}
+        />
+        <button type="button">채팅</button>
+      </LobbyRoomInput>
     </LobbyRoomWrapper>
   );
 };
@@ -30,10 +37,24 @@ const Room = styled.div`
   width: 100%;
   border: 1px solid #000000;
   min-height: 150px;
+`;
 
-  div {
-    margin-top: 0.5rem;
-    padding: 1rem;
+const LobbyRoomInput = styled.div`
+  position: relative;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem; 
+  padding-right: 4.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  border: 1px solid #000000;
+  border-radius: 2px;
+
+  button {
+    position: absolute;
+    width: 50px;
+    height: 28px;
+    right: 0.5rem;
+    bottom: 0.5rem;
   }
 `;
 

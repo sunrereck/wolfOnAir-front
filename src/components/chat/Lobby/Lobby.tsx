@@ -20,9 +20,10 @@ const Lobby = ({ chatList }: {
 
 const LobbyWrapper = styled.div`
   width: 100%;
+  margin-top: 1.5rem;
   margin-right: auto;
   margin-left: auto;
-  max-width: 864px;
+  max-width: 700px;
 `;
 
 export default Lobby;
