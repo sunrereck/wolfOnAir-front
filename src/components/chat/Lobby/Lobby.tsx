@@ -1,20 +1,41 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Room } from '@/interface/chat/room';
+import { Room } from "@/interface/chat/room";
 
-import ChatList from './ChatList';
-import EmptyChat from './EmptyChat';
-import LobbyRoom from './LobbyRoom';
+import Alert from '@/components/ui/Alert';
+import ChatList from "./ChatList";
+import EmptyChat from "./EmptyChat";
+import LobbyRoom from "./LobbyRoom";
 
-const Lobby = ({ chatList }: {
-  chatList: Room[]
-}): JSX.Element => {
+interface LobbyProps {
+  chatList: Room[];
+  isError: boolean;
+  onResetError: () => void;
+}
+
+const Lobby = ({
+  chatList,
+  isError,
+  onResetError,
+}: LobbyProps): JSX.Element => {
   return (
-    <LobbyWrapper>
-      {chatList.length > 0 ? <ChatList /> : <EmptyChat />}
-      <LobbyRoom />
-    </LobbyWrapper>
+    <>
+      <LobbyWrapper>
+        {chatList.length > 0 ? <ChatList /> : <EmptyChat />}
+        <LobbyRoom />
+      </LobbyWrapper>
+      <Alert
+        isShown={isError}
+        onClick={onResetError}
+        onClose={onResetError}
+        title="로비 접속 실패"
+      >
+        로비에 접속할 수 없습니다.
+        <br />
+        잠시 후 다시 시도해주세요.
+      </Alert>
+    </>
   );
 };
 

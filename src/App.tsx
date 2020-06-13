@@ -38,7 +38,7 @@ const App: React.FC = () => {
       }))
     }
 
-  }, [state, dispatch, uid]);
+  }, [!!state.data]);
 
   return (
     <Switch>

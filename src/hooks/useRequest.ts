@@ -76,7 +76,7 @@ function useRequest (callback: Function, deps: any = [], isSkiped = false) {
 
       throw err;
     }
-  }, [callback, dispatch]);
+  }, []);
 
   const onReset = () => {
     dispatch({
