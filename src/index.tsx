@@ -3,8 +3,9 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import createSagaMiddleware from "redux-saga";
-import { configureStore } from "@reduxjs/toolkit";
+import { connect } from 'socket.io-client';
 import { ThemeProvider } from "styled-components";
+import { configureStore } from "@reduxjs/toolkit";
 
 
 import theme from "@/styles/theme";
@@ -25,13 +26,16 @@ const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production'
 });
 
+// socket.io 연결
+const socket = connect('http://localhost:4000/chat', { path: '/socket.io'});
+
 ReactDOM.render(
   <>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
         <BrowserRouter>
-          <App />
+          <App socket={socket}/>
         </BrowserRouter>
       </ThemeProvider>
     </Provider>

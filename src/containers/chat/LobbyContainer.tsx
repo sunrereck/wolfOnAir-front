@@ -1,6 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { connect } from 'socket.io-client';
 
 import { connectLobby } from '@/api/chat';
 
@@ -10,8 +9,9 @@ import useRequest from '@/hooks/useRequest';
 
 import Lobby from '@/components/chat/Lobby';
 
-const LobbyContainer = (): JSX.Element => {
-  const socket = useRef(connect('http://localhost:4000/chat', { path: '/socket.io'}));
+const LobbyContainer = ({
+  socket
+}: any): JSX.Element => {
   const {isLoggedIn, uid } = useSelector((state: RootState) => ({
     isLoggedIn: state.user.isLoggedIn,
     uid: state.user.uid
@@ -27,15 +27,16 @@ const LobbyContainer = (): JSX.Element => {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    if (!!state.error) {
-      return;
+    console.log(state.data);
+   if (state.data === 'OK') {
+      socket.emit('join')
     }
 
-    socket.current.on('join', (data: any) => {
-      console.log(data);
-    });
-  
-  }, [state.error]);
+  }, [state]);
+
+  socket.on('joinLobby', (data: any) => {
+    console.log(data);
+  });
 
   return (
     <>
