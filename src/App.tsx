@@ -18,9 +18,9 @@ import Lobby from '@/pages/Lobby';
 import NotFound from '@/pages/NotFound';
 
 const App: React.FC = () => {
-  const [isCheckedAuth, setCheckAuth] = useState(false);
   const dispatch = useDispatch();
   const uid = useSelector((state: RootState) => (state.user.uid));
+  const [isCheckedAuth, setCheckAuth] = useState(false);
   const [state] = useRequest(checkStatus, [uid], false);  
 
   useEffect(() => {

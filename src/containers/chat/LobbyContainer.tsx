@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { connectLobby } from '@/api/chat';
 
 import { RootState } from '@/modules';
+import { joinLobby } from '@/modules/chat';
 
 import useRequest from '@/hooks/useRequest';
 
 import Lobby from '@/components/chat/Lobby';
 
 const LobbyContainer = (): JSX.Element => {
+  const dispatch = useDispatch();
   const {isLoggedIn, uid } = useSelector((state: RootState) => ({
     isLoggedIn: state.user.isLoggedIn,
     uid: state.user.uid
@@ -23,6 +25,11 @@ const LobbyContainer = (): JSX.Element => {
 
   // eslint-disable-next-line
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    dispatch(joinLobby.request(true));
+    // dispatch();
+  }, []);
 
   return (
     <>
