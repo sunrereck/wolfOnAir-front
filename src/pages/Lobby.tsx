@@ -6,17 +6,15 @@ import LobbyContainer from '@/containers/chat/LobbyContainer';
 
 interface ILobbyProps {
   isCheckingAuth: boolean;
-  socket: any
 }
 
 const Lobby = ({
-  isCheckingAuth,
-  socket
+  isCheckingAuth
 }: ILobbyProps): JSX.Element => {
   return (
     <PageTemplate>
       <RedirectHome isCheckingAuth={isCheckingAuth}/>
-      <LobbyContainer socket={socket} />
+      <LobbyContainer />
     </PageTemplate>
   );
 };

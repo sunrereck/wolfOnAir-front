@@ -17,9 +17,7 @@ import Login from '@/pages/Login';
 import Lobby from '@/pages/Lobby';
 import NotFound from '@/pages/NotFound';
 
-const App: React.FC<any> = ({
-  socket
-}) => {
+const App: React.FC = () => {
   const [isCheckedAuth, setCheckAuth] = useState(false);
   const dispatch = useDispatch();
   const uid = useSelector((state: RootState) => (state.user.uid));
@@ -49,7 +47,7 @@ const App: React.FC<any> = ({
       <Route exact path="/user/join" component={Join} />
       <Route exact path="/user/join/:email/send-email" component={JoinResult} />
       <Route exact path="/user/join/:email/send-email/auth" component={EmailAuthResult} />
-      <Route exact path='/lobby' render={() => <Lobby socket={socket} isCheckingAuth={!isCheckedAuth || state.isLoading} />} />
+      <Route exact path='/lobby' render={() => <Lobby isCheckingAuth={!isCheckedAuth || state.isLoading} />} />
       <Route component={NotFound} />
     </Switch>
   );

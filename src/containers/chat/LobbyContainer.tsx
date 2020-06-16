@@ -9,9 +9,7 @@ import useRequest from '@/hooks/useRequest';
 
 import Lobby from '@/components/chat/Lobby';
 
-const LobbyContainer = ({
-  socket
-}: any): JSX.Element => {
+const LobbyContainer = (): JSX.Element => {
   const {isLoggedIn, uid } = useSelector((state: RootState) => ({
     isLoggedIn: state.user.isLoggedIn,
     uid: state.user.uid
@@ -25,18 +23,6 @@ const LobbyContainer = ({
 
   // eslint-disable-next-line
   }, [isLoggedIn]);
-
-  useEffect(() => {
-    console.log(state.data);
-   if (state.data === 'OK') {
-      socket.emit('join')
-    }
-
-  }, [state]);
-
-  socket.on('joinLobby', (data: any) => {
-    console.log(data);
-  });
 
   return (
     <>

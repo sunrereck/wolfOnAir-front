@@ -35,7 +35,7 @@ ReactDOM.render(
       <ThemeProvider theme={theme}>
         <GlobalStyles />
         <BrowserRouter>
-          <App socket={socket}/>
+          <App />
         </BrowserRouter>
       </ThemeProvider>
     </Provider>
