@@ -21,7 +21,7 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const uid = useSelector((state: RootState) => (state.user.uid));
   const [isCheckedAuth, setCheckAuth] = useState(false);
-  const [state] = useRequest(checkStatus, [uid], false);  
+  const [state] = useRequest(checkStatus, [], false);  
 
   useEffect(() => {
     if (!!state.error) {
@@ -38,7 +38,7 @@ const App: React.FC = () => {
       }))
     }
 
-  }, [!!state.data]);
+  }, [state]);
 
   return (
     <Switch>

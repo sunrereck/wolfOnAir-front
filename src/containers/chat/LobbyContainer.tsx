@@ -27,9 +27,11 @@ const LobbyContainer = (): JSX.Element => {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    dispatch(joinLobby.request(true));
-    // dispatch();
-  }, []);
+    if (state && state.data) {
+      dispatch(joinLobby.request(true));
+    }
+
+  }, [state]);
 
   return (
     <>
