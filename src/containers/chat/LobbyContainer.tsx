@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { connectLobby } from '@/api/chat';
@@ -11,10 +11,13 @@ import useRequest from '@/hooks/useRequest';
 import Lobby from '@/components/chat/Lobby';
 
 const LobbyContainer = (): JSX.Element => {
+  const [chatLiset, setChatList] = useState<string[]>([]);
   const dispatch = useDispatch();
-  const {isLoggedIn, uid } = useSelector((state: RootState) => ({
+  const {isLoggedIn, systemMessage, uid } = useSelector((state: RootState) => ({
     isLoggedIn: state.user.isLoggedIn,
-    uid: state.user.uid
+    uid: state.user.uid,
+    //@ts-ignore
+    systemMessage: state.chat.systemMessage 
   }));
   const [state, onConnectLobby, onReset] = useRequest(() => connectLobby(uid), [], true);
 
@@ -28,15 +31,23 @@ const LobbyContainer = (): JSX.Element => {
 
   useEffect(() => {
     if (state && state.data) {
-      dispatch(joinLobby.request(true));
+      dispatch(joinLobby());
     }
 
   }, [state]);
 
+  useEffect(() => {
+    if (!systemMessage) {
+      return;
+    }
+
+    setChatList((prevState) => prevState.concat(systemMessage));
+  }, [systemMessage])
+
   return (
     <>
       <Lobby 
-        chatList={[]}
+        chatList={chatLiset}
         isError={!!state.error}
         onResetError={onReset}
       />

@@ -1,19 +1,17 @@
 import {
-  deprecated,
   ActionType,
+  createAction,
   createReducer
 } from 'typesafe-actions';
-
-const { createStandardAction } = deprecated;
 
 const SET_USER = 'user/SET_USER';
 const REMOVE_USER = 'user/REMOVE_USER';
 
-export const setUser = createStandardAction(SET_USER)<{
+export const setUser = createAction(SET_USER)<{
   uid: number;
   userName: string;
 }>(); 
-export const removeUser = createStandardAction(REMOVE_USER)();
+export const removeUser = createAction(REMOVE_USER)();
 
 const actionTypes = { setUser, removeUser };
 

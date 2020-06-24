@@ -1,66 +1,70 @@
 import {
   ActionType,
   createReducer,
-  createAsyncAction,
-  createCustomAction
+  createAction,
+  action,
 } from "typesafe-actions";
-import { apply, put, takeEvery } from "redux-saga/effects";
-import { connect } from 'socket.io-client';
+import { apply, call, select, put, take, takeEvery } from "redux-saga/effects";
+import { eventChannel } from "redux-saga";
 
-// socket.io 연결
-const socket = connect('http://localhost:4000/chat', { path: '/socket.io'});
+import { connect } from "socket.io-client";
 
+const socket = connect("http://localhost:4000/chat", { path: "/socket.io" });
+
+// 로비 접속
 const JOIN_LOBBY = "chat/JOIN_LOBBY";
-const JOIN_LOBBY_SUCCESS = "chat/JOIN_LOBBY_SUCCESS";
-const JOIN_LOBBY_FAILURE = "chat/JOIN_LOBBY_FAILURE";
-const JOIN_LOBBY_ASYNC = 'chat/JOIN_LOBBY_ASYNC';
 
-const JOIN_ROOM = "chat/JOIN_ROOM";
-const JOIN_ROOM_SUCCESS = "chat/JOIN_ROOM_SUCCESS";
-const JOIN_ROOM_FAILURE = "chat/JOIN_ROOM_FAILURE";
+// 채팅
+const GET_SYSTEM_MESSAGE = "chat/GET_SYSTEM_MESSAGE";
 
-export const joinLobby = createAsyncAction(
-  JOIN_LOBBY,
-  JOIN_LOBBY_SUCCESS,
-  JOIN_LOBBY_FAILURE
-)<boolean, boolean, boolean>();
-export const joinRoom = createAsyncAction(
-  JOIN_ROOM,
-  JOIN_ROOM_SUCCESS,
-  JOIN_ROOM_FAILURE
-)<string, string, string>();
+export const joinLobby = createAction(JOIN_LOBBY)();
 
-const actions = { joinLobby, joinRoom };
-
-type ChatAction = ActionType<typeof actions>;
 type ChatState = {
-  isConnecting: boolean;
-  isJoinedChat: boolean;
+  systemMessage: string;
 };
 
-const initialState = {
-  isConnecting: false,
-  isJoinedChat: false,
+const initialState: ChatState = {
+  systemMessage: ''
 };
 
-export function* joinLobbyAsyncSaga() {  
-  yield apply(socket, socket.emit, ['joinLobby']);
-  yield put({
-    type: joinLobby.request,
-    payload: true
-  })
+function createSocketChannel(socket: any) {
+  return eventChannel((emit: any) => {
+    const systemHandler = (message: any) => {
+      emit(message);
+    };
+
+    socket.on("system", systemHandler);
+
+    // the subscriber must return an unsubscribe function
+    // this will be invoked when the saga calls `channel.close` method
+    const unsubscribe = () => {
+      socket.off("system", systemHandler);
+    };
+
+    return unsubscribe;
+  });
 }
 
-const chat = createReducer<ChatState, ChatAction>(initialState).handleAction(
-  joinLobby.request,
-  (state, action) => ({
-    ...state,
-    isConnecting: action.payload,
-  })
-);
+function* joinLobbySaga() {
+  const { userName } = yield select((state) => state.user);
+  yield apply(socket, socket.emit, ["join", { userName }]);
+}
+
+const chat = createReducer<ChatState, any>(initialState).handleAction(GET_SYSTEM_MESSAGE,   (state: any, action: any) => ({
+  ...state,
+  systemMessage: action.payload
+}));
 
 export function* chatSaga() {
-  yield takeEvery(JOIN_LOBBY, joinLobbyAsyncSaga)
+  const socketChannel = yield call(createSocketChannel, socket);
+  
+  yield takeEvery(JOIN_LOBBY, joinLobbySaga);
+
+  while (true) {
+    const payload = yield take(socketChannel);
+
+    yield put({ type: GET_SYSTEM_MESSAGE, payload });
+  }
 }
 
 export default chat;

@@ -3,12 +3,16 @@ import styled from "styled-components";
 
 import Textarea from "@/components/ui/Textarea";
 
-const LobbyRoom = () => {
+const LobbyRoom = ({ chatList }: {chatList: string[]}) => {
   const [test, setTest] = useState("");
 
   return (
     <LobbyRoomWrapper>
-      <Room />
+      <Lobby>
+        {chatList.map((chat) => (
+          <span>{chat}</span>
+        ))}
+      </Lobby>
       <LobbyRoomInput>
         <Textarea
           width="100%"
@@ -33,7 +37,7 @@ const LobbyRoomWrapper = styled.div`
   max-width: 700px;
 `;
 
-const Room = styled.div`
+const Lobby = styled.div`
   width: 100%;
   border: 1px solid #000000;
   min-height: 150px;
