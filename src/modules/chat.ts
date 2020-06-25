@@ -11,34 +11,40 @@ import { connect } from "socket.io-client";
 
 const socket = connect("http://localhost:4000/chat", { path: "/socket.io" });
 
-// 로비 접속
-const JOIN_LOBBY = "chat/JOIN_LOBBY";
-
-// 채팅
-const GET_SYSTEM_MESSAGE = "chat/GET_SYSTEM_MESSAGE";
+const JOIN_LOBBY = 'chat/JOIN';
+const GET_MESSAGE = 'chat/GET_MESSAGE';
 
 export const joinLobby = createAction(JOIN_LOBBY)();
 
 type ChatState = {
-  systemMessage: string;
+  chat: {
+    user: string;
+    message: string;
+  };
 };
 
 const initialState: ChatState = {
-  systemMessage: ''
+  chat: {
+    user: '',
+    message: ''
+  }
 };
 
 function createSocketChannel(socket: any) {
   return eventChannel((emit: any) => {
-    const systemHandler = (message: any) => {
-      emit(message);
+    const chatHandler = ({user, message}: {user: string; message: string}) => {
+      emit({
+        user,
+        message
+      });
     };
 
-    socket.on("system", systemHandler);
+    socket.on("join", chatHandler);
 
     // the subscriber must return an unsubscribe function
     // this will be invoked when the saga calls `channel.close` method
     const unsubscribe = () => {
-      socket.off("system", systemHandler);
+      socket.off("join", chatHandler);
     };
 
     return unsubscribe;
@@ -47,13 +53,15 @@ function createSocketChannel(socket: any) {
 
 function* joinLobbySaga() {
   const { userName } = yield select((state) => state.user);
-  yield apply(socket, socket.emit, ["join", { userName }]);
+  yield apply(socket, socket.emit, ["joinConnect", { userName }]);
 }
 
-const chat = createReducer<ChatState, any>(initialState).handleAction(GET_SYSTEM_MESSAGE,   (state: any, action: any) => ({
-  ...state,
-  systemMessage: action.payload
-}));
+const chat = createReducer<ChatState, any>(initialState).handleAction(GET_MESSAGE, (state: any, action: any) => {
+  return {
+    ...state,
+    chat: action.payload
+  }
+});
 
 export function* chatSaga() {
   const socketChannel = yield call(createSocketChannel, socket);
@@ -63,7 +71,7 @@ export function* chatSaga() {
   while (true) {
     const payload = yield take(socketChannel);
 
-    yield put({ type: GET_SYSTEM_MESSAGE, payload });
+    yield put({ type: GET_MESSAGE, payload });
   }
 }
 

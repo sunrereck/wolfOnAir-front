@@ -2,15 +2,20 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import Textarea from "@/components/ui/Textarea";
+import Message from '../Message';
 
-const LobbyRoom = ({ chatList }: {chatList: string[]}) => {
+const LobbyRoom = ({ chatList }: {chatList: any[]}) => {
   const [test, setTest] = useState("");
 
   return (
     <LobbyRoomWrapper>
       <Lobby>
         {chatList.map((chat) => (
-          <span>{chat}</span>
+          <Message
+            isSystem={chat.user === 'system'}
+            message={chat.message}
+            user={chat.user}
+          />
         ))}
       </Lobby>
       <LobbyRoomInput>
@@ -39,6 +44,7 @@ const LobbyRoomWrapper = styled.div`
 
 const Lobby = styled.div`
   width: 100%;
+  padding: 0.5rem;
   border: 1px solid #000000;
   min-height: 150px;
 `;

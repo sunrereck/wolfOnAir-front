@@ -11,13 +11,13 @@ import useRequest from '@/hooks/useRequest';
 import Lobby from '@/components/chat/Lobby';
 
 const LobbyContainer = (): JSX.Element => {
-  const [chatLiset, setChatList] = useState<string[]>([]);
+  const [chatLiset, setChatList] = useState<{user: string; message: string}[]>([]);
   const dispatch = useDispatch();
-  const {isLoggedIn, systemMessage, uid } = useSelector((state: RootState) => ({
+  const {isLoggedIn, chat, uid } = useSelector((state: RootState) => ({
     isLoggedIn: state.user.isLoggedIn,
     uid: state.user.uid,
     //@ts-ignore
-    systemMessage: state.chat.systemMessage 
+    chat: state.chat.chat 
   }));
   const [state, onConnectLobby, onReset] = useRequest(() => connectLobby(uid), [], true);
 
@@ -37,12 +37,12 @@ const LobbyContainer = (): JSX.Element => {
   }, [state]);
 
   useEffect(() => {
-    if (!systemMessage) {
+    if (!chat || !chat.user) {
       return;
     }
 
-    setChatList((prevState) => prevState.concat(systemMessage));
-  }, [systemMessage])
+    setChatList((prevState) => prevState.concat(chat));
+  }, [chat])
 
   return (
     <>
