@@ -10,7 +10,7 @@ function useValidationInput(
   const [value, setValue] = useState(defaultValue);
   const [errorMessage, setErrorMessage] = useState("");
   const [isValid, setValid] = useState(false);
-  const inputEl = useRef(null);
+  const inputEl = useRef<HTMLInputElement>(null);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -36,9 +36,8 @@ function useValidationInput(
   const onSetError = (isValid: boolean, errorMessage: string) => {
     setErrorMessage(errorMessage);
     setValid(isValid);
-
+    
     if (!isValid && (inputEl && inputEl.current)) {
-      // @ts-ignore
       inputEl.current.focus();
     }
   };

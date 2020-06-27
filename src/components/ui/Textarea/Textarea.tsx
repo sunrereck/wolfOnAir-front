@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Textarea = ({ width, onChange, value }: any) => {
   const DEFAULT_HEIGHT = 24;
-  const textEl = useRef(null);
+  const textEl = useRef<HTMLTextAreaElement>(null);
   
   useEffect(() => {
     window.addEventListener('resize', onChangeSize);
@@ -22,13 +22,10 @@ const Textarea = ({ width, onChange, value }: any) => {
       return;
     }
 
-    //@ts-ignore
     textEl.current.style.height = `${DEFAULT_HEIGHT}px`;
 
-    //@ts-ignore
     const { scrollHeight } = textEl.current;
 
-    //@ts-ignore
     textEl.current.style.height =
       scrollHeight > DEFAULT_HEIGHT
         ? `${scrollHeight}px`

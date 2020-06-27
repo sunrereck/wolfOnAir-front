@@ -6,13 +6,13 @@ import SystemMessage from './SystemMessage';
 interface MessageProps {
   isSystem: boolean;
   message: string;
-  user?: string;
+  userName?: string;
 }
 
 const Message = ({
   isSystem,
   message,
-  user
+  userName
 }: MessageProps): JSX.Element => {
   if (isSystem) {
     return <SystemMessage message={message} />

@@ -1,30 +1,30 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
+import { Chat } from '@/interface/chat';
+
 import Textarea from "@/components/ui/Textarea";
 import Message from '../Message';
 
-const LobbyRoom = ({ chatList }: {chatList: any[]}) => {
-  const [test, setTest] = useState("");
-
+// @ts-ignore
+const LobbyRoom = ({ chatList, value, onChange, onChat }) => {
   return (
     <LobbyRoomWrapper>
       <Lobby>
-        {chatList.map((chat) => (
+        {chatList.map((chat: Chat) => (
           <Message
-            isSystem={chat.user === 'system'}
+            isSystem={chat.userName === 'system'}
             message={chat.message}
-            user={chat.user}
+            userName={chat.userName}
           />
         ))}
       </Lobby>
       <LobbyRoomInput>
         <Textarea
           width="100%"
-          value={test}
-          onChange={(e: any) => {
-            setTest(e.target.value);
-          }}
+          value={value}
+          onChange={onChange}
+          onKeyDown={onChat}
         />
         <button type="button">채팅</button>
       </LobbyRoomInput>

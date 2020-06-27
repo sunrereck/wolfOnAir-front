@@ -14,3 +14,9 @@ export function connectLobby(uid: number) {
     }
   });
 }
+
+export function sendMessage(message: string, roomId: string) {
+  return customAxios.post(`/chat/${roomId}/message`, {
+    message
+  })
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import Alert from '@/components/ui/Alert';
+import Alert from "@/components/ui/Alert";
 import ChatList from "./ChatList";
 import EmptyChat from "./EmptyChat";
 import LobbyRoom from "./LobbyRoom";
@@ -9,19 +9,30 @@ import LobbyRoom from "./LobbyRoom";
 interface LobbyProps {
   chatList: any[];
   isError: boolean;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChat: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   onResetError: () => void;
 }
 
 const Lobby = ({
   chatList,
   isError,
+  value,
+  onChange,
+  onChat,
   onResetError,
 }: LobbyProps): JSX.Element => {
   return (
     <>
       <LobbyWrapper>
         {/* {chatList.length > 0 ? <ChatList /> : <EmptyChat />} */}
-        <LobbyRoom chatList={chatList}/>
+        <LobbyRoom
+          chatList={chatList}
+          value={value}
+          onChange={onChange}
+          onChat={onChat}
+        />
       </LobbyWrapper>
       <Alert
         isShown={isError}
