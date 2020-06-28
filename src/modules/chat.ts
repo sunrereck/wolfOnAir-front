@@ -1,104 +1,125 @@
 import {
-  ActionType,
-  createReducer,
   createAction,
-  createCustomAction
+  createReducer,
+  ActionType
 } from "typesafe-actions";
-import { apply, call, select, put, take, takeEvery } from "redux-saga/effects";
-import { eventChannel } from "redux-saga";
-import { connect } from "socket.io-client";
+import { call, put, select, take, takeEvery } from "redux-saga/effects";
+import { buffers, eventChannel } from "redux-saga";
+
+import SocketIOClient, { connect } from "socket.io-client";
 
 import { Chat } from '@/interface/chat';
 
+interface Join extends Chat {
+  roomId: string;
+}
+
 const socket = connect("http://localhost:4000/chat", { path: "/socket.io" });
 
-const JOIN_LOBBY = 'chat/JOIN';
+// user 관련 Action
+const ADD_USER = 'chat/ADD_USER';
+const REMOVE_USER = 'chat/REMOVE_USER';
+
+// message 관련 Action
 const GET_MESSAGE = 'chat/GET_MESSAGE';
 const SEND_MESSAGE = 'chat/SEND_MESSAGE';
 
-export const joinLobby = createAction(JOIN_LOBBY)();
-export const getMessage = createAction(GET_MESSAGE)<Chat>();
-export const sendMessage = createAction(SEND_MESSAGE)<string>();
+// 접속 관련 Action
+const JOIN = 'chat/JOIN';
+const JOIN_SUCCESS = 'chat/JOIN_SUCCESS';
+const LEAVE = 'chat/LEAVE';
 
-const actionTypes = { joinLobby, getMessage, sendMessage };
+const getMessage = createAction(GET_MESSAGE)<Chat>();
+
+export const join = createAction(JOIN)();
+export const joinSuccess = createAction(JOIN_SUCCESS)<Join>();
+
+const actionTypes = { getMessage, join, joinSuccess };
 
 type ChatAction = ActionType<typeof actionTypes>
 
 type ChatState = {
   chat: Chat | null;
+  roomId: string;
 };
 
 const initialState: ChatState = {
-  chat: null
+  chat: null,
+  roomId: ''
 };
 
-function createSocketChannel(socket: any) {
+function createSocketChannel(socket: SocketIOClient.Socket, buffer: any) {
   return eventChannel((emit: any) => {
     const chatHandler = ({userName, message}: Chat) => {
-      console.log(123);
-      
       emit({
+        type: GET_MESSAGE,
         message,
         userName
       });
     };
 
-    socket.on("join", chatHandler);
-    socket.on('getMessage', chatHandler);
+    const joinHandler = ({userName, message, roomId}: Join) => {
+      emit({
+        type: JOIN_SUCCESS,
+        message,
+        roomId,
+        userName
+      })
+    }
 
-    // the subscriber must return an unsubscribe function
-    // this will be invoked when the saga calls `channel.close` method
+    socket.on('getMessage',chatHandler);
+    socket.on("join", joinHandler);
+
     const unsubscribe = () => {
-      socket.off("join", chatHandler);
       socket.off('getMessage', chatHandler);
+      socket.off("join", joinHandler);
     };
 
     return unsubscribe;
-  });
+  }, buffer || buffers.none());
 }
 
-function* joinLobbySaga() {
+export function *joinSaga() {
   const { userName } = yield select((state) => state.user);
-  yield apply(socket, socket.emit, ["joinConnect", { userName }]);
+
+  socket.emit('joinConnect', { userName });
 }
-
-function* sendMessageSaga(action: any) {
-  const { userName } = yield select((state) => state.user);
-  yield apply(socket, socket.emit, ["sendMessage", { userName, message: action.payload }]);
-}
-
-// const chat = createReducer<ChatState, ChatAction>(initialState, {
-//   [GET_MESSAGE]: (state, action) => ({
-//     ...state,
-//     message: action.payload.message,
-//     userName: action.payload.userName
-//   }),
-//   [SEND_MESSAGE]: (state, action) => ({
-//     ...state,
-//   }),
-//   [JOIN_LOBBY]: (state, action) => ({
-//     ...state
-//   })
-// });
-
-const chat = createReducer<ChatState, any>(initialState).handleAction(getMessage, (state: any, action: any) => {
-  return {
-    ...state,
-    chat: action.payload
-  }
-});
 
 export function* chatSaga() {
-  const socketChannel = yield call(createSocketChannel, socket);
-  
-  yield takeEvery(JOIN_LOBBY, joinLobbySaga);
-  yield takeEvery(SEND_MESSAGE, sendMessageSaga);
+  const socketChannel = yield call(createSocketChannel, socket, buffers.sliding(1));
+
+  yield takeEvery(JOIN, joinSaga);
 
   while (true) {
-    const payload = yield take(socketChannel);
+    try {
+      const payload = yield take(socketChannel);
 
-    yield put({ type: GET_MESSAGE, payload });
+      yield put({ type: payload.type, payload })
+
+    } catch (err) {
+      //
+    }
   }
 }
+
+const chat = createReducer<ChatState, ChatAction>(initialState, {
+  [GET_MESSAGE]: (state: ChatState, action: any) => {
+    return {
+    ...state,
+    chat: {
+      message: action.payload.message,
+      userName: action.payload.userName  
+    }
+  }
+  },
+  [JOIN_SUCCESS]: (state: ChatState, action: any) => ({
+    ...state,
+    roomId: action.payload.roomId,
+    chat: {
+      message: action.payload.message,
+      userName: action.payload.userName  
+    }
+  })
+});
 
 export default chat;

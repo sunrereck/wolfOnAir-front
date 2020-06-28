@@ -6,7 +6,7 @@ import { Chat } from '@/interface/chat';
 import { connectLobby } from '@/api/chat';
 
 import { RootState } from '@/modules';
-import { joinLobby, sendMessage } from '@/modules/chat';
+import { join } from '@/modules/chat';
 
 import useInput from '@/hooks/useInput';
 import useRequest from '@/hooks/useRequest';
@@ -30,9 +30,7 @@ const LobbyContainer = (): JSX.Element => {
       return;
     }
 
-    dispatch(sendMessage(value));
-
-    console.log(e);
+    // dispatch(sendMessage(value));
   };
 
   useEffect(() => {
@@ -45,13 +43,12 @@ const LobbyContainer = (): JSX.Element => {
 
   useEffect(() => {
     if (state && state.data) {
-      dispatch(joinLobby());
+      dispatch(join());
     }
 
   }, [state]);
 
   useEffect(() => {
-    console.log(chat);
     if (!chat) {
       return;
     }
