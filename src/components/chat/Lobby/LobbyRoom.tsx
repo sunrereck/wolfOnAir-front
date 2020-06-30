@@ -7,7 +7,7 @@ import Textarea from "@/components/ui/Textarea";
 import Message from '../Message';
 
 // @ts-ignore
-const LobbyRoom = ({ chatList, value, onChange, onChat }) => {
+const LobbyRoom = ({ chatList, value, onChange, onSendMessage }) => {
   return (
     <LobbyRoomWrapper>
       <Lobby>
@@ -24,7 +24,7 @@ const LobbyRoom = ({ chatList, value, onChange, onChat }) => {
           width="100%"
           value={value}
           onChange={onChange}
-          onKeyDown={onChat}
+          onKeyDown={onSendMessage}
         />
         <button type="button">채팅</button>
       </LobbyRoomInput>

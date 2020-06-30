@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
-const Textarea = ({ width, onChange, value }: any) => {
+const Textarea = ({ width, onChange,  value, ...props }: any) => {
   const DEFAULT_HEIGHT = 24;
   const textEl = useRef<HTMLTextAreaElement>(null);
   
@@ -38,6 +38,7 @@ const Textarea = ({ width, onChange, value }: any) => {
       ref={textEl}
       value={value}
       onChange={onChange}
+      {...props}
     />
   );
 };

@@ -11,8 +11,8 @@ interface LobbyProps {
   isError: boolean;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onChat: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   onResetError: () => void;
+  onSendMessage: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
 }
 
 const Lobby = ({
@@ -20,7 +20,7 @@ const Lobby = ({
   isError,
   value,
   onChange,
-  onChat,
+  onSendMessage,
   onResetError,
 }: LobbyProps): JSX.Element => {
   return (
@@ -31,7 +31,7 @@ const Lobby = ({
           chatList={chatList}
           value={value}
           onChange={onChange}
-          onChat={onChat}
+          onSendMessage={onSendMessage}
         />
       </LobbyWrapper>
       <Alert

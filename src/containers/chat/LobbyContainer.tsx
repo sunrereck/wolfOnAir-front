@@ -6,7 +6,7 @@ import { Chat } from '@/interface/chat';
 import { connectLobby } from '@/api/chat';
 
 import { RootState } from '@/modules';
-import { join } from '@/modules/chat';
+import { join, sendMessage } from '@/modules/chat';
 
 import useInput from '@/hooks/useInput';
 import useRequest from '@/hooks/useRequest';
@@ -25,12 +25,13 @@ const LobbyContainer = (): JSX.Element => {
   const [value, onChange] = useInput();
   const [state, onConnectLobby, onReset] = useRequest(() => connectLobby(uid), [], true);
 
-  const onChat = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const onSendMessage = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    console.log(e.keyCode);
     if (e.keyCode !== 13) {
       return;
     }
 
-    // dispatch(sendMessage(value));
+    dispatch(sendMessage(value));
   };
 
   useEffect(() => {
@@ -63,8 +64,8 @@ const LobbyContainer = (): JSX.Element => {
         isError={!!state.error}
         value={value}
         onChange={onChange}
-        onChat={onChat}
         onResetError={onReset}
+        onSendMessage={onSendMessage}
       />
     </>
   );

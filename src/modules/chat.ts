@@ -33,6 +33,7 @@ const getMessage = createAction(GET_MESSAGE)<Chat>();
 
 export const join = createAction(JOIN)();
 export const joinSuccess = createAction(JOIN_SUCCESS)<Join>();
+export const sendMessage = createAction(SEND_MESSAGE)<string>();
 
 const actionTypes = { getMessage, join, joinSuccess };
 
@@ -85,10 +86,23 @@ export function *joinSaga() {
   socket.emit('joinConnect', { userName });
 }
 
+export function *sendMessageSaga(action: {
+  type: string;
+  payload: string
+}) {
+  const { roomId, userName } = yield select((state) => ({
+    roomId: state.chat.roomId,
+    userName: state.user.userName
+  }));
+
+  socket.emit('sendMessage', { userName, message: action.payload, roomId });
+}
+ 
 export function* chatSaga() {
   const socketChannel = yield call(createSocketChannel, socket, buffers.sliding(1));
 
   yield takeEvery(JOIN, joinSaga);
+  yield takeEvery(SEND_MESSAGE, sendMessageSaga);
 
   while (true) {
     try {
