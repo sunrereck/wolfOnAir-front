@@ -4,8 +4,12 @@ export default function useInput(initialValue = "") {
   const [value, setValue] = useState(initialValue);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(e.target.value)
+    setValue(e.target.value);
   };
 
-  return [value, onChange] as [string, typeof onChange];
+  const onReset = () => {
+    setValue('');
+  };
+
+  return [value, onChange, onReset] as [string, typeof onChange, typeof onReset];
 }

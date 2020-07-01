@@ -6,7 +6,7 @@ import SystemMessage from './SystemMessage';
 interface MessageProps {
   isSystem: boolean;
   message: string;
-  userName?: string;
+  userName: string;
 }
 
 const Message = ({
@@ -19,7 +19,10 @@ const Message = ({
   }
 
   return (
-    <UserMessage />
+    <UserMessage 
+      message={message}
+      userName={userName}
+    />
   )
 };
 

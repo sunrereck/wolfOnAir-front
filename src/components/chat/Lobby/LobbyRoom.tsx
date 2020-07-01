@@ -1,19 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import { Chat } from '@/interface/chat';
+import { Chat } from "@/interface/chat";
 
 import Textarea from "@/components/ui/Textarea";
-import Message from '../Message';
+import Message from "../Message";
 
-// @ts-ignore
-const LobbyRoom = ({ chatList, value, onChange, onSendMessage }) => {
+interface LobbyRoomProps {
+  chatList: any[];
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onSendMessage: () => void;
+}
+
+const LobbyRoom = ({
+  chatList,
+  value,
+  onChange,
+  onSendMessage,
+}: LobbyRoomProps): JSX.Element => {
+  const lobbyRef = useRef<HTMLDivElement>(null); 
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.keyCode !== 13) {
+      return;
+    }
+
+    e.preventDefault();
+
+    onSendMessage();
+  };
+
+  useEffect(() => {
+    if (!lobbyRef || !lobbyRef.current) {
+      return;
+    }
+
+    const { scrollHeight, clientHeight } = lobbyRef.current;
+    
+    if (clientHeight < scrollHeight) {
+      lobbyRef.current.scrollTop = scrollHeight - clientHeight;
+    }
+  }, [chatList.length]);
+
   return (
     <LobbyRoomWrapper>
-      <Lobby>
+      <Lobby ref={lobbyRef}>
         {chatList.map((chat: Chat) => (
           <Message
-            isSystem={chat.userName === 'system'}
+            isSystem={chat.userName === "system"}
             message={chat.message}
             userName={chat.userName}
           />
@@ -24,9 +59,11 @@ const LobbyRoom = ({ chatList, value, onChange, onSendMessage }) => {
           width="100%"
           value={value}
           onChange={onChange}
-          onKeyDown={onSendMessage}
+          onKeyDown={onKeyDown}
         />
-        <button type="button">채팅</button>
+        <button type="button" onClick={onSendMessage}>
+          채팅
+        </button>
       </LobbyRoomInput>
     </LobbyRoomWrapper>
   );
@@ -43,16 +80,17 @@ const LobbyRoomWrapper = styled.div`
 `;
 
 const Lobby = styled.div`
+  overflow-y: scroll;
   width: 100%;
+  height: 150px;
   padding: 0.5rem;
   border: 1px solid #000000;
-  min-height: 150px;
 `;
 
 const LobbyRoomInput = styled.div`
   position: relative;
   margin-top: 0.5rem;
-  padding-top: 0.5rem; 
+  padding-top: 0.5rem;
   padding-right: 4.5rem;
   padding-bottom: 0.5rem;
   padding-left: 0.5rem;

@@ -12,7 +12,7 @@ interface LobbyProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onResetError: () => void;
-  onSendMessage: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  onSendMessage: () => void;
 }
 
 const Lobby = ({

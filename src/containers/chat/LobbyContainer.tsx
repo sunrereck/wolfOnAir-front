@@ -22,16 +22,16 @@ const LobbyContainer = (): JSX.Element => {
     //@ts-ignore
     chat: state.chat.chat 
   }));
-  const [value, onChange] = useInput();
+  const [value, onChange, onResetInput] = useInput();
   const [state, onConnectLobby, onReset] = useRequest(() => connectLobby(uid), [], true);
 
-  const onSendMessage = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    console.log(e.keyCode);
-    if (e.keyCode !== 13) {
+  const onSendMessage = () => {
+    if (!value) {
       return;
     }
-
+    
     dispatch(sendMessage(value));
+    onResetInput();
   };
 
   useEffect(() => {
