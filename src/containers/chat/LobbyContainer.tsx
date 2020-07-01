@@ -29,7 +29,7 @@ const LobbyContainer = (): JSX.Element => {
     if (!value) {
       return;
     }
-    
+
     dispatch(sendMessage(value));
     onResetInput();
   };
@@ -62,6 +62,7 @@ const LobbyContainer = (): JSX.Element => {
       <Lobby 
         chatList={chatLiset}
         isError={!!state.error}
+        roomList={[]}
         value={value}
         onChange={onChange}
         onResetError={onReset}

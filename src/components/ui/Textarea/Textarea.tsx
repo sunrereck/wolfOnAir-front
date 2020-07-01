@@ -14,7 +14,6 @@ const Textarea = ({ width, onChange,  value, ...props }: any) => {
   }, []);
 
   useEffect(() => {
-    console.log(1, value);
     onChangeSize();
   }, [value]);
 

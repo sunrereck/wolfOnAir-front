@@ -5,20 +5,22 @@ import styled from 'styled-components';
 interface UserMessageProps {
   message: string;
   userName: string;
+  style: Object;
 }
 
 const UserMessage = ({
   message,
-  userName
+  userName,
+  style
 }: UserMessageProps): JSX.Element => {
   return (
-    <UserMessageWrapper>
+    <UserMessageWrapper style={style}>
       {userName}: {message}
     </UserMessageWrapper>
   )
 }
 
-const UserMessageWrapper = styled.span`
+const UserMessageWrapper = styled.span<{style: Object}>`
   display: block;
   width: 100%;
   font-size: 1rem;

@@ -2,13 +2,14 @@ import React, { memo } from 'react';
 
 import styled from 'styled-components';
 
-interface SystemMessageProps {
+interface SystemMessage {
   message: string;
+  style: Object;
 }
 
-const SystemMessage = ({ message }: SystemMessageProps) => <SystemMessageWrapper>{message}</SystemMessageWrapper>;
+const SystemMessage = ({ message, style }: SystemMessage) => <SystemMessageWrapper style={style}>{message}</SystemMessageWrapper>;
 
-const SystemMessageWrapper = styled.span`
+const SystemMessageWrapper = styled.span<{style: Object}>`
   display: block;
   width: 100%;
   text-align: center;
