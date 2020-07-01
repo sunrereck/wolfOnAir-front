@@ -22,7 +22,7 @@ const LobbyChat = ({
   onChange,
   onSendMessage,
 }: LobbyRoomProps): JSX.Element => {
-  const lobbyEl = useRef<HTMLDivElement>(null);
+  const lobbyEl = useRef<List>(null);
 
   const rowRenderer = useCallback(
     ({
@@ -68,13 +68,8 @@ const LobbyChat = ({
       return;
     }
 
-    const { scrollHeight, clientHeight } = lobbyEl.current;
+    lobbyEl.current.scrollToRow(chatList.length);
 
-    console.log(lobbyEl.current.clientHeight, lobbyEl.current.scrollHeight);
-
-    if (clientHeight < scrollHeight) {
-      lobbyEl.current.scrollTop = scrollHeight - clientHeight;
-    }
   }, [chatList.length]);
 
   return (
@@ -82,13 +77,16 @@ const LobbyChat = ({
       <AutoSizer disableHeight>
         {({ width }: { width: number }) => (
           <>
-            <StyledList
-              rowCount={chatList.length}
-              rowHeight={24}
-              rowRenderer={rowRenderer}
-              width={width}
-              height={150}
-            />
+          <ListWrapper width={width}>
+              <StyledList
+                ref={lobbyEl}
+                rowCount={chatList.length}
+                rowHeight={24}
+                rowRenderer={rowRenderer}
+                width={width}
+                height={150}
+              />
+          </ListWrapper>
             <LobbyRoomInput width={width}>
               <Textarea
                 value={value}
@@ -111,9 +109,13 @@ const LobbyRoomWrapper = styled.div`
   padding: 0.5rem;
 `;
 
-const StyledList = styled(List)`
+const ListWrapper = styled.div<{ width: number }>`
+  width: ${({ width }) => width}px;
   padding: 0.5rem;
   border: 1px solid #000000;
+`;
+
+const StyledList = styled(List)`
   min-width: 300px;
   max-width: 700px;
 
