@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 
 import styled from 'styled-components';
 
@@ -27,4 +27,4 @@ const UserMessageWrapper = styled.span<{style: Object}>`
   line-height: 1.75;
 `;
 
-export default UserMessage
+export default memo(UserMessage)

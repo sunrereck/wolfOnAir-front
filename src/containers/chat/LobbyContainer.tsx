@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Chat } from '@/interface/chat';
@@ -14,25 +14,35 @@ import useRequest from '@/hooks/useRequest';
 import Lobby from '@/components/chat/Lobby';
 
 const LobbyContainer = (): JSX.Element => {
-  const [chatLiset, setChatList] = useState<Chat[]>([]);
   const dispatch = useDispatch();
+  const [isShownConfirm, setConfirm] = useState(false);
+  const [chatLiset, setChatList] = useState<Chat[]>([]);
   const {isLoggedIn, chat, uid } = useSelector((state: RootState) => ({
     isLoggedIn: state.user.isLoggedIn,
     uid: state.user.uid,
-    //@ts-ignore
     chat: state.chat.chat 
   }));
-  const [value, onChange, onResetInput] = useInput();
+  const [message, onChangeMessage, onResetMessage] = useInput();
+  const [roomTitle, onChangeRoomTitle, onResetRoomTitle] = useInput();
   const [state, onConnectLobby, onReset] = useRequest(() => connectLobby(uid), [], true);
 
-  const onSendMessage = () => {
-    if (!value) {
+  const onOpenNewRoom = () => {
+    setConfirm(true);
+  }
+
+  const onCloseNewRoom = () => {
+    onResetRoomTitle();
+    setConfirm(false);
+  }
+
+  const onSendMessage = useCallback(() => {
+    if (!message) {
       return;
     }
 
-    dispatch(sendMessage(value));
-    onResetInput();
-  };
+    dispatch(sendMessage(message));
+    onResetMessage();
+  }, [dispatch, message, onResetMessage]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -62,9 +72,14 @@ const LobbyContainer = (): JSX.Element => {
       <Lobby 
         chatList={chatLiset}
         isError={!!state.error}
+        isShownNewRoom={isShownConfirm}
+        message={message}
         roomList={[]}
-        value={value}
-        onChange={onChange}
+        roomTitle={roomTitle}
+        onChangeMessage={onChangeMessage}
+        onChangeRoomTitle={onChangeRoomTitle}
+        onCloseNewRoom={onCloseNewRoom}
+        onOpenNewRoom={onOpenNewRoom}
         onResetError={onReset}
         onSendMessage={onSendMessage}
       />

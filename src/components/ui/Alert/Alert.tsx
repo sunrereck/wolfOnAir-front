@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import styled from "styled-components";
 
 import Button from "../Button";
-import Fade from "../../layout/Fade ";
+import Fade from "../../layout/Fade";
 import Portal from "../../layout/Portal";
 
 const BackGround = styled.div`
@@ -32,6 +32,7 @@ const Modal = styled.div`
 const Title = styled.h1`
   margin-bottom: 1rem;
   font-size: 1.25rem;
+  font-weight: 600;
   text-align: center;
 `;
 
@@ -65,33 +66,31 @@ const Alert = ({
   isShown,
   onClick,
   onClose,
-  title
+  title,
 }: AlertProps): JSX.Element | null => {
   return (
-    <>
-      <Portal>
-        <Fade isShown={isShown} timeout={200}>
-          <Modal>
-            <Title>{title}</Title>
-            <Body>
-              <p>{children}</p>
-            </Body>
-            <ButtonWrap>
-              <Button type="button" onClick={onClick}>
-                확인
-              </Button>
-            </ButtonWrap>
-          </Modal>
-          <BackGround onClick={onClose} />
-        </Fade>
-      </Portal>
-    </>
+    <Portal>
+      <Fade isShown={isShown} timeout={200}>
+        <Modal>
+          <Title>{title}</Title>
+          <Body>
+            <p>{children}</p>
+          </Body>
+          <ButtonWrap>
+            <Button type="button" onClick={onClick}>
+              확인
+            </Button>
+          </ButtonWrap>
+        </Modal>
+        <BackGround onClick={onClose} />
+      </Fade>
+    </Portal>
   );
 };
 
 Alert.defaultProps = {
   children: null,
-  title: ""
+  title: "",
 };
 
 export default memo(Alert);
