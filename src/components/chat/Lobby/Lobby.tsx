@@ -18,6 +18,7 @@ interface LobbyProps {
   onChangeMessage: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onChangeRoomTitle: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCloseNewRoom: () => void;
+  onCreateRoom: () => void;
   onOpenNewRoom: () => void;
   onResetError: () => void;
   onSendMessage: () => void;
@@ -33,6 +34,7 @@ const Lobby = ({
   onChangeMessage,
   onChangeRoomTitle,
   onCloseNewRoom,
+  onCreateRoom,
   onOpenNewRoom,
   onSendMessage,
   onResetError
@@ -60,7 +62,7 @@ const Lobby = ({
         roomTitle={roomTitle}
         onCancel={onCloseNewRoom}
         onChangeRoomTitle={onChangeRoomTitle}
-        onClick={() => {}}
+        onClick={onCreateRoom}
         onClose={onCloseNewRoom}
         onOpen={onOpenNewRoom}
       />

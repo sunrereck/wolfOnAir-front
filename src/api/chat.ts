@@ -15,8 +15,9 @@ export function connectLobby(uid: number) {
   });
 }
 
-export function sendMessage(message: string, roomId: string) {
-  return customAxios.post(`/chat/${roomId}/message`, {
-    message
+export function createRoom(roomTitle: string, userName: string) {
+  return customAxios.post('/chat/room', {
+    roomTitle,
+    userName
   })
 }

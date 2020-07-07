@@ -55,6 +55,8 @@ function useRequest (callback: Function, deps: any = [], isSkiped = false) {
   });
 
   const onFetchData = useCallback(async (...params: any) => {
+    console.log(...params);
+    
     dispatch({
       type: 'LOADING',
       isLoading: true

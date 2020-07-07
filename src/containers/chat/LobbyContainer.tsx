@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Chat } from '@/interface/chat';
 
-import { connectLobby } from '@/api/chat';
+import { createRoom, connectLobby } from '@/api/chat';
 
 import { RootState } from '@/modules';
 import { join, sendMessage } from '@/modules/chat';
@@ -17,14 +17,16 @@ const LobbyContainer = (): JSX.Element => {
   const dispatch = useDispatch();
   const [isShownConfirm, setConfirm] = useState(false);
   const [chatLiset, setChatList] = useState<Chat[]>([]);
-  const {isLoggedIn, chat, uid } = useSelector((state: RootState) => ({
+  const {isLoggedIn, chat, uid, userName } = useSelector((state: RootState) => ({
     isLoggedIn: state.user.isLoggedIn,
     uid: state.user.uid,
+    userName: state.user.userName,
     chat: state.chat.chat 
   }));
   const [message, onChangeMessage, onResetMessage] = useInput();
   const [roomTitle, onChangeRoomTitle, onResetRoomTitle] = useInput();
   const [state, onConnectLobby, onReset] = useRequest(() => connectLobby(uid), [], true);
+  const [state2, onCreateRoom] = useRequest(createRoom, [] ,true);
 
   const onOpenNewRoom = () => {
     setConfirm(true);
@@ -33,6 +35,14 @@ const LobbyContainer = (): JSX.Element => {
   const onCloseNewRoom = () => {
     onResetRoomTitle();
     setConfirm(false);
+  }
+
+  const onClickNewRoom = async () => {
+    try {
+      await onCreateRoom(roomTitle, userName);
+    } catch (err) {
+      //
+    }
   }
 
   const onSendMessage = useCallback(() => {
@@ -79,6 +89,7 @@ const LobbyContainer = (): JSX.Element => {
         onChangeMessage={onChangeMessage}
         onChangeRoomTitle={onChangeRoomTitle}
         onCloseNewRoom={onCloseNewRoom}
+        onCreateRoom={onClickNewRoom}
         onOpenNewRoom={onOpenNewRoom}
         onResetError={onReset}
         onSendMessage={onSendMessage}
