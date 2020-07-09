@@ -32,10 +32,11 @@ const LEAVE = 'chat/LEAVE';
 const getMessage = createAction(GET_MESSAGE)<Chat>();
 
 export const join = createAction(JOIN)();
+export const leave = createAction(LEAVE)();
 export const joinSuccess = createAction(JOIN_SUCCESS)<Join>();
 export const sendMessage = createAction(SEND_MESSAGE)<string>();
 
-const actionTypes = { getMessage, join, joinSuccess };
+const actionTypes = { getMessage, join, joinSuccess, leave };
 
 type ChatAction = ActionType<typeof actionTypes>
 
@@ -97,12 +98,22 @@ export function *sendMessageSaga(action: {
 
   socket.emit('sendMessage', { userName, message: action.payload, roomId });
 }
+
+// export function *leaveSaga() {
+//   const { roomId, userName } = yield select((state) => ({
+//     roomId: state.chat.roomId,
+//     userName: state.user.userName
+//   }));
+
+//   socket.emit('disconnect', { userName, roomId });
+// }
  
 export function* chatSaga() {
   const socketChannel = yield call(createSocketChannel, socket, buffers.sliding(1));
 
   yield takeEvery(JOIN, joinSaga);
   yield takeEvery(SEND_MESSAGE, sendMessageSaga);
+  // yield takeEvery(LEAVE, leaveSaga);
 
   while (true) {
     try {
@@ -119,12 +130,12 @@ export function* chatSaga() {
 const chat = createReducer<ChatState, ChatAction>(initialState, {
   [GET_MESSAGE]: (state: ChatState, action: any) => {
     return {
-    ...state,
-    chat: {
-      message: action.payload.message,
-      userName: action.payload.userName  
+      ...state,
+      chat: {
+        message: action.payload.message,
+        userName: action.payload.userName  
+      }
     }
-  }
   },
   [JOIN_SUCCESS]: (state: ChatState, action: any) => ({
     ...state,
@@ -133,6 +144,10 @@ const chat = createReducer<ChatState, ChatAction>(initialState, {
       message: action.payload.message,
       userName: action.payload.userName  
     }
+  }),
+  [LEAVE]: (status: ChatState, action: any) => ({
+    ...status,
+    chat: null
   })
 });
 

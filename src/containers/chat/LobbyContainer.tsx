@@ -7,7 +7,7 @@ import { Chat } from "@/interface/chat";
 import { createRoom, connectLobby } from "@/api/chat";
 
 import { RootState } from "@/modules";
-import { join, sendMessage } from "@/modules/chat";
+import { join, leave, sendMessage } from "@/modules/chat";
 
 import useInput from "@/hooks/useInput";
 import useRequest from "@/hooks/useRequest";
@@ -21,7 +21,7 @@ interface LobbyContainerProps {
 const LobbyContainer = ({ history }: LobbyContainerProps): JSX.Element => {
   const dispatch = useDispatch();
   const [isShownConfirm, setConfirm] = useState(false);
-  const [chatLiset, setChatList] = useState<Chat[]>([]);
+  const [chatList, setChatList] = useState<Chat[]>([]);
   const { isLoggedIn, chat, uid, userName } = useSelector(
     (state: RootState) => ({
       isLoggedIn: state.user.isLoggedIn,
@@ -73,11 +73,15 @@ const LobbyContainer = ({ history }: LobbyContainerProps): JSX.Element => {
     // eslint-disable-next-line
   }, [isLoggedIn]);
 
+  
   useEffect(() => {
+
     if (state && state.data) {
       dispatch(join());
     }
-  }, [dispatch, state]);
+
+    // eslint-disable-next-line
+  }, [state]);
 
   useEffect(() => {
     if (!chat) {
@@ -89,6 +93,7 @@ const LobbyContainer = ({ history }: LobbyContainerProps): JSX.Element => {
 
   useEffect(() => {
     if (state2 && state2.data) {
+      dispatch(leave());
       history.push(`/room/${state2.data.roomId}`);
     }
   }, [state2]);
@@ -96,7 +101,7 @@ const LobbyContainer = ({ history }: LobbyContainerProps): JSX.Element => {
   return (
     <>
       <Lobby
-        chatList={chatLiset}
+        chatList={chatList}
         isError={!!state.error}
         isShownNewRoom={isShownConfirm}
         message={message}
