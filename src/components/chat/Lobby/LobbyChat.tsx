@@ -4,7 +4,6 @@ import styled from "styled-components";
 
 import { Chat } from "@/interface/chat";
 
-import Textarea from "@/components/ui/Textarea";
 import Message from "../Message";
 import LobbyChatInput from './LobbyChatInput';
 

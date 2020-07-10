@@ -94,7 +94,7 @@ const LobbyContainer = ({ history }: LobbyContainerProps): JSX.Element => {
   useEffect(() => {
     if (state2 && state2.data) {
       dispatch(leave());
-      history.push(`/room/${state2.data.roomId}`);
+      window.location.href = `/room/${state2.data.roomId}`;
     }
   }, [state2]);
 
