@@ -12,10 +12,21 @@ const Nav = styled.nav`
 
   ul {
     display: flex;
+    align-items: center;
   }
 
   li {
     margin-right: 1rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  button {
+    border: 0;
+    background: none;
+    font-size: 1rem;
   }
 `;
 

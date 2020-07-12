@@ -12,6 +12,10 @@ const Nav = styled.nav`
 
   li {
     margin-right: 1rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 `;
 

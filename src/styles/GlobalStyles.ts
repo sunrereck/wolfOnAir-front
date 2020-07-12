@@ -1,5 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
+import theme from './theme';
+
 const GlobalStyles = createGlobalStyle`
   /* http://meyerweb.com/eric/tools/css/reset/
     v4.0 | 20180602
@@ -126,6 +128,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
+    color: ${theme.textColor};
     line-height: 1;
   }
 
