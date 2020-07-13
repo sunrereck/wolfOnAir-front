@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AxiosError } from 'axios';
-import { History } from 'history';
+import { History, Location } from 'history';
 
 import { login } from "@/api/user";
 
 import { setUser } from '@/modules/user';
+
+import { getUrlQuery } from '@/utils/commons';
 
 import useRequest from '@/hooks/useRequest';
 import useValidationInput from "@/hooks/useValidationInput";
@@ -42,9 +44,10 @@ function getErrorMessage(err: AxiosError): string {
 
 interface LoginContainerProps {
   history: History;
+  location: Location;
 }
 
-const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
+const LoginContainer = ({ history, location }: LoginContainerProps): JSX.Element => {
   const dispatch = useDispatch();
   const [loginFailMessage, setFailMessage] = useState('');
   const [state, onFetchLogin, onReset] = useRequest(login, [], true);
@@ -99,11 +102,10 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
       return;
     }
 
-    const { data, error } = state;
-
-    if (error) {
-      return;
-    }
+    const { data } = state;
+    const querys: {
+      [key: string]: string | number;
+    } | null = getUrlQuery(location.search);
 
     if (data) {
       dispatch(setUser({
@@ -111,11 +113,17 @@ const LoginContainer = ({ history }: LoginContainerProps): JSX.Element => {
         userName: data.userName
       }))
 
+      if (querys && querys.redirect) {
+        history.replace(querys.redirect as string);
+
+        return;
+      }
+
       history.replace('/');
     }
 
   // eslint-disable-next-line
-  }, [state]);
+  }, [dispatch, state]);
 
   return (
     <LoginForm

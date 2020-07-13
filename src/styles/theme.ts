@@ -29,18 +29,18 @@ export interface ThemeProps {
 const theme: ThemeProps = {
   // 색상
   whiteColor: '#FFFFFF',
-  blackColor: '#212121',
+  blackColor: '#1E1D29',
   redColor: '#dc3545',
   orangeColor: '#f68b1f',
   yellowColor: '#ffdd45',
   greenColor: '#64bb46',
   blueColor: '#3399ff',
   grayColor: '#979797',
-  blackgreyColor: '#656565',
+  blackgreyColor: '#c3c2cc',
 
   borderColor: '#d1d2d3',
-  primaryColor: '#3399ff',
-  textColor: '#212529',
+  primaryColor: '#c3c2cc',
+  textColor: '#1E1D29',
 
   // 레이아웃
   headerHeight: '50px',

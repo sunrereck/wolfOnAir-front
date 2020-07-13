@@ -12,7 +12,7 @@ const buttonColor: {
   primary: {
     background: theme.primaryColor,
     border: theme.primaryColor,
-    color: theme.whiteColor
+    color: theme.textColor
   },
   red: {
     background: theme.redColor,

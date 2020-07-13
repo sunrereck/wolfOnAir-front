@@ -30,7 +30,7 @@ const Wrapper = styled.header`
   height: ${props => props.theme.headerHeight};
   padding: 0 1.125rem;
   border-bottom: 1px solid ${props => props.theme.borderColor};
-  background-color: #dddddd;
+  background-color:${({theme}) => theme.primaryColor};
   align-items: center;
   box-sizing: border-box;
   font-size: 1rem;

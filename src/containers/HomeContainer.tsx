@@ -1,36 +1,36 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
+import { History } from "history";
 
-import Confirm from "@/components/ui/Confirm";
+import { RootState } from "@/modules";
 
-const HomeContainer = () => {
-  const [isOpen, setOpen] = useState(false);
+import Home from "@/components/home/Home";
+
+interface HomeContainerProps {
+  history: History
+}
+
+const HomeContainer = ({
+  history
+}: HomeContainerProps) => {
+  const { isLoggedIn } = useSelector(
+    (state: RootState) => ({
+      isLoggedIn: state.user.isLoggedIn
+    })
+  );
+
+  const onRedirectLobby = () => {
+    if (isLoggedIn) {
+      history.push('/lobby');
+
+      return;
+    }
+
+    history.push('/user/login?redirect=/lobby');
+  }
+
   return (
-    <div>
-      <button
-        type="button"
-        onClick={() => {
-          setOpen((prevState) => !prevState);
-        }}
-      >
-        TEST
-      </button>
-      <Confirm
-        onCancel={() => {
-          setOpen((prevState) => !prevState);
-        }}
-        onClick={() => {
-          setOpen((prevState) => !prevState);
-        }}
-        onClose={() => {
-          setOpen((prevState) => !prevState);
-        }}
-        isShown={isOpen}
-        title="방 만들기"
-      >
-        방제: 잉양잉용
-        모드: ㅇㅇ
-      </Confirm>
-    </div>
+    <Home onRedirectLobby={onRedirectLobby} />
   );
 };
 
