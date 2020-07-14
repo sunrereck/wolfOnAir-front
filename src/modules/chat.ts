@@ -99,21 +99,11 @@ export function *sendMessageSaga(action: {
   socket.emit('sendMessage', { userName, message: action.payload, roomId });
 }
 
-// export function *leaveSaga() {
-//   const { roomId, userName } = yield select((state) => ({
-//     roomId: state.chat.roomId,
-//     userName: state.user.userName
-//   }));
-
-//   socket.emit('disconnect', { userName, roomId });
-// }
- 
 export function* chatSaga() {
   const socketChannel = yield call(createSocketChannel, socket, buffers.sliding(1));
 
   yield takeEvery(JOIN, joinSaga);
   yield takeEvery(SEND_MESSAGE, sendMessageSaga);
-  // yield takeEvery(LEAVE, leaveSaga);
 
   while (true) {
     try {

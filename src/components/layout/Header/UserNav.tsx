@@ -24,9 +24,12 @@ const Nav = styled.nav`
   }
 
   button {
+    height: 21px;
     border: 0;
     background: none;
     font-size: 1rem;
+    line-height: 21px;
+    color: ${({theme}) => theme.textColor};
   }
 `;
 

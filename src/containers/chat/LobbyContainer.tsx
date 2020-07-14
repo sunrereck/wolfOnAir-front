@@ -14,12 +14,9 @@ import useRequest from "@/hooks/useRequest";
 
 import Lobby from "@/components/chat/Lobby";
 
-interface LobbyContainerProps {
-  history: History
-}
-
-const LobbyContainer = ({ history }: LobbyContainerProps): JSX.Element => {
+const LobbyContainer = (): JSX.Element => {
   const dispatch = useDispatch();
+  const [errorMessage, setErrorMessage] = useState('');
   const [isShownConfirm, setConfirm] = useState(false);
   const [chatList, setChatList] = useState<Chat[]>([]);
   const { isLoggedIn, chat, uid, userName } = useSelector(
@@ -32,12 +29,12 @@ const LobbyContainer = ({ history }: LobbyContainerProps): JSX.Element => {
   );
   const [message, onChangeMessage, onResetMessage] = useInput();
   const [roomTitle, onChangeRoomTitle, onResetRoomTitle] = useInput();
-  const [state, onConnectLobby, onReset] = useRequest(
+  const [state, onConnectLobby, onResetLobbyState] = useRequest(
     () => connectLobby(uid),
     [],
     true
   );
-  const [state2, onCreateRoom] = useRequest(createRoom, [], true);
+  const [roomState, onCreateRoom, onResetRoomState] = useRequest(createRoom, [], true);
 
   const onOpenNewRoom = () => {
     setConfirm(true);
@@ -52,7 +49,13 @@ const LobbyContainer = ({ history }: LobbyContainerProps): JSX.Element => {
     try {
       await onCreateRoom(roomTitle, userName);
     } catch (err) {
-      //
+      let message = "서버와의 연결에 실패하였습니다.";
+
+      if (err.response && err.response.status === 400) {
+        message = "필수값이 누락되어 방생성을 완료하지 못하였습니다.";
+      }
+
+      setErrorMessage(message);
     }
   };
 
@@ -65,14 +68,35 @@ const LobbyContainer = ({ history }: LobbyContainerProps): JSX.Element => {
     onResetMessage();
   }, [dispatch, message, onResetMessage]);
 
+  const onResetError = useCallback(() => {
+    onResetLobbyState();
+    onResetRoomState();
+
+  }, [onResetLobbyState, onResetRoomState]);
+
   useEffect(() => {
-    if (isLoggedIn) {
-      onConnectLobby();
+    if (!isLoggedIn) {
+      return;
     }
 
+    const initialize = async () => {
+      try {
+        await onConnectLobby();
+      } catch(err) {
+        let message = "서버와의 연결에 실패하였습니다.";
+  
+        if (err.response && err.response.status === 401) {
+          message = "로그인 상태가 아닙니다.";
+        }
+  
+        setErrorMessage(message);
+      }
+    }
+
+    initialize();
+  
     // eslint-disable-next-line
   }, [isLoggedIn]);
-
   
   useEffect(() => {
 
@@ -80,8 +104,7 @@ const LobbyContainer = ({ history }: LobbyContainerProps): JSX.Element => {
       dispatch(join());
     }
 
-    // eslint-disable-next-line
-  }, [state]);
+  }, [dispatch, state]);
 
   useEffect(() => {
     if (!chat) {
@@ -92,17 +115,18 @@ const LobbyContainer = ({ history }: LobbyContainerProps): JSX.Element => {
   }, [chat]);
 
   useEffect(() => {
-    if (state2 && state2.data) {
+    if (roomState && roomState.data) {
       dispatch(leave());
-      window.location.href = `/room/${state2.data.roomId}`;
+      window.location.href = `/room/${roomState.data.roomId}`;
     }
-  }, [state2]);
+  }, [dispatch, roomState]);
 
   return (
     <>
       <Lobby
         chatList={chatList}
-        isError={!!state.error}
+        errorMessage={errorMessage}
+        isError={!!state.error || !!roomState.error}
         isShownNewRoom={isShownConfirm}
         message={message}
         roomList={[]}
@@ -112,7 +136,7 @@ const LobbyContainer = ({ history }: LobbyContainerProps): JSX.Element => {
         onCloseNewRoom={onCloseNewRoom}
         onCreateRoom={onClickNewRoom}
         onOpenNewRoom={onOpenNewRoom}
-        onResetError={onReset}
+        onResetError={onResetError}
         onSendMessage={onSendMessage}
       />
     </>

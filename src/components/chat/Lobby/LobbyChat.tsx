@@ -93,7 +93,8 @@ const LobbyRoomWrapper = styled.div`
 
 const ListWrapper = styled.div<{ width: number }>`
   width: ${({ width }) => width}px;
-  border: 1px solid #000000;
+  border: 1px solid ${({theme}) => theme.primaryColor};
+  border-radius: 2px;
 `;
 
 const StyledList = styled(List)`

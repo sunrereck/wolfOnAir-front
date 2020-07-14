@@ -74,9 +74,13 @@ function useRequest (callback: Function, deps: any = [], isSkiped = false) {
         error: err
       })
 
+      console.log(123);
+
       throw err;
     }
-  }, []);
+
+    // eslint-disable-next-line
+  }, [dispatch]);
 
   const onReset = () => {
     dispatch({

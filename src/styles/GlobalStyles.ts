@@ -128,6 +128,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
+    font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
     color: ${theme.textColor};
     line-height: 1;
   }

@@ -8,7 +8,6 @@ export interface ThemeProps {
   greenColor: string;
   blueColor: string;
   grayColor: string;
-  blackgreyColor: string;
 
   borderColor: string;
   primaryColor: string;
@@ -35,10 +34,9 @@ const theme: ThemeProps = {
   yellowColor: '#ffdd45',
   greenColor: '#64bb46',
   blueColor: '#3399ff',
-  grayColor: '#979797',
-  blackgreyColor: '#c3c2cc',
+  grayColor: '#72707f',
 
-  borderColor: '#d1d2d3',
+  borderColor: '#dcdbe4',
   primaryColor: '#c3c2cc',
   textColor: '#1E1D29',
 

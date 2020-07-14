@@ -10,13 +10,12 @@ interface LobbyProps extends RouteComponentProps {
 }
 
 const Lobby = ({
-  isCheckingAuth,
-  history
+  isCheckingAuth
 }: LobbyProps): JSX.Element => {
   return (
     <PageTemplate>
       <RedirectHome isCheckingAuth={isCheckingAuth}/>
-      <LobbyContainer history={history}/>
+      <LobbyContainer />
     </PageTemplate>
   );
 };

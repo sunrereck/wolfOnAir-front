@@ -22,7 +22,7 @@ const buttonColor: {
   primaryOutline: {
     background: theme.whiteColor,
     border: theme.primaryColor,
-    color: theme.primaryColor
+    color: theme.grayColor
   },
   redOutline: {
     background: theme.whiteColor,

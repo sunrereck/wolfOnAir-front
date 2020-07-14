@@ -10,6 +10,7 @@ import NewRoomModal from './NewRoomModal';
 
 interface LobbyProps {
   chatList: Chat[];
+  errorMessage: string;
   isError: boolean;
   isShownNewRoom: boolean;
   message: string;
@@ -26,6 +27,7 @@ interface LobbyProps {
 
 const Lobby = ({
   chatList,
+  errorMessage,
   isError,
   isShownNewRoom,
   message,
@@ -70,11 +72,9 @@ const Lobby = ({
         isShown={isError}
         onClick={onResetError}
         onClose={onResetError}
-        title="로비 접속 실패"
+        title="오류 발생"
       >
-        로비에 접속할 수 없습니다.
-        <br />
-        잠시 후 다시 시도해주세요.
+        {errorMessage}
       </Alert>
     </>
   );

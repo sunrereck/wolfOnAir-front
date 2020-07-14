@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import styled from "styled-components";
 
-
+import Button from '@/components/ui/Button'; 
 import Textarea from "@/components/ui/Textarea";
 
 import "react-virtualized/styles.css";
@@ -32,9 +32,9 @@ const LobbyChatInput = ({
   return (
     <Wrapper width={width}>
       <Textarea value={message} onChange={onChangeMessage} onKeyDown={onKeyDown} />
-      <button type="button" onClick={onSendMessage}>
+      <Button type="button" onClick={onSendMessage} size="small">
         채팅
-      </button>
+      </Button>
     </Wrapper>
   );
 };
@@ -49,7 +49,7 @@ const Wrapper = styled.div<{ width: number }>`
   padding-right: 4.5rem;
   padding-bottom: 0.5rem;
   padding-left: 0.5rem;
-  border: 1px solid #000000;
+  border: 1px solid ${({theme}) => theme.primaryColor};
   border-radius: 2px;
 
   textarea {
