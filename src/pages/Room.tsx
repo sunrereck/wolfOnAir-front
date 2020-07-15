@@ -3,19 +3,19 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import PageTemplate from '@/components/templates/PageTemplate';
 import RedirectHome from '@/components/layout/RedirectHome';
+import Room from '@/components/room/Room';
 
 interface RoomProps extends RouteComponentProps {
   isCheckingAuth: boolean;
 }
 
 const Lobby = ({
-  isCheckingAuth,
-  history
+  isCheckingAuth
 }: RoomProps): JSX.Element => {
   return (
     <PageTemplate>
       <RedirectHome isCheckingAuth={isCheckingAuth}/>
-      룸!
+      <Room />
     </PageTemplate>
   );
 };
