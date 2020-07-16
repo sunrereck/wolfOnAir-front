@@ -1,28 +1,21 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { memo, useCallback, useEffect, useRef } from "react";
 import { AutoSizer, List } from "react-virtualized";
 import styled from "styled-components";
 
 import { Chat } from "@/interface/chat";
 
 import Message from "../Message";
-import LobbyChatInput from './LobbyChatInput';
 
 import "react-virtualized/styles.css";
 
-interface LobbyRoomProps {
+interface ChatListProps {
   chatList: Chat[];
-  message: string;
-  onChangeMessage: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onSendMessage: () => void;
 }
 
-const LobbyChat = ({
+const ChatList = ({
   chatList,
-  message,
-  onChangeMessage,
-  onSendMessage,
-}: LobbyRoomProps): JSX.Element => {
-  const lobbyEl = useRef<List>(null);
+}: ChatListProps): JSX.Element => {
+  const listEl = useRef<List>(null);
 
   const rowRenderer = useCallback(
     ({
@@ -50,22 +43,22 @@ const LobbyChat = ({
   );
 
   useEffect(() => {
-    if (!lobbyEl || !lobbyEl.current) {
+    if (!listEl || !listEl.current) {
       return;
     }
 
-    lobbyEl.current.scrollToRow(chatList.length);
+    listEl.current.scrollToRow(chatList.length);
 
   }, [chatList.length]);
 
   return (
-    <LobbyRoomWrapper>
+    <Wrapper>
       <AutoSizer disableHeight>
         {({ width }: { width: number }) => (
           <>
             <ListWrapper width={width}>
               <StyledList
-                ref={lobbyEl}
+                ref={listEl}
                 rowCount={chatList.length}
                 rowHeight={28}
                 rowRenderer={rowRenderer}
@@ -73,20 +66,14 @@ const LobbyChat = ({
                 height={150}
               />
             </ListWrapper>
-            <LobbyChatInput 
-              message={message}
-              width={width}
-              onChangeMessage={onChangeMessage}
-              onSendMessage={onSendMessage}
-            />
           </>
         )}
       </AutoSizer>
-    </LobbyRoomWrapper>
+    </Wrapper>
   );
 };
 
-const LobbyRoomWrapper = styled.div`
+const Wrapper = styled.div`
   width: 100%;
   padding: 0.5rem;
 `;
@@ -111,4 +98,4 @@ const StyledList = styled(List)`
   }
 `;
 
-export default LobbyChat;
+export default memo(ChatList);

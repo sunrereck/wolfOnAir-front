@@ -5,7 +5,8 @@ import { Chat } from '@/interface/chat';
 
 import Alert from "@/components/ui/Alert";
 import Button from "@/components/ui/Button";
-import LobbyChat from "./LobbyChat";
+import ChatInput from '@/components/chat/ChatInput';
+import ChatList from '@/components/chat/ChatList';
 import NewRoomModal from './NewRoomModal';
 
 interface LobbyProps {
@@ -52,11 +53,13 @@ const Lobby = ({
         >
           방 만들기
         </Button>
-        <LobbyChat
+        <ChatList
           chatList={chatList}
+        />
+        <ChatInput 
           message={message}
           onChangeMessage={onChangeMessage}
-          onSendMessage={onSendMessage}
+          onSendMessage={onSendMessage}        
         />
       </LobbyWrapper>
       <NewRoomModal 
@@ -89,7 +92,7 @@ const LobbyWrapper = styled.div`
   max-width: 700px;
   flex-direction: column;
 
-  button {
+  > button {
     margin-left: auto;
     margin-right: 0.5rem;
   }

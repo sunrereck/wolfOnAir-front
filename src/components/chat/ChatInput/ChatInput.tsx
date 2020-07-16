@@ -6,19 +6,17 @@ import Textarea from "@/components/ui/Textarea";
 
 import "react-virtualized/styles.css";
 
-interface LobbyChatInputProps {
+interface ChatInputProps {
   message: string;
-  width: number;
   onChangeMessage: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSendMessage: () => void;
 }
 
-const LobbyChatInput = ({
+const ChatInput = ({
   message,
-  width,
   onChangeMessage,
   onSendMessage
-}: LobbyChatInputProps): JSX.Element => {
+}: ChatInputProps): JSX.Element => {
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.keyCode !== 13) {
       return;
@@ -30,7 +28,7 @@ const LobbyChatInput = ({
   };
 
   return (
-    <Wrapper width={width}>
+    <Wrapper>
       <Textarea value={message} onChange={onChangeMessage} onKeyDown={onKeyDown} />
       <Button type="button" onClick={onSendMessage} size="small">
         채팅
@@ -39,30 +37,34 @@ const LobbyChatInput = ({
   );
 };
 
-const Wrapper = styled.div<{ width: number }>`
+const Wrapper = styled.div`
   position: relative;
-  width: ${({ width }) => width}px;
+  width: 100%;
   min-width: 300px;
   max-width: 700px;
   margin-top: 0.5rem;
-  padding-top: 0.5rem;
-  padding-right: 4.5rem;
-  padding-bottom: 0.5rem;
+  padding-right: 0.5rem;
   padding-left: 0.5rem;
-  border: 1px solid ${({theme}) => theme.primaryColor};
-  border-radius: 2px;
 
   textarea {
     width: 100%;
+    padding-top: 0.5rem;
+    padding-right: 4.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    border: 1px solid ${({theme}) => theme.primaryColor};  
+    border-radius: 2px;
   }
 
   button {
     position: absolute;
     width: 50px;
     height: 28px;
-    right: 0.5rem;
-    bottom: 0.5rem;
+    margin-top: -14px;
+    right: 1rem;
+    top: 50%;
+    
   }
 `;
 
-export default memo(LobbyChatInput);
+export default memo(ChatInput);
