@@ -14,7 +14,7 @@ interface Join extends Chat {
   roomId: string;
 }
 
-const socket = connect("http://localhost:4000/chat", { path: "/socket.io" });
+const socket = connect(`${process.env.REACT_APP_CHAT}/chat`, { path: "/socket.io" });
 
 // user 관련 Action
 const ADD_USER = 'chat/ADD_USER';
