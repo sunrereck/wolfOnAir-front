@@ -68,7 +68,8 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "deploy": "aws s3 sync ./build s3://wolfonair-front --profile=wolfonair-front",
-    "invalidate": "aws cloudfront create-invalidation --profile=wolfonair-front --distribution-id E1TJ3O6B5C18BL --paths / /index.html /error.html /service-worker.js /manifest.json /favicon.ico"
+    "invalidate": "aws cloudfront create-invalidation --profile=wolfonair-front --distribution-id E1TJ3O6B5C18BL --paths / /index.html /error.html /service-worker.js /manifest.json /favicon.ico",
+    "start:prod": "yarn build && yarn deploy && yarn invalidate"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const customAxios = axios.create({
-  baseURL: process.env.REACT_APP_CHAT,
+  baseURL: process.env.REACT_APP_CHAT_API,
   withCredentials: true
 });
 
