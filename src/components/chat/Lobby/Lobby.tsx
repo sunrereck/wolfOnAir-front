@@ -1,13 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Chat } from '@/interface/chat';
+import { Chat } from "@/interface/chat";
 
 import Alert from "@/components/ui/Alert";
 import Button from "@/components/ui/Button";
-import ChatInput from '@/components/chat/ChatInput';
-import ChatList from '@/components/chat/ChatList';
-import NewRoomModal from './NewRoomModal';
+import ChatInput from "@/components/chat/ChatInput";
+import ChatList from "@/components/chat/ChatList";
+import RoomList from "@/components/chat/Lobby/RoomList";
+
+import NewRoomModal from "./NewRoomModal";
 
 interface LobbyProps {
   chatList: Chat[];
@@ -40,7 +42,7 @@ const Lobby = ({
   onCreateRoom,
   onOpenNewRoom,
   onSendMessage,
-  onResetError
+  onResetError,
 }: LobbyProps): JSX.Element => {
   return (
     <>
@@ -53,16 +55,15 @@ const Lobby = ({
         >
           방 만들기
         </Button>
-        <ChatList
-          chatList={chatList}
-        />
-        <ChatInput 
+        <RoomList roomList={roomList} />
+        <ChatList chatList={chatList} />
+        <ChatInput
           message={message}
           onChangeMessage={onChangeMessage}
-          onSendMessage={onSendMessage}        
+          onSendMessage={onSendMessage}
         />
       </LobbyWrapper>
-      <NewRoomModal 
+      <NewRoomModal
         isShown={isShownNewRoom}
         roomTitle={roomTitle}
         onCancel={onCloseNewRoom}
