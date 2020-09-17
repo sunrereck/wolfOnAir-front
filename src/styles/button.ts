@@ -2,68 +2,54 @@ import { css } from 'styled-components';
 
 import theme from './theme';
 
-const buttonColor: {
+interface IButtonColor {
   [color: string]: {
     background: string;
     border: string;
     color: string;
   }
-} = {
+}
+
+const containedColor: IButtonColor = {
   primary: {
     background: theme.primaryColor,
     border: theme.primaryColor,
-    color: theme.textColor
-  },
-  red: {
-    background: theme.redColor,
-    border: theme.redColor,
     color: theme.whiteColor
-  },
-  primaryOutline: {
+  }
+};
+
+const outlinedColor: IButtonColor = {
+  primary: {
     background: theme.whiteColor,
     border: theme.primaryColor,
-    color: theme.grayColor
-  },
-  redOutline: {
-    background: theme.whiteColor,
-    border: theme.redColor,
-    color: theme.redColor
+    color: theme.primaryColor
   }
-}
+};
 
-const button = css<{ color: string; size: 'small' | 'medium' | 'large'; }>`
-  display: flex;
+const button = css<{ color: string; variant: 'contained' | 'outlined' }>`
   height: 3rem;
-  border-radius: 2px;
   border: 1px solid;
-  font-size: 1.25rem;
-  align-items: center;
+  border-radius: 3px;
+  font-size: 0.875rem;
   cursor: pointer;
-  justify-content: center;
+  text-align: center;
   outline: none;
 
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.7;
   }
 
-  ${({color}) => `
-    background-color: ${buttonColor[color].background};
-    border-color: ${buttonColor[color].border};
-    color: ${buttonColor[color].color};
+  ${({ color, variant }) => variant === 'contained' && `
+    background-color: ${containedColor[color].background};
+    border-color: ${containedColor[color].border};
+    color: ${containedColor[color].color};    
   `}
 
-  ${({size}) => size === 'small' && `
-    font-size: 1rem;
-    height: 2.5rem;
-    padding: 0.5rem;
+  ${({ color, variant }) => variant === 'outlined' && `
+    background-color: ${outlinedColor[color].background};
+    border-color: ${outlinedColor[color].border};
+    color: ${outlinedColor[color].color};    
   `}
-
-  ${({size}) => size === 'large' && `
-    font-size: 1.75rem;
-    height: 3.5rem;
-    padding: 1rem 2rem;
-  `}
-}
 `;
 
 export default button;

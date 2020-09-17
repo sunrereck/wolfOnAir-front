@@ -3,45 +3,31 @@ import styled from 'styled-components';
 
 import button from '@/styles/button';
 
-const StyledButton = styled.button<{ color: string; size:  'small' | 'medium' | 'large'; }>`
-  ${button}
-`;
-
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  className?: string;
-  color?: string;
-  size?: 'small' | 'medium' | 'large';
-  readOnly?: boolean;
+  color: string;
+  variant?: 'contained' | 'outlined';
 }
 
 const Button= ({
   children,
   className,
   color,
-  disabled,
-  size,
   type,
+  variant,
   ...others
 }: ButtonProps): JSX.Element => (
-  <StyledButton
+  <Wrapper
     {...others}
     color={color || 'primary'}
-    disabled={disabled}
-    size={size || 'medium'}
-    type={type || 'button'}
+    variant={variant || 'contained'}
   >
     {children}
-  </StyledButton>
+  </Wrapper>
 );
 
-Button.defaultProps = {
-  children: null,
-  className: '',
-  color: '',
-  disabled: false,
-  size: 'medium',
-  readOnly: false
-};
+const Wrapper = styled.button<{ color: string; variant: 'contained' | 'outlined'; }>`
+  ${button}
+`;
 
 export default Button;
