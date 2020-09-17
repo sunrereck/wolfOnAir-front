@@ -5,7 +5,7 @@ import button from '@/styles/button';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  color: string;
+  color?: 'primary';
   variant?: 'contained' | 'outlined';
 }
 

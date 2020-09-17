@@ -29,7 +29,7 @@ function Confirm({
           <Title>{title}</Title>
           <Body>{children}</Body>
           <ButtonWrap>
-            <Button type="button" color="primaryOutline" onClick={onCancel}>
+            <Button type="button" variant="outlined" onClick={onCancel}>
               취소
             </Button>
             <Button type="button" onClick={onClick}>

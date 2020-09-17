@@ -65,7 +65,7 @@ const JoinResult = ({
             type="button"
             onClick={onSendHelpMail}
             disabled={isHelpMailLoading}
-            color="primaryOutline"
+            variant="outlined"
           >
             {isHelpMailLoading ? '관리자에게 문의 메일 전송 중...' : '관리자에게 문의메일 보내기'}
           </Button>

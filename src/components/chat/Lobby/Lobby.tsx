@@ -47,8 +47,6 @@ const Lobby = ({
       <LobbyWrapper>
         <Button
           type="button"
-          color="primary"
-          size="small"
           onClick={onOpenNewRoom}
         >
           방 만들기

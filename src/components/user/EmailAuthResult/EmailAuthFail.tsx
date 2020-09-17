@@ -48,7 +48,7 @@ const JoinFail = ({ error }: JoinFailProps): JSX.Element => {
         )}
 
         {!isClientError && <Button type="button">인증 이메일 재전송</Button>}
-        <Button type="button" color="primaryOutline">
+        <Button type="button" variant="outlined">
           관리자에게 문의하기
         </Button>
       </Wrapper>

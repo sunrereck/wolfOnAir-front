@@ -30,7 +30,7 @@ const ChatInput = ({
   return (
     <Wrapper>
       <Textarea value={message} onChange={onChangeMessage} onKeyDown={onKeyDown} />
-      <Button type="button" onClick={onSendMessage} size="small">
+      <Button type="button" onClick={onSendMessage} style={{width: "100px"}}>
         채팅
       </Button>
     </Wrapper>

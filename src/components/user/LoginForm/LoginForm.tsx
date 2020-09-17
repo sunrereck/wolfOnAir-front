@@ -93,7 +93,7 @@ const LoginForm = ({
           placeholder="비밀번호"
           value={password}
         />
-        <Button type="submit" size="medium" color="primary" onMouseDown={onIgnoreBlurEvent}>
+        <Button type="submit" onMouseDown={onIgnoreBlurEvent}>
           { isFetching ? '로그인 중...' : '로그인' }
         </Button>
         <LinkButton color="primaryOutline" to="/user/join">
