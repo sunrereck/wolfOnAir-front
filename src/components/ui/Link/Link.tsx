@@ -1,46 +1,37 @@
 import React from 'react';
-import { Link, LinkProps } from 'react-router-dom';
+import { Link as RouterLink, LinkProps } from 'react-router-dom';
 import styled from 'styled-components';
 
 import button from '@/styles/button';
 
-const StyledLink = styled(Link)<{color: string; size: 'small' | 'medium' | 'large';} | any >`
+const StyledLink = styled(RouterLink)<{color: string; size: 'small' | 'medium' | 'large';} | any >`
   ${button}
 `;
 
 interface LinkButtonProps extends LinkProps {
   children: React.ReactNode;
-  className?: string;
-  color?: string;
+  color?: 'primary';
   search?: string
-  size?: 'small' | 'medium' | 'large';
+  variant?: 'contained' | 'outlined';
 }
 
 const LinkButton = ({
-  className,
   children, 
   color, 
-  size, 
-  to
+  to,
+  variant,
+  ...others
 }: LinkButtonProps): JSX.Element => {
   return (
     <StyledLink
-      className={className}
       color={color || 'primary'}
-      size={size || 'medium'}
+      variant={variant || 'contained'}
       to={to}
+      {...others}
     >
       {children}
     </StyledLink>
   );
 }
-
-LinkButton.defaultProps = {
-  children: null,
-  className: '',
-  color: 'primary',
-  size: 'medium',
-  to: ''
-};
 
 export default LinkButton;

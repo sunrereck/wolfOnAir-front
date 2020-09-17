@@ -12,7 +12,9 @@ const Home = ({
 }: HomeProps) => (
   <Wrapper>
     <div>
-      <img src="/wolf.svg" alt="늑대온에어 메인" />
+      <p>
+        <img src="/wolf.svg" alt="늑대온에어 메인" />
+      </p>
       <Button type="button" onClick={onRedirectLobby}>게임 하러 가기</Button>
     </div>
   </Wrapper>

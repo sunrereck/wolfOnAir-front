@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import Alert from '@/components/ui/Alert';
 import Button from "@/components/ui/Button";
-import LinkButton from "@/components/ui/LinkButton";
+import Link from "@/components/ui/Link";
 import ValidationInput from "@/components/ui/ValidationInput";
 
 import UserTitle from "../UserTitle";
@@ -96,9 +96,16 @@ const LoginForm = ({
         <Button type="submit" onMouseDown={onIgnoreBlurEvent}>
           { isFetching ? '로그인 중...' : '로그인' }
         </Button>
-        <LinkButton color="primaryOutline" to="/user/join">
+        <Link
+         style={{
+           display: "block",
+           width: "100",
+           height: "3rem",
+           lineHeight: "3rem"
+         }}
+         variant="outlined" to="/user/join">
           회원가입
-        </LinkButton>
+        </Link>
       </Form>
       <Alert 
         title="로그인 실패"

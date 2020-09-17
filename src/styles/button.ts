@@ -30,7 +30,7 @@ const button = css<{ color: string; variant: 'contained' | 'outlined' }>`
   height: 3rem;
   border: 1px solid;
   border-radius: 3px;
-  font-size: 0.875rem;
+  font-size: 1rem;
   cursor: pointer;
   text-align: center;
   outline: none;
