@@ -16,7 +16,7 @@ import Lobby from "@/components/chat/Lobby";
 
 const LobbyContainer = (): JSX.Element => {
   const dispatch = useDispatch();
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [isShownConfirm, setConfirm] = useState(false);
   const [chatList, setChatList] = useState<Chat[]>([]);
   const { isLoggedIn, chat, uid, userName } = useSelector(
@@ -34,7 +34,11 @@ const LobbyContainer = (): JSX.Element => {
     [],
     true
   );
-  const [roomState, onCreateRoom, onResetRoomState] = useRequest(createRoom, [], true);
+  const [roomState, onCreateRoom, onResetRoomState] = useRequest(
+    createRoom,
+    [],
+    true
+  );
 
   const onOpenNewRoom = () => {
     setConfirm(true);
@@ -71,7 +75,6 @@ const LobbyContainer = (): JSX.Element => {
   const onResetError = useCallback(() => {
     onResetLobbyState();
     onResetRoomState();
-
   }, [onResetLobbyState, onResetRoomState]);
 
   useEffect(() => {
@@ -82,28 +85,26 @@ const LobbyContainer = (): JSX.Element => {
     const initialize = async () => {
       try {
         await onConnectLobby();
-      } catch(err) {
+      } catch (err) {
         let message = "서버와의 연결에 실패하였습니다.";
-  
+
         if (err.response && err.response.status === 401) {
           message = "로그인 상태가 아닙니다.";
         }
-  
+
         setErrorMessage(message);
       }
-    }
+    };
 
     initialize();
-  
+
     // eslint-disable-next-line
   }, [isLoggedIn]);
-  
-  useEffect(() => {
 
+  useEffect(() => {
     if (state && state.data) {
       dispatch(join());
     }
-
   }, [dispatch, state]);
 
   useEffect(() => {
@@ -129,7 +130,7 @@ const LobbyContainer = (): JSX.Element => {
         isError={!!state.error || !!roomState.error}
         isShownNewRoom={isShownConfirm}
         message={message}
-        roomList={[]}
+        roomList={(state.data && state.data.rooms) || []}
         roomTitle={roomTitle}
         onChangeMessage={onChangeMessage}
         onChangeRoomTitle={onChangeRoomTitle}
