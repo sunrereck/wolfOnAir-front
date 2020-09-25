@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import styled from 'styled-components';
 
-import Input from '../Input';
+import Input from './Input';
 
 const Wrapper = styled.div<{isError?: boolean}>`
   display: flex;

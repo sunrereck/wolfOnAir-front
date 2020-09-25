@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import Fade from "@/components/layout/Fade";
 import Portal from "@/components/layout/Portal";
-import Button from "../Button";
+import Button from "../../atoms/Button";
 
 interface ConfirmProps {
   children: React.ReactNode;

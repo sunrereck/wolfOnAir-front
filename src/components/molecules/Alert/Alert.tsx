@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import styled from "styled-components";
 
-import Button from "../Button";
+import Button from "../../atoms/Button";
 import Fade from "../../layout/Fade";
 import Portal from "../../layout/Portal";
 

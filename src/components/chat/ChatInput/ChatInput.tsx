@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import styled from "styled-components";
 
-import Button from '@/components/ui/Button'; 
+import Button from '@/components/atoms/Button'; 
 import Textarea from "@/components/ui/Textarea";
 
 import "react-virtualized/styles.css";

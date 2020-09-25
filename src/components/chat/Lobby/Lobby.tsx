@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 import { Chat } from "@/interface/chat";
 
-import Alert from "@/components/ui/Alert";
-import Button from "@/components/ui/Button";
+import Alert from "@/components/molecules/Alert";
+import Button from "@/components/atoms/Button";
 import ChatInput from "@/components/chat/ChatInput";
 import ChatList from "@/components/chat/ChatList";
 import RoomList from "@/components/chat/Lobby/RoomList";

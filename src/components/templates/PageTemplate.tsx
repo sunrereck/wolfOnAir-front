@@ -9,11 +9,6 @@ interface PageTemplateProps {
   children: React.ReactNode;
 }
 
-const Wrapper = styled.div`
-  min-height: 100%;
-  position: relative;
-`;
-
 const PageTemplate: React.SFC<PageTemplateProps> = ({ children }) => {
   return (
     <React.Fragment>
@@ -24,8 +19,9 @@ const PageTemplate: React.SFC<PageTemplateProps> = ({ children }) => {
   );
 };
 
-PageTemplate.defaultProps = {
-  children: null
-};
+const Wrapper = styled.div`
+  min-height: 100%;
+  position: relative;
+`;
 
 export default PageTemplate;

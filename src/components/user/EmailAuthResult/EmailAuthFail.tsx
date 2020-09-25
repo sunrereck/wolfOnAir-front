@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import Button from "@/components/ui/Button";
+import Button from "@/components/atoms/Button";
 import UserTitle from "../UserTitle";
 
 const Wrapper = styled.form`

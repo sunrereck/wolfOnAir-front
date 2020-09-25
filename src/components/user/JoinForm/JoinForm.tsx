@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import Alert from "@/components/ui/Alert";
-import Button from "@/components/ui/Button";
+import Alert from "@/components/molecules/Alert";
+import Button from "@/components/atoms/Button";
 import ValidationInput from "@/components/ui/ValidationInput";
 import UserTitle from "../UserTitle";
 
