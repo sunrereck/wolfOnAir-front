@@ -12,7 +12,7 @@ import { getUrlQuery } from '@/utils/commons';
 import useRequest from '@/hooks/useRequest';
 import useValidationInput from "@/hooks/useValidationInput";
 
-import LoginForm from "@/components/user/LoginForm";
+import LoginForm from "@/components/molecules/LoginForm";
 
 function validateEmail(email: string): string {
   if (!email) {

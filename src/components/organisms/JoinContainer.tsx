@@ -10,7 +10,7 @@ import {
 import useValidationInput from "@/hooks/useValidationInput";
 import useRequet from "@/hooks/useRequest";
 
-import JoinForm from "@/components/user/JoinForm";
+import JoinForm from "@/components/molecules/JoinForm";
 
 interface JoinContainerProps {
   history: History;

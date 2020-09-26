@@ -4,7 +4,7 @@ import { History } from "history";
 
 import { RootState } from "@/modules";
 
-import Home from "@/components/home/Home";
+import Home from "@/components/molecules/home/Home";
 
 interface HomeContainerProps {
   history: History

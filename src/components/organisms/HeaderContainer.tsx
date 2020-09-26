@@ -8,7 +8,7 @@ import { removeUser } from '@/modules/user';
 
 import useRequest from '@/hooks/useRequest';
 
-import Header from '@/components/layout/Header';
+import Header from '@/components/molecules/Header';
 
 const HeaderContainer = () => {
   const isLoggedIn = useSelector((state: RootState) => (state.user.isLoggedIn));

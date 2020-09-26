@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { sendAuthEmail } from '@/api/user';
 import { sendJoinAuthHelpEmail } from '@/api/help';
 
-import JoinResult from '@/components/user/JoinResult';
+import JoinResult from '@/components/molecules/JoinResult';
 
 interface JoinResultContainerProps {
   email: string;

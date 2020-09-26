@@ -2,7 +2,7 @@ import React from "react";
 
 import useRequet from "@/hooks/useRequest";
 
-import EmailAuthResult from "@/components/user/EmailAuthResult";
+import EmailAuthResult from "@/components/molecules/EmailAuthResult";
 import { updateUserAuth } from "@/api/user";
 
 interface EmailAuthResultContainerProps {

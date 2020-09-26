@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 import Alert from '@/components/molecules/Alert';
 import Button from "@/components/atoms/Button";
-import Link from "@/components/ui/Link";
-import ValidationInput from "@/components/ui/ValidationInput";
+import Link from "@/components/molecules/EmailAuthResult/node_modules/@/components/ui/Link";
+import ValidationInput from "@/components/molecules/JoinForm/node_modules/@/components/ui/ValidationInput";
 
 import UserTitle from "../UserTitle";
 
