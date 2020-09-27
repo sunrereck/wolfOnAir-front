@@ -1,9 +1,9 @@
 import React, { memo } from "react";
 import styled from "styled-components";
 
-import Fade from "@/components/layout/Fade";
-import Portal from "@/components/layout/Portal";
-import Button from "../../atoms/Button";
+import Fade from "@/components/atoms/Fade";
+import Portal from "@/components/atoms/Portal";
+import Button from "@/components/atoms/Button";
 
 interface ConfirmProps {
   children: React.ReactNode;

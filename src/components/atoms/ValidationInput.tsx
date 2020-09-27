@@ -3,33 +3,6 @@ import styled from 'styled-components';
 
 import Input from './Input';
 
-const Wrapper = styled.div<{isError?: boolean}>`
-  display: flex;
-  flex-wrap: wrap;
-  border-radius: 2px;
-
-  input { 
-    width: 100%;
-    height: 3rem;
-    padding: 0 0.5rem;
-    border: 1px solid ${({theme}) => theme.borderColor};
-    border-radius: 2px;
-    font-size: 1rem;
-
-    ${({isError, theme}) => isError && `
-      border: 1px solid ${theme.redColor};
-    `
-  }
-`;
-
-const ErrorText = styled.span`
-  display: inline-block;
-  width: 100%;
-  margin: 0.75rem 0;
-  color: ${({ theme }) => theme.redColor};
-  font: ${({ theme }) => theme.font12};
-`;
-
 interface ValidationInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
   inputEl?: React.RefObject<HTMLInputElement>
@@ -59,5 +32,32 @@ const ValidationInput = ({
     </Wrapper>
   )
 }
+
+const Wrapper = styled.div<{isError?: boolean}>`
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 2px;
+
+  input { 
+    width: 100%;
+    height: 3rem;
+    padding: 0 0.5rem;
+    border: 1px solid ${({theme}) => theme.borderColor};
+    border-radius: 2px;
+    font-size: 1rem;
+
+    ${({isError, theme}) => isError && `
+      border: 1px solid ${theme.redColor};
+    `
+  }
+`;
+
+const ErrorText = styled.span`
+  display: inline-block;
+  width: 100%;
+  margin: 0.75rem 0;
+  color: ${({ theme }) => theme.redColor};
+  font: ${({ theme }) => theme.font12};
+`;
 
 export default memo(ValidationInput);

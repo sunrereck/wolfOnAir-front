@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from '@/styles/theme';
 
-import HeaderContainer from '@/containers/layout/HeaderContainer';
-import ScrollTop from '@/components/layout/ScrollToTop';
+import ScrollTop from '@/components/atoms/ScrollToTop';
+import HeaderContainer from '@/components/organisms/HeaderContainer';
 
 interface PageTemplateProps {
   children: React.ReactNode;

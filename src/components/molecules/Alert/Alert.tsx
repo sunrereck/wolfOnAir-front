@@ -1,9 +1,9 @@
 import React, { memo } from "react";
 import styled from "styled-components";
 
-import Button from "../../atoms/Button";
-import Fade from "../../layout/Fade";
-import Portal from "../../layout/Portal";
+import Button from "@/components/atoms/Button";
+import Fade from "@/components/atoms/Fade";
+import Portal from "@/components/atoms/Portal";
 
 const BackGround = styled.div`
   position: fixed;

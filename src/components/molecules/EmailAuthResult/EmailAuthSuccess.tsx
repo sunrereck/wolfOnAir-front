@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Link from '@/components/ui/Link';
+import Link from '@/components/atoms/Link';
 import UserTitle from '../UserTitle';
 
 const Wrapper = styled.section`

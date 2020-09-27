@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import styled from "styled-components";
 
+import Input from "@/components/components/Input";
 import Confirm from "@/components/molecules/Confirm";
-import Input from "@/components/ui/Input";
 
 interface NewRoomModalProps {
   isShown: boolean;

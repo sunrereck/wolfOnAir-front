@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-import Alert from '@/components/molecules/Alert';
 import Button from "@/components/atoms/Button";
-import Link from "@/components/molecules/EmailAuthResult/node_modules/@/components/ui/Link";
-import ValidationInput from "@/components/molecules/JoinForm/node_modules/@/components/ui/ValidationInput";
+import Link from "@/components/atoms/Link";
+import ValidationInput from "@/components/atoms/ValidationInput";
+import Alert from '@/components/molecules/Alert';
 
 import UserTitle from "../UserTitle";
 

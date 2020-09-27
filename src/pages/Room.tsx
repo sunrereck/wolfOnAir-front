@@ -1,9 +1,9 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import PageTemplate from '@/components/templates/PageTemplate';
-import RedirectHome from '@/components/layout/RedirectHome';
+import RedirectHome from '@/components/atoms/RedirectHome';
 import Room from '@/components/molecules/Room';
+import PageTemplate from '@/components/templates/PageTemplate';
 
 interface RoomProps extends RouteComponentProps {
   isCheckingAuth: boolean;
