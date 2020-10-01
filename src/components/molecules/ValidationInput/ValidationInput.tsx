@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import styled from 'styled-components';
 
-import Input from './Input';
+import Input from '@/components/atoms/Input';
 
 interface ValidationInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;

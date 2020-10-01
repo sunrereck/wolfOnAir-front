@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import Button from "@/components/atoms/Button";
 import Link from "@/components/atoms/Link";
-import ValidationInput from "@/components/atoms/ValidationInput";
+import ValidationInput from "@/components/molecules/ValidationInput";
 import Alert from '@/components/molecules/Alert';
 
 import UserTitle from "../UserTitle";

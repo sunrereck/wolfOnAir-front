@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { History } from "history";
 
 import { Chat } from "@/interface/chat";
 
@@ -12,7 +11,7 @@ import { join, leave, sendMessage } from "@/modules/chat";
 import useInput from "@/hooks/useInput";
 import useRequest from "@/hooks/useRequest";
 
-import Lobby from "@/components/chat/Lobby";
+import Lobby from "@/components/molecules/Lobby";
 
 const LobbyContainer = (): JSX.Element => {
   const dispatch = useDispatch();

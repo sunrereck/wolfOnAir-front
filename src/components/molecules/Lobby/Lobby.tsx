@@ -5,9 +5,9 @@ import { Chat } from "@/interface/chat";
 
 import Alert from "@/components/molecules/Alert";
 import Button from "@/components/atoms/Button";
-import ChatInput from "@/components/molecules/Room/node_modules/@/components/chat/ChatInput";
-import ChatList from "@/components/molecules/Room/node_modules/@/components/chat/ChatList";
-import RoomList from "@/components/chat/Lobby/RoomList";
+import ChatInput from "@/components/molecules/ChatInput";
+import ChatList from "@/components/molecules/ChatList";
+import RoomList from "@/components/molecules/Lobby/RoomList";
 
 import NewRoomModal from "./NewRoomModal";
 

@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import styled from "styled-components";
 
-import Input from "@/components/components/Input";
+import Input from "@/components/atoms/Input";
 import Confirm from "@/components/molecules/Confirm";
 
 interface NewRoomModalProps {

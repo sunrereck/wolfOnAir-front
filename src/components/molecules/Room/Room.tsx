@@ -1,8 +1,8 @@
 import React, { memo } from "react";
 import styled from "styled-components";
 
-import ChatInput from "@/components/chat/ChatInput";
-import ChatList from "@/components/chat/ChatList";
+import ChatInput from "@/components/molecules/ChatInput";
+import ChatList from "@/components/molecules/ChatList";
 import UserList from "./UserList";
 
 function Room() {
