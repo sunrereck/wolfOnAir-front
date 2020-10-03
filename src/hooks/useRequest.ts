@@ -1,104 +1,87 @@
-import { useCallback, useEffect, useReducer } from 'react';
+import {
+  useCallback, useEffect, useRef, useState
+} from 'react';
+import { AxiosPromise, AxiosResponse, AxiosError } from 'axios';
 
-function reducer(state: any, action: any) {
-  switch(action.type) {
-    case 'SUCCESS': {
-      return {
-        data: action.data,
-        isLoading: false,
-        error: null,
-      }
-    }
-    
-    case 'FAIL': {
-      return {
-        data: null,
-        isLoading: false,
-        error: action.error
-      }
-    }
+import { checkObject, checkDeepEqualObject } from '@/utils/commons';
 
-    case 'LOADING': {
-      return {
-        ...state,
-        isLoading: action.isLoading
-      }
-    }
+type ObjectType = Record<string, unknown>
 
-    case 'RESET': {
-      return {
-        data: null,
-        error: null,
-        isLoading: false
-      }
-    }
-
-    default: 
-      return {
-        data: null,
-        error: null,
-        isLoading: false
-      }
+function checkParams<T>(prevParams: T, nextParams: T): boolean {
+  if (prevParams === nextParams) {
+    return true;
   }
+
+  if (!(checkObject(prevParams as ObjectType) && checkObject(nextParams as ObjectType))) {
+    return false;
+  }
+
+  return checkDeepEqualObject(prevParams as ObjectType, nextParams as ObjectType);
 }
 
-/**
- * @param callback 호출할 api 함수
- * @param deps useEffect에서 didupdate 시킬 값
- * @param isSkiped hooks를 선언하자마자 실행할지 말지 여부
- */
-function useRequest (callback: Function, deps: any = [], isSkiped = false) {
-  const [state, dispatch] = useReducer(reducer, {
-    data: null,
-    error: null,
-    isLoading: false
-  });
+function useRequest<T>(
+  callback: (params: T) => AxiosPromise,
+  params: T,
+  isSkip = false
+): [
+  AxiosResponse['data'] | null,
+  AxiosError | null,
+  boolean,
+  (param: T) => Promise<void>,
+  () => void
+] {
+  const prevParams = useRef<T | null>(null);
+  const isMounted = useRef<boolean>(false);
+  const [data, setData] = useState<AxiosResponse['data'] | null>(null);
+  const [error, setError] = useState<AxiosError | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onFetchData = useCallback(async (...params: any) => {
-    dispatch({
-      type: 'LOADING',
-      isLoading: true
-    });
+  const onFetch = useCallback(async (newParams: typeof params) => {
+    setIsLoading(true);
 
     try {
-      const response = await callback(...params);
+      const response = await callback(newParams);
 
-      dispatch({
-        type: 'SUCCESS',
-        data: response.data
-      });
-
-    } catch(err) {
-      dispatch({
-        type: 'FAIL',
-        error: err
-      })
-
-      console.log(123);
-
-      throw err;
+      setData(response.data);
+      setError(null);
+    } catch (err) {
+      setError(err);
+      setData(null);
+    } finally {
+      setIsLoading(false);
     }
-
-    // eslint-disable-next-line
-  }, [dispatch]);
+  }, [callback]);
 
   const onReset = () => {
-    dispatch({
-      type: 'RESET'
-    })
-  }
+    setData(null);
+    setError(null);
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    if (isSkiped) {
+    if (isSkip) {
       return;
     }
-    
-    onFetchData();
 
-  // eslint-disable-next-line
-  }, deps);
+    // 최초 실행
+    if (!isMounted.current) {
+      isMounted.current = true;
+      prevParams.current = params;
 
-  return [state, onFetchData, onReset];
+      onFetch(params);
+
+      return;
+    }
+
+    // params이 이전 값이랑 다를 때
+    if (!checkParams(prevParams.current, params)) {
+      prevParams.current = params;
+
+      onFetch(params);
+    }
+  });
+
+  return [data, error, isLoading, onFetch, onReset];
 }
 
 export default useRequest;
