@@ -16,25 +16,29 @@ function WithAuth(
   const ComponentWithExtraInfo: React.FC = (props) => {
     const dispatch = useDispatch();
     const uid = useSelector((state: RootState) => (state.user.uid));
-    const [state] = useRequest(checkStatus, [], false);  
+    const [
+      data,
+      error,
+      isLoading
+    ] = useRequest(checkStatus, [], false);  
 
 
     useEffect(() => {
-      if (!!state.error) {
+      if (!!error) {
         dispatch(removeUser());
         return;
       }
   
-      if (state.data  && (uid !== state.data.uid)) {
+      if (data  && (uid !== data.uid)) {
         dispatch(setUser({
-          uid: state.data.uid,
-          userName: state.data.userName
+          uid: data.uid,
+          userName: data.userName
         }))
       }
   
-    }, [dispatch, state, uid]);
+    }, [dispatch, error, data, uid]);
 
-    if (state && state.isLoading) {
+    if (isLoading) {
       return <PageLoader />;
     }
 
