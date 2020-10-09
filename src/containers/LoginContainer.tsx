@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AxiosError } from 'axios';
-import { History, Location } from 'history';
 
 import { login } from "@/api/user";
 
@@ -12,7 +12,7 @@ import { getUrlQuery } from '@/utils/commons';
 import useRequest from '@/hooks/useRequest';
 import useValidationInput from "@/hooks/useValidationInput";
 
-import LoginForm from "@/components/user/LoginForm";
+import LoginForm from "@/components/molecules/LoginForm";
 
 function validateEmail(email: string): string {
   if (!email) {
@@ -42,12 +42,9 @@ function getErrorMessage(err: AxiosError): string {
   return "통신이 불안정하여 로그인을 완료하지 못하였습니다.";
 }
 
-interface LoginContainerProps {
-  history: History;
-  location: Location;
-}
-
-const LoginContainer = ({ history, location }: LoginContainerProps): JSX.Element => {
+const LoginContainer = (): JSX.Element => {
+  const history = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
   const [loginFailMessage, setFailMessage] = useState('');
   const [state, onFetchLogin, onReset] = useRequest(login, [], true);
