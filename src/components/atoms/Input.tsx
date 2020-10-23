@@ -14,10 +14,4 @@ const Input = ({type, value, onChange, inputEl, ...props}: InputProps):JSX.Eleme
   />
 );
 
-Input.defaultProps = {
-  onChange: () => {},
-  type: 'text',
-  value: ''
-};
-
 export default memo(Input);
