@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-const ScrollToTop: React.SFC = () => {
+function ScrollToTop (): React.ReactElement | null {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

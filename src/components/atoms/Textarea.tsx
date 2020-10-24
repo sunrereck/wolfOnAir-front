@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
-const Textarea = ({ width, onChange,  value, ...props }: any) => {
+function Textarea ({ width, onChange,  value, ...props }: any): React.ReactElement {
   const DEFAULT_HEIGHT = 24;
   const textEl = useRef<HTMLTextAreaElement>(null);
   

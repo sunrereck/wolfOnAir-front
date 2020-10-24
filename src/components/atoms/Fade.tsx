@@ -15,7 +15,7 @@ function getOpacity(state: string): number {
   return 0;
 }
 
-const Fade = ({ children, isShown, timeout }: FadeProps): JSX.Element => {
+function Fade ({ children, isShown, timeout }: FadeProps): React.ReactElement {
   return (
     <Transition in={isShown} timeout={timeout} mountOnEnter unmountOnExit>
       {state => (

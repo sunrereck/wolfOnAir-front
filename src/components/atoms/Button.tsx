@@ -9,22 +9,24 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'contained' | 'outlined';
 }
 
-const Button= ({
+function Button ({
   children,
   className,
   color,
   type,
   variant,
   ...others
-}: ButtonProps): JSX.Element => (
-  <Wrapper
-    {...others}
-    color={color || 'primary'}
-    variant={variant || 'contained'}
-  >
-    {children}
-  </Wrapper>
-);
+}: ButtonProps): React.ReactElement {
+  return (
+    <Wrapper
+      {...others}
+      color={color || 'primary'}
+      variant={variant || 'contained'}
+    >
+      {children}
+    </Wrapper>
+  );
+}
 
 const Wrapper = styled.button<{ color: string; variant: 'contained' | 'outlined'; }>`
   ${button}

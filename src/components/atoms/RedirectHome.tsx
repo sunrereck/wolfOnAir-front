@@ -8,9 +8,9 @@ interface RedirectHomeProps {
   isCheckingAuth: boolean;
 }
 
-const RedirectHome = ({
+function RedirectHome ({
   isCheckingAuth
-}: RedirectHomeProps) => {
+}: RedirectHomeProps): React.ReactElement {
   const isLoggedIn = useSelector((state: RootState) => (state.user.isLoggedIn));
 
   if (isCheckingAuth) {
