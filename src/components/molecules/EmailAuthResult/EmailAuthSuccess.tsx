@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Link from '@/components/atoms/Link';
+import Button from '@/components/atoms/Button';
 import UserTitle from '../UserTitle';
 
 const Wrapper = styled.section`
@@ -42,7 +42,7 @@ const EmailAuthSuccess = ({email}: EmailAuthSuccessProps): JSX.Element => {
         <br/>
         이메일 인증이 완료 되었습니다!
       </p>
-      <Link variant="outlined" to="/user/login">로그인하러 가기</Link>
+      <Button variant="outlined" to="/user/login">로그인하러 가기</Button>
     </Wrapper>
     </>
   )

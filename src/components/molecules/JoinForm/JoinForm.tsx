@@ -76,7 +76,7 @@ const JoinForm = ({
   passwordError,
   password2Error,
   userNameError
-}: JoinFormProps): JSX.Element => {
+}: JoinFormProps): React.ReactElement => {
   const onIgnoreBlurEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
   };

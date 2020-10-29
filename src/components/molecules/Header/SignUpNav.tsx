@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
+
+import Button from '@/components/atoms/Button';
 
 const Nav = styled.nav`
   margin-left: auto;
@@ -24,14 +25,14 @@ const SignupNav = () => {
     <Nav>
       <ul>
         <li>
-          <Link to="/user/login">
+          <Button to="/user/login">
             로그인
-          </Link>
+          </Button>
         </li>
         <li>
-          <Link to="/user/join">
+          <Button to="/user/join">
             회원가입
-          </Link>
+          </Button>
         </li>
       </ul>
     </Nav>

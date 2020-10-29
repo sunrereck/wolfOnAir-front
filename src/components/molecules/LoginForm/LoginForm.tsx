@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 import Button from "@/components/atoms/Button";
-import Link from "@/components/atoms/Link";
 import ValidationInput from "@/components/molecules/ValidationInput";
 import Alert from '@/components/molecules/Alert';
 
@@ -96,7 +95,7 @@ const LoginForm = ({
         <Button type="submit" onMouseDown={onIgnoreBlurEvent}>
           { isFetching ? '로그인 중...' : '로그인' }
         </Button>
-        <Link
+        <Button
          style={{
            display: "block",
            width: "100",
@@ -105,7 +104,7 @@ const LoginForm = ({
          }}
          variant="outlined" to="/user/join">
           회원가입
-        </Link>
+        </Button>
       </Form>
       <Alert 
         title="로그인 실패"
