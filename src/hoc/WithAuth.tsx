@@ -8,7 +8,7 @@ import { removeUser, setUser } from '@/modules/user';
  
 import useRequest from '@/hooks/useRequest';
 
-import PageLoader from '@/components/atoms/PageLoader';
+// import PageLoader from '@/components/atoms/PageLoader';
 
 function WithAuth(
   WrappedComponent: React.ComponentType
@@ -39,7 +39,7 @@ function WithAuth(
     }, [dispatch, error, data, uid]);
 
     if (isLoading) {
-      return <PageLoader />;
+      return null;
     }
 
     return <WrappedComponent {...props} />;

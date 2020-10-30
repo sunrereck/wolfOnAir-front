@@ -88,9 +88,4 @@ const Alert = ({
   );
 };
 
-Alert.defaultProps = {
-  children: null,
-  title: "",
-};
-
 export default memo(Alert);

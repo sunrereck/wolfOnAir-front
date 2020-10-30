@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import HeaderContainer from '@/components/organisms/HeaderContainer';
 
 import useScrollToTop from '@/hooks/useScrollToTop';
 
@@ -15,7 +14,6 @@ function PageTemplate({
 
   return (
     <React.Fragment>
-      <HeaderContainer />
       <Wrapper>{children}</Wrapper>
     </React.Fragment>
   );
