@@ -1,16 +1,14 @@
 import React from 'react';
 
-import WithAuth from '@/components/hoc/WithAuth';
-
 import PageTemplate from '@/components/templates/PageTemplate';
-import LoginContainer from '@/components/organisms/LoginContainer';
+import LoginContainer from '@/containers/LoginContainer';
 
 const Login: React.FC = () => {
   return (
     <PageTemplate>
-      <LoginContainer/>
+      <LoginContainer />
     </PageTemplate>
   );
 }
 
-export default WithAuth(Login)
+export default Login

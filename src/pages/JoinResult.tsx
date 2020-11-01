@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import JoinResultContainer from '@/components/organisms/JoinResultContainer';
+import JoinResultContainer from '@/containers/JoinResultContainer';
 import PageTemplate from '@/components/templates/PageTemplate';
 
 interface MatchParams {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { logout } from '@/api/user';
 
@@ -11,16 +12,17 @@ import useRequest from '@/hooks/useRequest';
 import Header from '@/components/molecules/Header';
 
 const HeaderContainer = () => {
+  const history = useHistory();
   const isLoggedIn = useSelector((state: RootState) => (state.user.isLoggedIn));
   const userName = useSelector((state: RootState) => (state.user.userName));
   const dispatch = useDispatch();
-  const [, onLogout] = useRequest(logout, [], true);
+  const [,,,onLogout] = useRequest(logout, null, true);
 
   const onClickLogout = () => {
-    onLogout();
     dispatch(removeUser());
+    onLogout(null);
 
-    // window.location.href= "/";
+    history.push('/');
   }
 
   return (

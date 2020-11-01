@@ -135,6 +135,7 @@ const JoinForm = ({
       </Form>
       <Alert
         isShown={isFailedJoin}
+        title="123"
         onClick={onToggleJoinFailAlert}
         onClose={onToggleJoinFailAlert}
       >

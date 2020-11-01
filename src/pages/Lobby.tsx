@@ -1,25 +1,17 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import WithAuth from '@/components/hoc/WithAuth';
-
 import PageTemplate from '@/components/templates/PageTemplate';
 import RedirectHome from '@/components/atoms/RedirectHome';
-import LobbyContainer from '@/components/organisms/LobbyContainer';
+import LobbyContainer from '@/containers/LobbyContainer';
 
-interface LobbyProps extends RouteComponentProps {
-  isCheckingAuth: boolean;
-}
-
-const Lobby = ({
-  isCheckingAuth
-}: LobbyProps): JSX.Element => {
+const Lobby = (): React.ReactElement => {
   return (
     <PageTemplate>
-      <RedirectHome isCheckingAuth={isCheckingAuth}/>
+      <RedirectHome />
       <LobbyContainer />
     </PageTemplate>
   );
 };
 
-export default WithAuth(Lobby);
+export default Lobby;

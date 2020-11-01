@@ -147,8 +147,8 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
     onBlurUserName,
     onSetUserNameError
   ] = useValidationInput("", validateUserName);
-  const [, onJoinUser] = useRequet(joinUser, [], true);
-  const [, onSendAuthEmail] = useRequet(sendAuthEmail, [], true);
+  // const [, onJoinUser] = useRequet(joinUser, [], true);
+  // const [, onSendAuthEmail] = useRequet(sendAuthEmail, [], true);
 
   const onChangePasswords = (e: React.ChangeEvent<HTMLInputElement>) => {
     onResetPassword2();
@@ -190,13 +190,13 @@ const JoinContainer = ({ history }: JoinContainerProps): JSX.Element => {
     setSubmit(true);
 
     try {
-      await onJoinUser({
-        email,
-        password,
-        userName
-      });
+      // await onJoinUser({
+      //   email,
+      //   password,
+      //   userName
+      // });
 
-      await onSendAuthEmail(email);
+      // await onSendAuthEmail(email);
 
       history.push(`/user/join/${email}/send-email`);
     } catch (err) {

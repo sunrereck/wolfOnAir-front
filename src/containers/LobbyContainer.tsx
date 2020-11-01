@@ -28,16 +28,16 @@ const LobbyContainer = (): JSX.Element => {
   );
   const [message, onChangeMessage, onResetMessage] = useInput();
   const [roomTitle, onChangeRoomTitle, onResetRoomTitle] = useInput();
-  const [state, onConnectLobby, onResetLobbyState] = useRequest(
-    () => connectLobby(uid),
-    [],
-    true
-  );
-  const [roomState, onCreateRoom, onResetRoomState] = useRequest(
-    createRoom,
-    [],
-    true
-  );
+  // const [state, onConnectLobby, onResetLobbyState] = useRequest(
+  //   () => connectLobby(uid),
+  //   [],
+  //   true
+  // );
+  // const [roomState, onCreateRoom, onResetRoomState] = useRequest(
+  //   createRoom,
+  //   [],
+  //   true
+  // );
 
   const onOpenNewRoom = () => {
     setConfirm(true);
@@ -49,17 +49,17 @@ const LobbyContainer = (): JSX.Element => {
   };
 
   const onClickNewRoom = async () => {
-    try {
-      await onCreateRoom(roomTitle, userName);
-    } catch (err) {
-      let message = "서버와의 연결에 실패하였습니다.";
+    // try {
+    //   await onCreateRoom(roomTitle, userName);
+    // } catch (err) {
+    //   let message = "서버와의 연결에 실패하였습니다.";
 
-      if (err.response && err.response.status === 400) {
-        message = "필수값이 누락되어 방생성을 완료하지 못하였습니다.";
-      }
+    //   if (err.response && err.response.status === 400) {
+    //     message = "필수값이 누락되어 방생성을 완료하지 못하였습니다.";
+    //   }
 
-      setErrorMessage(message);
-    }
+    //   setErrorMessage(message);
+    // }
   };
 
   const onSendMessage = useCallback(() => {
@@ -71,40 +71,40 @@ const LobbyContainer = (): JSX.Element => {
     onResetMessage();
   }, [dispatch, message, onResetMessage]);
 
-  const onResetError = useCallback(() => {
-    onResetLobbyState();
-    onResetRoomState();
-  }, [onResetLobbyState, onResetRoomState]);
+  // const onResetError = useCallback(() => {
+  //   onResetLobbyState();
+  //   onResetRoomState();
+  // }, [onResetLobbyState, onResetRoomState]);
 
   useEffect(() => {
     if (!isLoggedIn) {
       return;
     }
 
-    const initialize = async () => {
-      try {
-        await onConnectLobby();
-      } catch (err) {
-        let message = "서버와의 연결에 실패하였습니다.";
+    // const initialize = async () => {
+    //   try {
+    //     await onConnectLobby();
+    //   } catch (err) {
+    //     let message = "서버와의 연결에 실패하였습니다.";
 
-        if (err.response && err.response.status === 401) {
-          message = "로그인 상태가 아닙니다.";
-        }
+    //     if (err.response && err.response.status === 401) {
+    //       message = "로그인 상태가 아닙니다.";
+    //     }
 
-        setErrorMessage(message);
-      }
-    };
+    //     setErrorMessage(message);
+    //   }
+    // };
 
-    initialize();
+    // initialize();
 
     // eslint-disable-next-line
   }, [isLoggedIn]);
 
-  useEffect(() => {
-    if (state && state.data) {
-      dispatch(join());
-    }
-  }, [dispatch, state]);
+  // useEffect(() => {
+  //   if (state && state.data) {
+  //     dispatch(join());
+  //   }
+  // }, [dispatch, state]);
 
   useEffect(() => {
     if (!chat) {
@@ -114,29 +114,29 @@ const LobbyContainer = (): JSX.Element => {
     setChatList((prevState) => prevState.concat(chat));
   }, [chat]);
 
-  useEffect(() => {
-    if (roomState && roomState.data) {
-      dispatch(leave());
-      window.location.href = `/room/${roomState.data.roomId}`;
-    }
-  }, [dispatch, roomState]);
+  // useEffect(() => {
+  //   if (roomState && roomState.data) {
+  //     dispatch(leave());
+  //     window.location.href = `/room/${roomState.data.roomId}`;
+  //   }
+  // }, [dispatch, roomState]);
 
   return (
     <>
       <Lobby
         chatList={chatList}
         errorMessage={errorMessage}
-        isError={!!state.error || !!roomState.error}
+        isError={false}
         isShownNewRoom={isShownConfirm}
         message={message}
-        roomList={(state.data && state.data.rooms) || []}
+        roomList={[]}
         roomTitle={roomTitle}
         onChangeMessage={onChangeMessage}
         onChangeRoomTitle={onChangeRoomTitle}
         onCloseNewRoom={onCloseNewRoom}
         onCreateRoom={onClickNewRoom}
         onOpenNewRoom={onOpenNewRoom}
-        onResetError={onResetError}
+        onResetError={() => {}}
         onSendMessage={onSendMessage}
       />
     </>

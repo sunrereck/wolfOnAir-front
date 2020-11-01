@@ -4,16 +4,13 @@ import { useSelector } from 'react-redux';
 
 import { RootState } from '@/modules';
 
-interface RedirectHomeProps {
-  isCheckingAuth: boolean;
-}
+function RedirectHome (): React.ReactElement | null {
+  const {
+    isLoading,
+    isLoggedIn
+  } = useSelector((state: RootState) => (state.user));
 
-function RedirectHome ({
-  isCheckingAuth
-}: RedirectHomeProps): React.ReactElement | null {
-  const isLoggedIn = useSelector((state: RootState) => (state.user.isLoggedIn));
-
-  if (isCheckingAuth) {
+  if (isLoading) {
     return null;
   }
 

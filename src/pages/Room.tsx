@@ -14,7 +14,7 @@ const Lobby = ({
 }: RoomProps): JSX.Element => {
   return (
     <PageTemplate>
-      <RedirectHome isCheckingAuth={isCheckingAuth}/>
+      <RedirectHome />
       <Room />
     </PageTemplate>
   );

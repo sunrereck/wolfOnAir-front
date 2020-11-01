@@ -1,22 +1,15 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { History } from "history";
+import { useHistory } from 'react-router-dom';
 
 import { RootState } from "@/modules";
 
 import Home from "@/components/molecules/home/Home";
 
-interface HomeContainerProps {
-  history: History
-}
-
-const HomeContainer = ({
-  history
-}: HomeContainerProps) => {
+const HomeContainer = (): React.ReactElement => {
+  const history = useHistory();
   const { isLoggedIn } = useSelector(
-    (state: RootState) => ({
-      isLoggedIn: state.user.isLoggedIn
-    })
+    (state: RootState) => state.user
   );
 
   const onRedirectLobby = () => {

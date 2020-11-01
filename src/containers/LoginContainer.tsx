@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory, useLocation  } from 'react-router-dom';
+
 import { AxiosError } from 'axios';
-import { History, Location } from 'history';
 
 import { login } from "@/api/user";
 
@@ -42,15 +43,12 @@ function getErrorMessage(err: AxiosError): string {
   return "통신이 불안정하여 로그인을 완료하지 못하였습니다.";
 }
 
-interface LoginContainerProps {
-  history: History;
-  location: Location;
-}
-
-const LoginContainer = ({ history, location }: LoginContainerProps): JSX.Element => {
+const LoginContainer = (): JSX.Element => {
+  const history = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
   const [loginFailMessage, setFailMessage] = useState('');
-  const [state, onFetchLogin, onReset] = useRequest(login, [], true);
+  // const [state, onFetchLogin, onReset] = useRequest(login, [], true);
   const [
     email,
     emailError,
@@ -90,54 +88,54 @@ const LoginContainer = ({ history, location }: LoginContainerProps): JSX.Element
     }
 
     try {
-      await onFetchLogin(email, password);  
+      // await onFetchLogin(email, password);  
       
     } catch (err) {
       setFailMessage(getErrorMessage(err));
     }
   };
 
-  useEffect(() => {
-    if (!state) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!state) {
+  //     return;
+  //   }
 
-    const { data } = state;
-    const querys: {
-      [key: string]: string | number;
-    } | null = getUrlQuery(location.search);
+  //   const { data } = state;
+  //   const querys: {
+  //     [key: string]: string | number;
+  //   } | null = getUrlQuery(location.search);
 
-    if (data) {
-      dispatch(setUser({
-        uid: data.uid,
-        userName: data.userName
-      }))
+  //   if (data) {
+  //     dispatch(setUser({
+  //       uid: data.uid,
+  //       userName: data.userName
+  //     }))
 
-      if (querys && querys.redirect) {
-        history.replace(querys.redirect as string);
+  //     if (querys && querys.redirect) {
+  //       history.replace(querys.redirect as string);
 
-        return;
-      }
+  //       return;
+  //     }
 
-      history.replace('/');
-    }
+  //     history.replace('/');
+  //   }
 
-  // eslint-disable-next-line
-  }, [dispatch, state]);
+  // // eslint-disable-next-line
+  // }, [dispatch, state]);
 
   return (
     <LoginForm
       email={email}
       emailEl={emailEl}
       emailError={emailError}
-      isFailedLogin={!!state && !!state.error}
-      isFetching={state.isLoading}
+      isFailedLogin={false}
+      isFetching={false}
       loginFailMessage={loginFailMessage}
       onBlurEmail={onBlurEmail}
       onBlurPassword={onBlurPassword}
       onChangeEmail={onChangeEmail}
       onChangePassword={onChangePassword}
-      onToggleFailAlert={onReset}
+      onToggleFailAlert={()=> {}}
       onSubmit={onSubmit}
       password={password}
       passwordEl={passwordEl}
