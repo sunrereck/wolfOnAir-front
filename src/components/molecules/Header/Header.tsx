@@ -17,7 +17,9 @@ const Header = ({
   userName
 }: HeaderProps): JSX.Element => (
   <Wrapper>
-    <Logo to="/"><strong><img src="/logo.svg" alt="늑대 온에어" /></strong></Logo>
+    <Logo to="/">
+      <img src="/logo.svg" alt="늑대 온에어" />
+    </Logo>
     {
       isLoggedIn ? <UserNav onLogout={onLogout} userName={userName} /> : <SignUpNav />
     }

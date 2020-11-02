@@ -168,6 +168,11 @@ const GlobalStyles = createGlobalStyle`
   input {
     outline: 0;
   }
+
+  #root {
+    width: 100%;
+    min-width: 280px;
+  }
 `;
 
 export default GlobalStyles;

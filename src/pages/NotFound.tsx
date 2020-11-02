@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from "react-router-dom";
 
 import styled from "styled-components";
+
+import Button from '@/components/atoms/Button';
 
 const Wrapper = styled.section`
   position: relative;
@@ -18,14 +19,6 @@ const Error = styled.div`
   text-align: center;
 `;
 
-const HomeButton = styled(Link)`
-  display: block;
-  margin-top: 1.5rem;
-  padding: 1rem;
-  border: 1px solid ${({theme}) => theme.primaryColor};
-  border-radius: 5px;
-  color: ${({theme}) => theme.primaryColor};
-`;
 
 const NotFound = () => {
   return (
@@ -33,7 +26,8 @@ const NotFound = () => {
       <Error>
         앗, 없는 페이지 입니다. X_X
         <br/>
-        <HomeButton to="/">첫 페이지로 돌아가기</HomeButton>
+        <br/>
+        <Button to="/" variant="outlined">첫 페이지로 돌아가기</Button>
       </Error>
     </Wrapper>
   )

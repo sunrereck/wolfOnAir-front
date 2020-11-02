@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import useScrollToTop from '@/hooks/useScrollToTop';
 
+import HeaderContainer from '@/containers/HeaderContainer';
+
 interface PageTemplateProps {
   children: React.ReactNode;
 }
@@ -14,6 +16,7 @@ function PageTemplate({
 
   return (
     <React.Fragment>
+      <HeaderContainer />
       <Wrapper>{children}</Wrapper>
     </React.Fragment>
   );

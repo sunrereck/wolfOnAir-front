@@ -25,7 +25,10 @@ export function updateUserAuth(email: string) {
   return axios.put('/user/join/auth', {email});
 }
 
-export function login(email: string, password: string) {
+export function login({email, password}: {
+  email: string;
+  password: string;
+}) {
   return axios.post('/user/login', { email, password });
 }
 
