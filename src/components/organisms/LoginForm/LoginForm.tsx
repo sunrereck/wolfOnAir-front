@@ -24,18 +24,27 @@ interface LoginFormProps {
   passwordError: string;
 }
 
-function LoginForm(): React.ReactElement {
+function LoginForm({
+  email,
+  password
+}: LoginFormProps): React.ReactElement {
     const onIgnoreBlurEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
   };
 
   return (
     <Wrapper>
-    <Form>
-      <Button type="submit" onMouseDown={onIgnoreBlurEvent}>
-         로그인
-      </Button>
-    </Form>
+      <Form>
+        <ValidationInput 
+          placeholder="이메일" 
+          value={email}/>
+        <ValidationInput 
+          placeholder="패스워드" 
+          value={password}/>
+          <Button type="submit" onMouseDown={onIgnoreBlurEvent}>
+            로그인
+          </Button>
+      </Form>
     </Wrapper>
   );
 }

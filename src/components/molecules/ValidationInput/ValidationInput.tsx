@@ -12,18 +12,12 @@ const ValidationInput = ({
   className,
   errorMessage,
   inputEl,
-  onChange,
-  type, 
-  value,
   ...props
 }: ValidationInputProps): JSX.Element => {
   return (
     <Wrapper className={className} isError={!!errorMessage}>
       <Input 
         inputEl={inputEl}
-        onChange={onChange}
-        type={type}
-        value={value}      
         {...props}
       />
       {
