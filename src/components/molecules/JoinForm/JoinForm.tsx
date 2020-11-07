@@ -7,22 +7,6 @@ import Form from '@/components/atoms/Form';
 import ValidationInput from "@/components/molecules/ValidationInput";
 import UserTitle from "../UserTitle";
 
-const Form = styled.form`
-  width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
-  max-width: 440px;
-  box-sizing: border-box;
-
-  div {
-    margin-bottom: 1rem;
-  }
-
-  button {
-    width: 100%;
-  }
-`;
-
 interface JoinFormProps {
   email: string;
   emailEl: React.RefObject<HTMLInputElement>;

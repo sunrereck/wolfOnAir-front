@@ -8,20 +8,7 @@ import Alert from '@/components/molecules/Alert';
 
 interface LoginFormProps {
   email: string;
-  emailEl: React.RefObject<HTMLInputElement>;
-  emailError: string;
-  isFailedLogin: boolean;
-  isFetchingLogin: boolean;
-  loginFailMessage: string;
-  onBlurEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlurPassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  onToggleFailAlert: () => void;
   password: string;
-  passwordEl: React.RefObject<HTMLInputElement>;
-  passwordError: string;
 }
 
 function LoginForm({
@@ -34,6 +21,7 @@ function LoginForm({
 
   return (
     <Wrapper>
+      <h2>로그인</h2>
       <Form>
         <ValidationInput 
           placeholder="이메일" 
@@ -50,7 +38,21 @@ function LoginForm({
 }
 
 const Wrapper = styled.div`
-  padding: 1rem;
+  padding-top: 2rem;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    text-align: center;
+  }
+
+  form {
+    margin: 0 auto;
+  }
+
+  input {
+    margin-bottom: 0.5rem;
+  }
 
   button {
     width: 100%;

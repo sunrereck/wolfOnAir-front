@@ -101,7 +101,9 @@ const LoginContainer = (): JSX.Element => {
   };
 
   return (
-    <LoginForm />
+    <LoginForm
+      email={email}
+      password={password} />
   );
 };
 
