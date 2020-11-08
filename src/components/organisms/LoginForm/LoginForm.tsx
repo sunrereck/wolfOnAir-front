@@ -1,35 +1,82 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
+
+import useForm from '@/hooks/useForm';
 
 import Button from "@/components/atoms/Button";
 import Form from '@/components/atoms/Form';
 import ValidationInput from "@/components/molecules/ValidationInput";
 import Alert from '@/components/molecules/Alert';
 
+interface ValidateLoginParams {
+  email?: string;
+  password?: string;
+}
+
 interface LoginFormProps {
   email: string;
   password: string;
+}
+
+function validate(values: ValidateLoginParams): ValidateLoginParams {
+  const errors = {} as ValidateLoginParams;
+
+  if (!values.email) {
+    errors.email = "필수 항목 입니다";
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,8}$/i.test(values.email)) {
+    errors.email = "이메일 형식이 아닙니다";
+  }
+
+  if (!values.password) {
+    errors.password = '필수 항목 입니다'
+  }
+
+  return errors;
 }
 
 function LoginForm({
   email,
   password
 }: LoginFormProps): React.ReactElement {
-    const onIgnoreBlurEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-  };
+  const [
+    values,
+    errors,
+    onChange,
+    onBlur,
+    onSubmit,
+    onRef
+  ] = useForm({
+    initialValues: {
+      email: '',
+      password: ''
+    },
+    // @ts-ignore
+    validate
+  });
 
   return (
     <Wrapper>
       <h2>로그인</h2>
-      <Form>
+      <Form onSubmit={onSubmit(() => {console.log(123)})}>
         <ValidationInput 
+          name="email"
           placeholder="이메일" 
-          value={email}/>
+          errorMessage={errors.email}
+          value={values.email || ''}
+          onChange={onChange}
+          onBlur={onBlur}
+          inputEl={onRef}
+          />
         <ValidationInput 
+          name="password"
           placeholder="패스워드" 
-          value={password}/>
-          <Button type="submit" onMouseDown={onIgnoreBlurEvent}>
+          errorMessage={errors.password}          
+          value={values.password}
+          onChange={onChange}
+          onBlur={onBlur}
+          inputEl={onRef}
+          />
+          <Button type="submit">
             로그인
           </Button>
       </Form>
@@ -58,76 +105,5 @@ const Wrapper = styled.div`
     width: 100%;
   }
 `;
-
-// const LoginForm = ({
-//   email,
-//   emailEl,
-//   emailError,
-//   isFailedLogin,
-//   isFetching,
-//   loginFailMessage,
-//   onBlurEmail,
-//   onBlurPassword,
-//   onChangeEmail,
-//   onChangePassword,
-//   onSubmit,
-//   onToggleFailAlert,
-//   password,
-//   passwordEl,
-//   passwordError
-// }: LoginFormProps): JSX.Element => {
-//   const onIgnoreBlurEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
-//     e.preventDefault();
-//   };
-  
-//   return (
-//     <>
-//       <UserTitle>로그인</UserTitle>
-//       <Form onSubmit={onSubmit}>
-//         <ValidationInput
-//           type="email"
-//           name="email"
-//           inputEl={emailEl}
-//           errorMessage={emailError}
-//           onBlur={onBlurEmail}
-//           onChange={onChangeEmail}
-//           placeholder="이메일"
-//           value={email}
-//         />
-//         <ValidationInput
-//           type="password"
-//           name="password"
-//           errorMessage={passwordError}
-//           onBlur={onBlurPassword}
-//           onChange={onChangePassword}
-//           inputEl={passwordEl}
-//           placeholder="비밀번호"
-//           value={password}
-//         />
-//         <Button type="submit" onMouseDown={onIgnoreBlurEvent}>
-//           { isFetching ? '로그인 중...' : '로그인' }
-//         </Button>
-//         <Button
-//          style={{
-//            display: "block",
-//            width: "100",
-//            height: "3rem",
-//            lineHeight: "3rem"
-//          }}
-//          variant="outlined" to="/user/join">
-//           회원가입
-//         </Button>
-//       </Form>
-//       <Alert 
-//         title="로그인 실패"
-//         isShown={isFailedLogin}
-//         onClick={onToggleFailAlert}
-//         onClose={onToggleFailAlert}
-//       >
-//         {loginFailMessage}
-//       </Alert>
-//     </>
-//   );
-// };
 
 export default LoginForm;

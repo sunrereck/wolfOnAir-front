@@ -10,6 +10,7 @@ function Form (props: React.FormHTMLAttributes<HTMLFormElement>): React.ReactEle
 
 const Wrapper = styled.form`
   width: 100%;
+  margin: 0 auto;
   max-width: 28rem;
 
   @media ${mediaQuerys.tablet} { 

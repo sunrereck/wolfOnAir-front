@@ -5,21 +5,18 @@ import Input from '@/components/atoms/Input';
 
 interface ValidationInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
-  inputEl?: React.RefObject<HTMLInputElement>
+  inputEl?: any;
 }
 
 const ValidationInput = ({
   className,
   errorMessage,
   inputEl,
-  ...props
+  ...others
 }: ValidationInputProps): JSX.Element => {
   return (
     <Wrapper className={className} isError={!!errorMessage}>
-      <Input 
-        inputEl={inputEl}
-        {...props}
-      />
+      <input ref={inputEl} {...others} />
       {
         errorMessage && <ErrorText>{errorMessage}</ErrorText>
       }
