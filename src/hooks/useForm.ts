@@ -4,8 +4,14 @@ type HtmlInputTypes = HTMLInputElement | HTMLTextAreaElement;
 
 function useForm(
   initialValues: Record<string, any>, 
-  validate: (values: Record<string, any>) => string, 
-  onSubmit: () => void) {
+  validate: (values: Record<string, any>) => Record<string, any>, 
+  onSubmit?: () => void): [
+    Record<string, any>,
+    Record<string, any>,
+    boolean,
+    (e: React.ChangeEvent<HtmlInputTypes>) => void,
+    (e: React.ChangeEvent<HtmlInputTypes>) => void,
+  ] {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({})
   const [isValied, setIsValied] = useState(false);
@@ -25,4 +31,14 @@ function useForm(
 
     setErrors(errors);
   }
+
+  return [
+    values,
+    errors,
+    isSubmitting,
+    onChange,
+    onCheckError
+  ];
 }
+
+export default useForm;

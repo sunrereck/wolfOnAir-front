@@ -1,10 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 
+import useForm from '@/hooks/useForm';
+
 import Button from "@/components/atoms/Button";
 import Form from '@/components/atoms/Form';
 import ValidationInput from "@/components/molecules/ValidationInput";
 import Alert from '@/components/molecules/Alert';
+
+interface ValidateLoginParams {
+  email?: string;
+  password?: string;
+}
+
+function validateLogin({ email, password }: ValidateLoginParams): ValidateLoginParams {
+  const errors: ValidateLoginParams = {};
+
+  if (!email) {
+    errors.email = "필수 항목 입니다";
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,8}$/i.test(email)) {
+    errors.email = "이메일 형식이 아닙니다";
+  }
+
+  if (!password) {
+    errors.password = "필수 항목 입니다";
+  }
+
+  return errors;
+}
 
 interface LoginFormProps {
   email: string;
@@ -15,7 +38,14 @@ function LoginForm({
   email,
   password
 }: LoginFormProps): React.ReactElement {
-    const onIgnoreBlurEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const [
+    values,
+    errors,
+    ,
+    onChange,
+    onBlur
+  ] = useForm({}, validateLogin);
+  const onIgnoreBlurEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
   };
 
@@ -25,10 +55,18 @@ function LoginForm({
       <Form>
         <ValidationInput 
           placeholder="이메일" 
-          value={email}/>
+          value={values?.email || ''}
+          errorMessage={errors.email}
+          onBlur={onBlur}
+          onChange={onChange}
+          />
         <ValidationInput 
           placeholder="패스워드" 
-          value={password}/>
+          value={values.password}
+          errorMessage={errors.password}
+          onBlur={onBlur}
+          onChange={onChange}
+          />
           <Button type="submit" onMouseDown={onIgnoreBlurEvent}>
             로그인
           </Button>
