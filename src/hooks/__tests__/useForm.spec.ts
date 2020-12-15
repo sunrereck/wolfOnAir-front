@@ -3,36 +3,52 @@ import { act, renderHook } from '@testing-library/react-hooks';
 
 import useForm from '../useForm';
 
+interface FormValues {
+  name: string;
+  value: string;
+}
+
 function timeout(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function validate(value: string) {
-  if (!value) {
-    return 'error'!
+function validate(values: any): any {
+  const errors = {} as FormValues;
+
+  if (!values.name) {
+    errors.name = 'no value';
+  } else if (values.name === 'error') {
+    errors.name = 'It is Error!';
   }
 
-  return value === 'error' ? 'error!' : '';
+  if (!values.value) {
+    errors.value = 'no value';
+  }
+
+  return errors;
 } 
 
-async function asyncValidate (value: string) {
+async function asyncValidateName (name: string) {
   return timeout(1000).then(() => {
-    if (['john', 'paul', 'george', 'ringo'].includes(value)) {
-      return 'That username is taken' as string
+    if (['john', 'paul', 'george', 'ringo'].includes(name)) {
+      return { name: 'That name is taken' }
     }
 
-    return '';
+    return { name: '' }
   });
 }
 
 describe("useForm", () => {
   test('state 값들이 정상적으로 initialize 된다.', () => {
-    const { result } = renderHook(() => useForm<{
-      name: string;
-      value: string;
-    }>({
-      name: '',
-      value: ''
+    const { result } = renderHook(() => useForm({
+      initialValues: {
+        name: '',
+        value: ''
+      },
+      validate,
+      asyncValidate: {
+        name: asyncValidateName
+      }
     }));
     const [values] = result.current;
 
@@ -41,10 +57,15 @@ describe("useForm", () => {
   });
 
   test('state 값들이 정상적으로 변경된다.', () => {
-    const { result } = renderHook(() => useForm<{
-      value: string;
-    }>({
-      value: ''
+    const { result } = renderHook(() => useForm({
+      initialValues: {
+        name: '',
+        value: ''
+      },
+      validate,
+      asyncValidate: {
+        name: asyncValidateName
+      }
     }));
     const [,, onChange] = result.current;
 
@@ -63,15 +84,20 @@ describe("useForm", () => {
   });
 
   test('state 값들의 validation check를 정상적으로 할 수 있다.', async () => {
-    const { result } = renderHook(() => useForm<{
-      value: string;
-    }>({
-      value: ''
+    const { result } = renderHook(() => useForm({
+      initialValues: {
+        name: '',
+        value: ''
+      },
+      validate,
+      asyncValidate: {
+        name: asyncValidateName
+      }
     }));
-    const [,,, onValidate] = result.current;
+    const [,,, onBlur] = result.current;
 
     act(() => {
-      onValidate(validate, asyncValidate)({
+      onBlur({
         target: {
           value: 'error',
           name: 'value'
@@ -85,9 +111,9 @@ describe("useForm", () => {
     expect(isValid).toEqual(false);
 
     await act(async () => {
-      await onValidate(validate, asyncValidate)({
+      await onBlur({
         target: {
-          value: 'paul',
+          value: 'error',
           name: 'value'
         }
       } as ChangeEvent<HTMLInputElement>);
@@ -95,13 +121,13 @@ describe("useForm", () => {
 
     const [, errors2,,,, isValid2] = result.current;
 
-    expect(errors2.value).toEqual('That username is taken');
+    expect(errors2.value).toEqual('That rname is taken');
     expect(isValid2).toEqual(false);
 
     await act(async () => {
-      await onValidate(validate, asyncValidate)({
+      await onBlur({
         target: {
-          value: 'not paul',
+          value: 'error',
           name: 'value'
         }
       } as ChangeEvent<HTMLInputElement>);

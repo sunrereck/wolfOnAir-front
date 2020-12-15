@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { checkEmptyObject } from '@/utils/commons';
 
-type DefaultType = string | number | boolean | null | undefined;
+type DefaultType = string;
 type ObjectType = Record<string, DefaultType>;
 type InputTypes = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 type ValidateType = (values: ObjectType) => ObjectType
@@ -10,7 +10,6 @@ type AsyncValidateType = Record<string, (value: string) => Promise<Record<string
 
 interface UseFormProps {
   asyncValidate?: AsyncValidateType;
-  asyncValidateField?: string[];
   initialValues: ObjectType;
   validate?: ValidateType;
 }
