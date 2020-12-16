@@ -2,27 +2,29 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { checkEmptyObject } from '@/utils/commons';
 
-type DefaultType = string;
-type ObjectType = Record<string, DefaultType>;
 type InputTypes = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
-type ValidateType = (values: ObjectType) => ObjectType
-type AsyncValidateType = Record<string, (value: string) => Promise<Record<string, string>>>;
+type ValidateType<Tvalues> = (values: Tvalues) => Tvalues
+type AsyncValidateType = {
+  [name: string]: (value: string) => Promise<{
+    [name: string]: string
+  }>
+};
 
-interface UseFormProps {
+interface UseFormProps<Tvalues> {
   asyncValidate?: AsyncValidateType;
-  initialValues: ObjectType;
-  validate?: ValidateType;
+  initialValues: Tvalues;
+  validate?: ValidateType<Tvalues>;
 }
 
-function useForm({
+function useForm<Tvalues extends Record<string, unknown>>({
   asyncValidate,
-  initialValues = {} as ObjectType,
+  initialValues = {} as Tvalues,
   validate
-}: UseFormProps): any[] {
+}: UseFormProps<Tvalues>): any[] {
   const fields = useRef({} as any);
-  const [values, setValues] = useState<ObjectType>(initialValues);
-  const [errors, setErrors] = useState<ObjectType>({});
-  const [touched, setTouched] = useState<ObjectType>({});
+  const [values, setValues] = useState<Tvalues>(initialValues);
+  const [errors, setErrors] = useState<Tvalues>({} as Tvalues);
+  const [touched, setTouched] = useState<Tvalues>({} as Tvalues);
   const [isValid, setIsValid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -51,7 +53,7 @@ function useForm({
 
       setErrors((prevState) => ({
         ...prevState,
-        [name]: errors[name]
+        [name]: errors[name as any] as any
       }));
 
       if (errors[name]) {
@@ -94,8 +96,8 @@ function useForm({
 
     setIsSubmitting(true);
 
-    let validateErrors: ObjectType = {};
-    let asyncValidateErrors: ObjectType = {};
+    let validateErrors = {} as Record<string, unknown>;
+    let asyncValidateErrors = {} as Record<string, unknown>;
 
     if (!!validate) {
       validateErrors = validate(values);
@@ -112,7 +114,7 @@ function useForm({
 
     try {
       if (!!asyncValidate) {
-        const promises: Promise<string>[] = [];
+        const promises: Promise<Record<string, string>>[] = [];
 
         for (const [key, func] of Object.entries(asyncValidate)) {
           if (!validateErrors[key]) {
@@ -125,7 +127,7 @@ function useForm({
 
         const responses = await Promise.all(promises);
 
-        responses.forEach((response: string) => {
+        responses.forEach((response: Record<string, string>) => {
           Object.entries(response).forEach((arr) => {
             const [name, error] = arr;
 

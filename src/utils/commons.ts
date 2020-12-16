@@ -6,8 +6,16 @@ type ObjectType = Record<string, unknown>
  * @param object 빈값인지 아닌지 확인할 객체
  * @returns 객체가 빈값인지 아닌지 확인한 bool 결과
  */
-export function checkEmptyObject(object: ObjectType): boolean {
-  return Object.keys(object).length === 0;
+export function checkEmptyObject(object: unknown): boolean {
+  if (!object) {
+    return true;
+  }
+
+  if (typeof object !== 'object') {
+    return true;
+  }
+
+  return !!object && Object.keys(object).length === 0;
 }
 
 /**

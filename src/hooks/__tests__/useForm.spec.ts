@@ -12,7 +12,7 @@ function timeout(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function validate(values: any): any {
+function validate(values: FormValues): FormValues {
   const errors = {} as FormValues;
 
   if (!values.name) {
