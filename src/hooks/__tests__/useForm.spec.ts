@@ -100,43 +100,52 @@ describe("useForm", () => {
       onBlur({
         target: {
           value: 'error',
+          name: 'name'
+        }
+      } as ChangeEvent<HTMLInputElement>);
+    })
+
+    act(() => {
+      onBlur({
+        target: {
+          value: '',
           name: 'value'
         }
       } as ChangeEvent<HTMLInputElement>);
     })
 
-    const [, errors,,,, isValid] = result.current;
+    const [, errors] = result.current;
 
-    expect(errors.value).toEqual('error!');
-    expect(isValid).toEqual(false);
+    expect(errors.value).toEqual('no value');
+    // expect(isValid).toEqual(false);
 
     await act(async () => {
       await onBlur({
         target: {
-          value: 'error',
-          name: 'value'
+          name: 'name',
+          value: 'john'
         }
       } as ChangeEvent<HTMLInputElement>);
     })
 
-    const [, errors2,,,, isValid2] = result.current;
+    const [, errors2] = result.current;
 
-    expect(errors2.value).toEqual('That rname is taken');
-    expect(isValid2).toEqual(false);
+    expect(errors2.name).toEqual('That name is taken');
+    // expect(isValid2).toEqual(false);
 
     await act(async () => {
       await onBlur({
         target: {
-          value: 'error',
-          name: 'value'
+          name: 'name',
+          value: 'test'
         }
       } as ChangeEvent<HTMLInputElement>);
     })
 
-    const [, errors3,,,, isValid3] = result.current;
+    const [, errors3] = result.current;
 
-    expect(errors3.value).toEqual('');
-    expect(isValid3).toEqual(true);
+    expect(errors3.name).toEqual('');
+    // expect(isValid3).toEqual(true);
   })
 
 

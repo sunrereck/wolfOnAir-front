@@ -24,8 +24,8 @@ function useForm<Tvalues extends Record<string, unknown>>({
   const fields = useRef({} as any);
   const [values, setValues] = useState<Tvalues>(initialValues);
   const [errors, setErrors] = useState<Tvalues>({} as Tvalues);
-  const [touched, setTouched] = useState<Tvalues>({} as Tvalues);
-  const [isValid, setIsValid] = useState(false);
+  // const [touched, setTouched] = useState<Tvalues>({} as Tvalues);
+  // const [isValid, setIsValid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onChange = (e: React.ChangeEvent<InputTypes>) => {
@@ -40,10 +40,10 @@ function useForm<Tvalues extends Record<string, unknown>>({
   const onBlur = async (e: React.ChangeEvent<InputTypes>) => {
     const { value, name } = e.target;
 
-    setTouched((prevState) => ({ 
-      ...prevState, 
-      [name]: true 
-    }));
+    // setTouched((prevState) => ({ 
+    //   ...prevState, 
+    //   [name]: true 
+    // }));
 
     if (!!validate) {
       const errors = validate({
@@ -53,7 +53,7 @@ function useForm<Tvalues extends Record<string, unknown>>({
 
       setErrors((prevState) => ({
         ...prevState,
-        [name]: errors[name as any] as any
+        [name]: errors[name]
       }));
 
       if (errors[name]) {
@@ -96,8 +96,8 @@ function useForm<Tvalues extends Record<string, unknown>>({
 
     setIsSubmitting(true);
 
-    let validateErrors = {} as Record<string, unknown>;
-    let asyncValidateErrors = {} as Record<string, unknown>;
+    let validateErrors = {} as Tvalues;
+    let asyncValidateErrors = {} as Record<string, string>;
 
     if (!!validate) {
       validateErrors = validate(values);
@@ -119,8 +119,7 @@ function useForm<Tvalues extends Record<string, unknown>>({
         for (const [key, func] of Object.entries(asyncValidate)) {
           if (!validateErrors[key]) {
             promises.push(
-              // @ts-ignore
-              func(values[key])
+              func(values[key] as string)
             );  
           }
         }
@@ -171,9 +170,17 @@ function useForm<Tvalues extends Record<string, unknown>>({
     } 
   }, [])
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   let isValid = true;
 
-  }, []);
+  //   for (const [, value] of Object.entries((errors))) {
+  //     if (!!value) {
+  //       isValid = false;
+  //     }
+  //   }
+
+  //   setIsValid(isValid);
+  // }, []);
 
   return [
     values,
@@ -182,8 +189,8 @@ function useForm<Tvalues extends Record<string, unknown>>({
     onBlur,
     onSubmit,
     onRef,
-    isValid,
     isSubmitting,
+    // isValid
   ];  
 }
 
