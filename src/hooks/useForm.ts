@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { checkEmptyObject } from '@/utils/commons';
 
@@ -24,8 +24,6 @@ function useForm<Tvalues extends Record<string, unknown>>({
   const fields = useRef({} as any);
   const [values, setValues] = useState<Tvalues>(initialValues);
   const [errors, setErrors] = useState<Tvalues>({} as Tvalues);
-  // const [touched, setTouched] = useState<Tvalues>({} as Tvalues);
-  // const [isValid, setIsValid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onChange = (e: React.ChangeEvent<InputTypes>) => {
@@ -40,23 +38,27 @@ function useForm<Tvalues extends Record<string, unknown>>({
   const onBlur = async (e: React.ChangeEvent<InputTypes>) => {
     const { value, name } = e.target;
 
-    // setTouched((prevState) => ({ 
-    //   ...prevState, 
-    //   [name]: true 
-    // }));
-
     if (!!validate) {
-      const errors = validate({
-        ...values,
+      const validateErrors = validate({
         [name]: value
-      });
+      } as Tvalues);
 
-      setErrors((prevState) => ({
-        ...prevState,
-        [name]: errors[name]
-      }));
+      if (validateErrors[name]) {
+        setErrors((prevState) => {
+          const filterErrors = {
+            ...prevState,
+            [name]: validateErrors[name]
+          }
 
-      if (errors[name]) {
+          Object.entries(filterErrors).forEach(([name, value]) => {
+            if (!value) delete filterErrors[name];
+          })
+
+          return filterErrors;
+        });
+      }
+
+      if (validateErrors[name]) {
         return;
       }
     }
@@ -72,10 +74,14 @@ function useForm<Tvalues extends Record<string, unknown>>({
       try { 
         const error = await asyncValidate[name](value);
 
-        setErrors((prevState) => ({
-          ...prevState,
-          ...error
-        }));
+        console.log(error);
+
+        if (!!error[name]) {
+          setErrors((prevState) => ({
+            ...prevState,
+            [name]: error[name]
+          }));  
+        }
       } catch (err) {
         setErrors((prevState) => ({
           ...prevState,
@@ -102,9 +108,18 @@ function useForm<Tvalues extends Record<string, unknown>>({
     if (!!validate) {
       validateErrors = validate(values);
 
+      Object.entries(validateErrors).forEach(([name, value]) => {
+        if (!value) {
+          delete validateErrors[name];
+        }
+      })
+
       if (!checkEmptyObject(validateErrors)) {
         setIsSubmitting(false);
-        setErrors(validateErrors);
+        setErrors((prevState) => ({
+          ...prevState,
+          ...validateErrors
+        }));
 
         const errorFields = Object.keys(validateErrors);
 
@@ -170,18 +185,7 @@ function useForm<Tvalues extends Record<string, unknown>>({
     } 
   }, [])
 
-  // useEffect(() => {
-  //   let isValid = true;
-
-  //   for (const [, value] of Object.entries((errors))) {
-  //     if (!!value) {
-  //       isValid = false;
-  //     }
-  //   }
-
-  //   setIsValid(isValid);
-  // }, []);
-
+  
   return [
     values,
     errors,

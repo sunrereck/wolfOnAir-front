@@ -100,6 +100,7 @@ const JoinContainer = (): JSX.Element => {
       userName: asyncValidateUserName
     },
   });
+
   return (
     <JoinForm
       email={values.email}
