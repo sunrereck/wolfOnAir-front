@@ -16,6 +16,16 @@ interface UseFormProps<Tvalues> {
   validate?: ValidateType<Tvalues>;
 }
 
+function getFilterErrors(errors: any) {
+  const filterErrors = { ... errors };
+
+  Object.entries(errors).forEach(([name, value]) => {
+    if (!value) delete filterErrors[name];
+  })
+
+  return filterErrors;
+}
+
 function useForm<Tvalues extends Record<string, unknown>>({
   asyncValidate,
   initialValues = {} as Tvalues,
@@ -45,15 +55,11 @@ function useForm<Tvalues extends Record<string, unknown>>({
 
       if (validateErrors[name]) {
         setErrors((prevState) => {
-          const filterErrors = {
+          const filterErrors = getFilterErrors({
             ...prevState,
             [name]: validateErrors[name]
-          }
-
-          Object.entries(filterErrors).forEach(([name, value]) => {
-            if (!value) delete filterErrors[name];
-          })
-
+          });
+          
           return filterErrors;
         });
       }
@@ -74,14 +80,14 @@ function useForm<Tvalues extends Record<string, unknown>>({
       try { 
         const error = await asyncValidate[name](value);
 
-        console.log(error);
-
-        if (!!error[name]) {
-          setErrors((prevState) => ({
+        setErrors((prevState) => {
+          const filterErrors = getFilterErrors({
             ...prevState,
             [name]: error[name]
-          }));  
-        }
+          });
+          
+          return filterErrors;
+        });
       } catch (err) {
         setErrors((prevState) => ({
           ...prevState,
@@ -100,6 +106,9 @@ function useForm<Tvalues extends Record<string, unknown>>({
       e.persist();
     }
 
+    console.log(values);
+
+
     setIsSubmitting(true);
 
     let validateErrors = {} as Tvalues;
@@ -108,22 +117,16 @@ function useForm<Tvalues extends Record<string, unknown>>({
     if (!!validate) {
       validateErrors = validate(values);
 
-      Object.entries(validateErrors).forEach(([name, value]) => {
-        if (!value) {
-          delete validateErrors[name];
-        }
-      })
-
       if (!checkEmptyObject(validateErrors)) {
         setIsSubmitting(false);
-        setErrors((prevState) => ({
-          ...prevState,
-          ...validateErrors
-        }));
-
-        const errorFields = Object.keys(validateErrors);
-
-        fields.current[errorFields[0]].focus();
+        setErrors((prevState) => {
+          const filterErrors = getFilterErrors({
+            ...prevState,
+            ...validateErrors
+          });
+          
+          return filterErrors;
+        });
       }
     }
 
@@ -145,24 +148,19 @@ function useForm<Tvalues extends Record<string, unknown>>({
           Object.entries(response).forEach((arr) => {
             const [name, error] = arr;
 
-            if (!!error) {
-              asyncValidateErrors[name] = error;
-    
-              setErrors((prevState) => ({
-                ...prevState,
-                [name]: error
-              }));
-            }
-          })
-        })
+            asyncValidateErrors[name] = error;
+          });
+        });
       }
 
-      if (!checkEmptyObject(asyncValidateErrors)) {
+      const filterAsyncValidateErrors = getFilterErrors(asyncValidateErrors);
+
+      if (!checkEmptyObject(filterAsyncValidateErrors)) {
         setIsSubmitting(false);
-
-        const errorFields = Object.keys(asyncValidateErrors);
-
-        fields.current[errorFields[0]].focus();
+        setErrors((prevState) => ({
+          ...prevState,
+          ...filterAsyncValidateErrors
+        }))
 
         return;
       }

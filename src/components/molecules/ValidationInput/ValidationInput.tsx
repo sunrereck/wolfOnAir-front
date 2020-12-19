@@ -16,7 +16,7 @@ const ValidationInput = ({
 }: ValidationInputProps): JSX.Element => {
   return (
     <Wrapper className={className} isError={!!errorMessage}>
-      <input ref={inputEl} {...others} />
+      <Input inputEl={inputEl} {...others} />
       {
         errorMessage && <ErrorText>{errorMessage}</ErrorText>
       }
@@ -46,7 +46,7 @@ const Wrapper = styled.div<{isError?: boolean}>`
 const ErrorText = styled.span`
   display: inline-block;
   width: 100%;
-  margin: 0.75rem 0;
+  margin-top: 0.75rem;
   color: ${({ theme }) => theme.redColor};
   font: ${({ theme }) => theme.font12};
 `;

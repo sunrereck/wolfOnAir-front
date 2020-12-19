@@ -100,6 +100,13 @@ function JoinForm({
 }
 
 const Wrapper = styled(Form)`
+  padding: 1rem;
+
+
+  button {
+    width: 100%; 
+  }
+
   > div {
     margin-bottom: 1rem;
   }
