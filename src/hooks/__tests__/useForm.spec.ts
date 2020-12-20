@@ -160,7 +160,7 @@ describe("useForm", () => {
     const [,,,, onSubmit] = result.current;
 
     await act(async () => {
-      await onSubmit(() => console.log(123))();
+      await onSubmit(() => jest.fn())();
     })
     
     const [, errors] = result.current;
@@ -188,7 +188,8 @@ describe("useForm", () => {
     const [,,,,onSubmit2] = result.current;
 
     await act(async () => {
-      await onSubmit2(() => console.log(123))();
+      
+      await onSubmit2(() => jest.fn())();
     })
 
     const [, errors2] = result.current;
@@ -196,17 +197,27 @@ describe("useForm", () => {
     expect(errors2.name).toEqual('That name is taken');
   })
 
-  test('onSubmit 함수가 정상적으로 실행된다.', () => {
+  test('validation error가 없으면 onSubmit 함수가 정상적으로 실행된다.', async () => {
     const { result } = renderHook(() => useForm({
       initialValues: {
-        name: '',
-        value: ''
+        name: 'test',
+        value: 'test'
       },
       validate,
       asyncValidate: {
         name: asyncValidateName
       }
     }));
-    const [,,, onBlur] = result.current;
+
+    const [,,,, onSubmit] = result.current;
+    let isCalled = false;
+
+    await act(async () => {
+      await onSubmit(() => {
+        isCalled = true;
+      })();
+    });
+
+    expect(isCalled).toEqual(true);
   })
 });

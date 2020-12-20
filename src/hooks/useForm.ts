@@ -106,9 +106,6 @@ function useForm<Tvalues extends Record<string, unknown>>({
       e.persist();
     }
 
-    console.log(values);
-
-
     setIsSubmitting(true);
 
     let validateErrors = {} as Tvalues;
@@ -148,18 +145,20 @@ function useForm<Tvalues extends Record<string, unknown>>({
           Object.entries(response).forEach((arr) => {
             const [name, error] = arr;
 
-            asyncValidateErrors[name] = error;
+            if (!!error) {
+              asyncValidateErrors[name] = error;
+            } else {
+              delete asyncValidateErrors[name];
+            }
           });
         });
       }
 
-      const filterAsyncValidateErrors = getFilterErrors(asyncValidateErrors);
-
-      if (!checkEmptyObject(filterAsyncValidateErrors)) {
+      if (!checkEmptyObject(asyncValidateErrors)) {
         setIsSubmitting(false);
         setErrors((prevState) => ({
           ...prevState,
-          ...filterAsyncValidateErrors
+          ...asyncValidateErrors
         }))
 
         return;
