@@ -8,7 +8,7 @@ import {
 } from "@/api/user";
 
 import useForm from '@/hooks/useForm';
-import useRequet from "@/hooks/useRequest";
+import useRequest from "@/hooks/useRequest";
 
 import JoinForm from "@/components/molecules/JoinForm";
 
@@ -52,29 +52,33 @@ function validate(values: any): any {
 
  async function asyncValidateEmail(email: string): Promise<Record<string, string>> {
    try {
-    const response = await checkAvailabilityEmail(email);
+    // const response = await checkAvailabilityEmail(email);
 
-      if (!response.data.isOk) {
-        return { email: '이미 사용 중인 이메일 입니다.'};
-      }
+      // if (!response.data.isOk) {
+      //   return { email: '이미 사용 중인 이메일 입니다.'};
+      // }
   
       return {email: ''};
    } catch (err) {
-     return {email: '알수없는 오류가 발생하여 통신에 실패하였습니다.'};
+    //  return {email: '알수없는 오류가 발생하여 통신에 실패하였습니다.'};
+    return {email: ''};
+  
    }
  }
 
  async function asyncValidateUserName(userName: string): Promise<Record<string, string>> {
    try {
-    const response = await checkAvailabiltyUser(userName);
+    // const response = await checkAvailabiltyUser(userName);
 
-    if (!response.data.isOk) {
-      return {userName: '이미 사용 중인 닉네임 입니다.'};
-    }
+    // if (!response.data.isOk) {
+    //   return {userName: '이미 사용 중인 닉네임 입니다.'};
+    // }
 
     return {userName: ''};
    } catch (err) {
-    return {userName: '알수없는 오류가 발생하여 통신에 실패하였습니다.'};
+    // return {userName: '알수없는 오류가 발생하여 통신에 실패하였습니다.'};
+    return {userName: ''};
+
    }
  }
 
@@ -100,6 +104,16 @@ const JoinContainer = (): JSX.Element => {
       userName: asyncValidateUserName
     },
   });
+  const [
+    joinUserData,
+    joinUserError,
+    ,
+    onFetchJoinUser
+  ] = useRequest(joinUser, {
+    email: '',
+    password: '',
+    userName: ''
+  }, true);
 
   return (
     <JoinForm
@@ -114,7 +128,7 @@ const JoinContainer = (): JSX.Element => {
       onChange={onChange}
       onBlur={onBlur}
       onRef={onRef}
-      onSubmit={onSubmit}
+      onSubmit={onSubmit(onFetchJoinUser)}
     />
   );
 };

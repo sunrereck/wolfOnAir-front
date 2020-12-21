@@ -39,7 +39,7 @@ function JoinForm({
   return (
     <>
       <UserTitle>회원가입</UserTitle>
-      <Wrapper onSubmit={onSubmit(() => {console.log(123)})}>
+      <Wrapper onSubmit={onSubmit}>
         <ValidationInput
           errorMessage={emailError}
           inputEl={onRef}

@@ -50,6 +50,7 @@ function useForm<Tvalues extends Record<string, unknown>>({
 
     if (!!validate) {
       const validateErrors = validate({
+        ...values,
         [name]: value
       } as Tvalues);
 
