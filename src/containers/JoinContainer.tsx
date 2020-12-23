@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Redirect } from 'react-router-dom';
 import {
   checkAvailabilityEmail,
   checkAvailabiltyUser,
@@ -10,14 +10,20 @@ import {
 import useForm from '@/hooks/useForm';
 import useRequest from "@/hooks/useRequest";
 
-import JoinForm from "@/components/molecules/JoinForm";
+import { getErrorMessage } from '@/utils/errors';
 
-interface JoinContainerProps {
-  history: History;
+import JoinForm from "@/components/molecules/JoinForm";
+import { join } from "path";
+
+type FormTypes = {
+  email?: string;
+  password?: string;
+  password2?: string;
+  userName?: string;
 }
 
-function validate(values: any): any {
-  const errors = {} as any;
+function validate(values: FormTypes): FormTypes {
+  const errors = {} as FormTypes;
 
   if (!values.email) {
     errors.email = '필수 항목 입니다.';
@@ -52,38 +58,33 @@ function validate(values: any): any {
 
  async function asyncValidateEmail(email: string): Promise<Record<string, string>> {
    try {
-    // const response = await checkAvailabilityEmail(email);
+    const response = await checkAvailabilityEmail(email);
 
-      // if (!response.data.isOk) {
-      //   return { email: '이미 사용 중인 이메일 입니다.'};
-      // }
+      if (!response.data.isOk) {
+        return { email: '이미 사용 중인 이메일 입니다.'};
+      }
   
       return {email: ''};
    } catch (err) {
-    //  return {email: '알수없는 오류가 발생하여 통신에 실패하였습니다.'};
-    return {email: ''};
-  
+     return {email: '알수없는 오류가 발생하여 통신에 실패하였습니다.'};  
    }
  }
 
  async function asyncValidateUserName(userName: string): Promise<Record<string, string>> {
    try {
-    // const response = await checkAvailabiltyUser(userName);
+    const response = await checkAvailabiltyUser(userName);
 
-    // if (!response.data.isOk) {
-    //   return {userName: '이미 사용 중인 닉네임 입니다.'};
-    // }
+    if (!response.data.isOk) {
+      return {userName: '이미 사용 중인 닉네임 입니다.'};
+    }
 
     return {userName: ''};
    } catch (err) {
-    // return {userName: '알수없는 오류가 발생하여 통신에 실패하였습니다.'};
-    return {userName: ''};
-
+    return {userName: '알수없는 오류가 발생하여 통신에 실패하였습니다.'};
    }
  }
 
-const JoinContainer = (): JSX.Element => {
-  const history = useHistory();
+function JoinContainer(): React.ReactElement {
   const [
     values,
     errors,
@@ -92,12 +93,7 @@ const JoinContainer = (): JSX.Element => {
     onSubmit,
     onRef
   ] = useForm({
-    initialValues: {
-      email: '',
-      password: '',
-      password2: '',
-      userName: ''
-    },
+    initialValues: {} as FormTypes,
     validate,
     asyncValidate: {
       email: asyncValidateEmail,
@@ -108,28 +104,73 @@ const JoinContainer = (): JSX.Element => {
     joinUserData,
     joinUserError,
     ,
-    onFetchJoinUser
-  ] = useRequest(joinUser, {
-    email: '',
-    password: '',
-    userName: ''
+    onJoinUser,
+    onResetJoinUser
+  ] = useRequest(joinUser, {} as {
+    email: string;
+    password: string;
+    userName: string;
   }, true);
+  const [isShownAlert, setIsShownAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  // componentDidUpdate - joinUserData
+  useEffect(() => {
+    if (!joinUserData) {
+      return;
+    }
+
+    onResetJoinUser();
+  })
+
+  // componentDidUpdate - joinUserError
+  useEffect(() => {
+    if (!joinUserError) {
+      return;
+    }
+
+    setIsShownAlert(true);
+    setAlertMessage(getErrorMessage(joinUserError));
+    onResetJoinUser();
+
+    return;
+  }, [joinUserError, onResetJoinUser]);
+
+  // alert 닫기
+  const onCloseAlert = () => {
+    setIsShownAlert(false);
+    setAlertMessage('');
+  }
+
+  // 회원가입 
+  const onSubmitJoinUser = () => {
+    onJoinUser({
+      email: values.email,
+      password: values.password,
+      userName: values.userName
+    })
+  }
 
   return (
-    <JoinForm
-      email={values.email}
-      emailError={errors.email}
-      password={values.password}
-      passwordError={errors.password}
-      password2={values.password2}
-      password2Error={errors.password2}
-      userName={values.userName}
-      userNameError={errors.userName}
-      onChange={onChange}
-      onBlur={onBlur}
-      onRef={onRef}
-      onSubmit={onSubmit(onFetchJoinUser)}
-    />
+    <>
+      <JoinForm
+        alertMessage={alertMessage}
+        email={values.email}
+        emailError={errors.email}
+        isShownAlert={isShownAlert}
+        password={values.password}
+        passwordError={errors.password}
+        password2={values.password2}
+        password2Error={errors.password2}
+        userName={values.userName}
+        userNameError={errors.userName}
+        onBlur={onBlur}
+        onChange={onChange}
+        onCloseAlert={onCloseAlert}
+        onRef={onRef}
+        onSubmit={onSubmit(onSubmitJoinUser)}
+      />
+    </>
   );
 };
 

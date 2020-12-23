@@ -17,7 +17,7 @@ interface UseFormProps<Tvalues> {
 }
 
 function getFilterErrors(errors: any) {
-  const filterErrors = { ... errors };
+  const filterErrors = { ...errors };
 
   Object.entries(errors).forEach(([name, value]) => {
     if (!value) delete filterErrors[name];
@@ -37,7 +37,7 @@ function useForm<Tvalues extends Record<string, unknown>>({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onChange = (e: React.ChangeEvent<InputTypes>) => {
-    const {value, name} = e.target;
+    const { value, name } = e.target;
 
     setValues((prevState) => ({
       ...prevState,
@@ -54,16 +54,14 @@ function useForm<Tvalues extends Record<string, unknown>>({
         [name]: value
       } as Tvalues);
 
-      if (validateErrors[name]) {
-        setErrors((prevState) => {
-          const filterErrors = getFilterErrors({
-            ...prevState,
-            [name]: validateErrors[name]
-          });
-          
-          return filterErrors;
+      setErrors((prevState) => {
+        const filterErrors = getFilterErrors({
+          ...prevState,
+          [name]: validateErrors[name]
         });
-      }
+        
+        return filterErrors;
+      });
 
       if (validateErrors[name]) {
         return;
@@ -115,17 +113,14 @@ function useForm<Tvalues extends Record<string, unknown>>({
     if (!!validate) {
       validateErrors = validate(values);
 
-      if (!checkEmptyObject(validateErrors)) {
-        setIsSubmitting(false);
-        setErrors((prevState) => {
-          const filterErrors = getFilterErrors({
-            ...prevState,
-            ...validateErrors
-          });
-          
-          return filterErrors;
+      setErrors((prevState) => {
+        const filterErrors = getFilterErrors({
+          ...prevState,
+          ...validateErrors
         });
-      }
+        
+        return filterErrors;
+      });
     }
 
     try {
@@ -155,15 +150,18 @@ function useForm<Tvalues extends Record<string, unknown>>({
         });
       }
 
-      if (!checkEmptyObject(asyncValidateErrors)) {
+      setErrors((prevState) => ({
+        ...prevState,
+        ...asyncValidateErrors
+      }))
+
+      if (!checkEmptyObject(validateErrors) || !checkEmptyObject(asyncValidateErrors)) {
         setIsSubmitting(false);
-        setErrors((prevState) => ({
-          ...prevState,
-          ...asyncValidateErrors
-        }))
 
         return;
       }
+
+      setErrors({} as Tvalues);
 
       await submit();
 

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Button from '@/components/atoms/Button';
-import UserTitle from '../UserTitle';
+import Heading from "@/components/atoms/Heading";
 
 const Wrapper = styled.section`
   width: 100%;
@@ -33,9 +33,9 @@ interface EmailAuthSuccessProps {
 const EmailAuthSuccess = ({email}: EmailAuthSuccessProps): JSX.Element => {
   return (
     <>
-    <UserTitle>
+    <Heading>
       이메일 인증 완료
-    </UserTitle>
+    </Heading>
     <Wrapper>
       <p>
         <strong>{email}</strong>

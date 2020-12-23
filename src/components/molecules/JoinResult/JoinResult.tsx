@@ -2,8 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import Button from "@/components/atoms/Button";
-
-import UserTitle from "../UserTitle";
+import Heading from "@/components/atoms/Heading";
 
 const Wrapper = styled.section`
   p {
@@ -41,7 +40,7 @@ const JoinResult = ({
 }: JoinResultProps): JSX.Element => {
   return (
     <>
-      <UserTitle>회원가입 완료</UserTitle>
+      <Heading>회원가입 완료</Heading>
       <Wrapper>
         <p>
           가입하신 이메일 주소

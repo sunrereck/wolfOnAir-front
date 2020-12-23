@@ -5,6 +5,7 @@ import useForm from '@/hooks/useForm';
 
 import Button from "@/components/atoms/Button";
 import Form from '@/components/atoms/Form';
+import Heading from '@/components/atoms/Heading';
 import ValidationInput from "@/components/molecules/ValidationInput";
 import Alert from '@/components/molecules/Alert';
 
@@ -55,9 +56,9 @@ function LoginForm({
   });
 
   return (
-    <Wrapper>
-      <h2>로그인</h2>
-      <Form onSubmit={onSubmit(() => {console.log(123)})}>
+    <>
+      <StyledHeading>로그인</StyledHeading>
+      <StyledForm onSubmit={onSubmit(() => {console.log(123)})}>
         <ValidationInput 
           name="email"
           placeholder="이메일" 
@@ -79,30 +80,24 @@ function LoginForm({
           <Button type="submit">
             로그인
           </Button>
-      </Form>
-    </Wrapper>
+      </StyledForm>
+    </>
   );
 }
 
-const Wrapper = styled.div`
-  padding-top: 2rem;
+const StyledHeading = styled(Heading)`
+  margin-top: 2rem;
+  font-size: 1.25rem;
+  text-align: center;
+`;
 
-  h2 {
-    margin-bottom: 1.5rem;
-    font-size: 1.25rem;
-    text-align: center;
-  }
-
-  form {
-    margin: 0 auto;
-  }
-
-  input {
-    margin-bottom: 0.5rem;
-  }
-
+const StyledForm = styled(Form)`
   button {
-    width: 100%;
+    width: 100%; 
+  }
+
+  > div {
+    margin-bottom: 1rem;
   }
 `;
 

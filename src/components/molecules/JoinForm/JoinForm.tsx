@@ -1,15 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
-import Alert from "@/components/molecules/Alert";
 import Button from "@/components/atoms/Button";
 import Form from '@/components/atoms/Form';
+import Heading from '@/components/atoms/Heading';
+import Alert from "@/components/molecules/Alert";
 import ValidationInput from "@/components/molecules/ValidationInput";
-import UserTitle from "../UserTitle";
 
 interface JoinFormProps {
+  alertMessage: string;
   email: string;
   emailError: string;
+  isShownAlert: boolean;
   password: string;
   passwordError: string;
   password2: string;
@@ -18,13 +20,16 @@ interface JoinFormProps {
   userNameError: string;
   onBlur: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onCloseAlert: () => void;
   onRef: (ref: any) => void;
   onSubmit: any;
 }
 
 function JoinForm({
+  alertMessage,
   email,
   emailError,
+  isShownAlert,
   password,
   passwordError,
   password2,
@@ -33,13 +38,14 @@ function JoinForm({
   userNameError,
   onBlur,
   onChange,
+  onCloseAlert,
   onRef,
   onSubmit
 }: JoinFormProps): React.ReactElement {
   return (
     <>
-      <UserTitle>회원가입</UserTitle>
-      <Wrapper onSubmit={onSubmit}>
+      <StyledHeading>회원가입</StyledHeading>
+      <StyledForm onSubmit={onSubmit}>
         <ValidationInput
           errorMessage={emailError}
           inputEl={onRef}
@@ -86,23 +92,26 @@ function JoinForm({
         >
           회원가입
         </Button>
-      </Wrapper>
-      {/* <Alert
-        isShown={isFailedJoin}
-        title="123"
-        onClick={onToggleJoinFailAlert}
-        onClose={onToggleJoinFailAlert}
+      </StyledForm>    
+      <Alert
+        isShown={isShownAlert}
+        title="회원가입 실패"
+        onClick={onCloseAlert}
+        onClose={onCloseAlert}
       >
-        {joinFailMessage}
-      </Alert> */}
+        {alertMessage}
+      </Alert>
     </>
   );
 }
 
-const Wrapper = styled(Form)`
-  padding: 1rem;
+const StyledHeading = styled(Heading)`
+  margin-top: 2rem;
+  font-size: 1.25rem;
+  text-align: center;
+`;
 
-
+const StyledForm = styled(Form)`
   button {
     width: 100%; 
   }

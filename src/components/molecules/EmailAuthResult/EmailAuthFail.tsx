@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Button from "@/components/atoms/Button";
-import UserTitle from "../UserTitle";
+import Heading from "@/components/atoms/Heading";
 
 const Wrapper = styled.form`
   width: 100%;
@@ -35,7 +35,7 @@ const JoinFail = ({ error }: JoinFailProps): JSX.Element => {
 
   return (
     <>
-      <UserTitle>이메일 인증 실패</UserTitle>
+      <Heading>이메일 인증 실패</Heading>
       <Wrapper>
         {isClientError ? (
           <p>{error.response.data.reason}</p>
