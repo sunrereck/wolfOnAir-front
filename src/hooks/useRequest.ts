@@ -36,11 +36,11 @@ function useRequest<T>(
   const [error, setError] = useState<AxiosError | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const onFetch = useCallback(async (newParams: typeof params) => {
+  const onFetch = useCallback(async (newParams?: typeof params) => {
     setIsLoading(true);
 
     try {
-      const response = await callback(newParams);
+      const response = newParams ? await callback(newParams) : await callback(params);
 
       setIsLoading(false);
       setError(null);

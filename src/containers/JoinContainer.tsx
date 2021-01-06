@@ -4,7 +4,7 @@ import {
   checkAvailabilityEmail,
   checkAvailabiltyUser,
   joinUser,
-  sendAuthEmail
+  sendJoinAuthEmail
 } from "@/api/user";
 
 import useForm from '@/hooks/useForm';
@@ -12,8 +12,7 @@ import useRequest from "@/hooks/useRequest";
 
 import { getErrorMessage } from '@/utils/errors';
 
-import JoinForm from "@/components/molecules/JoinForm";
-import { join } from "path";
+import JoinForm from "@/components/organisms/JoinForm";
 
 type FormTypes = {
   email?: string;
@@ -85,6 +84,8 @@ function validate(values: FormTypes): FormTypes {
  }
 
 function JoinContainer(): React.ReactElement {
+  const [isShownAlert, setIsShownAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const [
     values,
     errors,
@@ -103,7 +104,7 @@ function JoinContainer(): React.ReactElement {
   const [
     joinUserData,
     joinUserError,
-    ,
+    isLoadingJoinUser,
     onJoinUser,
     onResetJoinUser
   ] = useRequest(joinUser, {} as {
@@ -111,15 +112,20 @@ function JoinContainer(): React.ReactElement {
     password: string;
     userName: string;
   }, true);
-  const [isShownAlert, setIsShownAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-
+  const [
+    sendAuthEmailData,
+    sendAuthEmailError,
+    isLoadingSendAuthEmail,
+    onSendJoinAuthEmail
+  ] = useRequest(sendJoinAuthEmail, '', true);
+  
   // componentDidUpdate - joinUserData
   useEffect(() => {
     if (!joinUserData) {
       return;
     }
 
+    onSendJoinAuthEmail(values.email);
     onResetJoinUser();
   })
 
@@ -153,11 +159,22 @@ function JoinContainer(): React.ReactElement {
 
   return (
     <>
+      {
+        !!sendAuthEmailData && (
+          <Redirect to="/user/join/:email/send-email?result=success"/>
+        )  
+      }
+      {      
+        !!sendAuthEmailError && (
+          <Redirect to="/user/join/:email/send-email?result=fail"/>
+        )
+      }
       <JoinForm
         alertMessage={alertMessage}
         email={values.email}
         emailError={errors.email}
         isShownAlert={isShownAlert}
+        isSubmitting={isLoadingJoinUser || isLoadingSendAuthEmail}
         password={values.password}
         passwordError={errors.password}
         password2={values.password2}

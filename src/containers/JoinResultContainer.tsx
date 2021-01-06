@@ -1,50 +1,86 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 
-import { sendAuthEmail } from '@/api/user';
+import { sendJoinAuthEmail } from '@/api/user';
 import { sendJoinAuthHelpEmail } from '@/api/help';
 
-import JoinResult from '@/components/molecules/JoinResult';
+import { getUrlQuery } from '@/utils/commons';
 
-interface JoinResultContainerProps {
-  email: string;
-}
+import useAlert from '@/hooks/useAlert';
+import useRequest from "@/hooks/useRequest";
 
-const JoinResultContainer = ({ email }: JoinResultContainerProps): JSX.Element => {
-  const [isAuthMailLoading, setAuthMailLoading] = useState(false);
-  const [isHelpMailLoading, setHelpEmailLoading] = useState(false);
+import JoinResult from '@/components/organisms/JoinResult';
 
-  const handleSendEmail = async () => {
-    setAuthMailLoading(true);
+function JoinResultContainer(): React.ReactElement {
+  const location = useLocation();
+  const { email }: {
+    email: string;
+  } = useParams();
+  const [
+    isShownAlert,
+    alertMessage,
+    onToggleAlert,
+    onSetAlertMessage
+  ] = useAlert();
+  const [
+    sendJoinAuthEmailData,
+    sendAuthEmailError,
+    isLoadingSendJoinAuthEmail,
+    onSendJoinAuthEmail,
+    onResetSendJoinAuthEmail
+  ] = useRequest(sendJoinAuthEmail, '' as string, true);
+  const [
+    sendJoinAuthHelpEmailData,
+    sendJoinAuthHelpEmailError,
+    isLoadingSendJoinAuthHelpEmail,
+    onSendJoinAuthHelpEmail,
+    onResetSendJoinAuthHelpEmail
+  ] = useRequest(sendJoinAuthHelpEmail, '' as string, true);
+  const query = getUrlQuery(location.search);
 
-    try {
-      await sendAuthEmail(email);
-
-    } catch(e) {
-//
-    }
-
-    setAuthMailLoading(false);
+  const onClickSendJoinAuthEmail = () => {
+    onSendJoinAuthEmail(email);
   }
 
-  const handleSendHelpEmail = async () => {
-    setHelpEmailLoading(true);
+  const onClickSendJoinAuthHelpEmail = () => {
+    onSendJoinAuthHelpEmail(email);
+  }
 
-    try {
-      await sendJoinAuthHelpEmail(email);
-    } catch(e) {
-
+  useEffect(() => {
+    if (!sendJoinAuthEmailData && !sendJoinAuthHelpEmailData) {
+      return;
     }
 
-    setHelpEmailLoading(false);
-  }
+    if (sendJoinAuthEmailData) {
+      onSetAlertMessage(`가입하신 이메일 주소 ${email}로 인증메일을 보내드렸습니다.\n이메일 인증을 완료해주세요.`);
+      onToggleAlert();
+      onResetSendJoinAuthEmail();
+      return;
+    }
+
+    if (sendJoinAuthHelpEmailData) {
+      onSetAlertMessage(`관리자에게 문의메일을 보냈습니다.\n빨리 문제가 해결될 수 있도록 처리하겠습니다.`);
+      onToggleAlert();
+      onResetSendJoinAuthHelpEmail();
+    }
+  }, [
+    sendJoinAuthEmailData,
+    sendJoinAuthHelpEmailData,
+    onResetSendJoinAuthEmail,
+    onResetSendJoinAuthHelpEmail
+  ]);
 
   return (
     <JoinResult 
+      alertMessage={alertMessage}
       email={email}
-      isAuthMailLoading={isAuthMailLoading}
-      isHelpMailLoading={isHelpMailLoading}
-      onSendAuthMail={handleSendEmail}
-      onSendHelpMail={handleSendHelpEmail}
+      isLoadingSendJoinAuthEmail={isLoadingSendJoinAuthEmail}
+      isLoadingSendJoinAuthHelpEmail={isLoadingSendJoinAuthHelpEmail}
+      isSuccess={!!query && query.result === 'success'}
+      isShownAlert={isShownAlert}
+      onClickSendJoinAuthEmail={onClickSendJoinAuthEmail}
+      onClickSendJoinAuthHelpEmail={onClickSendJoinAuthHelpEmail}
+      onToggleAlert={onToggleAlert}
     />
   )
 }

@@ -12,6 +12,7 @@ interface JoinFormProps {
   email: string;
   emailError: string;
   isShownAlert: boolean;
+  isSubmitting: boolean;
   password: string;
   passwordError: string;
   password2: string;
@@ -30,6 +31,7 @@ function JoinForm({
   email,
   emailError,
   isShownAlert,
+  isSubmitting,
   password,
   passwordError,
   password2,
@@ -89,6 +91,7 @@ function JoinForm({
         <Button
           type="submit"
           onMouseDown={(e: any) => e.preventDefault()}
+          disabled={isSubmitting}
         >
           회원가입
         </Button>
