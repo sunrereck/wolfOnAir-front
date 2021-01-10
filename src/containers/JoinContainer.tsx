@@ -117,7 +117,7 @@ function JoinContainer(): React.ReactElement {
     sendAuthEmailError,
     isLoadingSendAuthEmail,
     onSendJoinAuthEmail
-  ] = useRequest(sendJoinAuthEmail, '', true);
+  ] = useRequest(sendJoinAuthEmail, '' as string, true);
   
   // componentDidUpdate - joinUserData
   useEffect(() => {
@@ -161,12 +161,12 @@ function JoinContainer(): React.ReactElement {
     <>
       {
         !!sendAuthEmailData && (
-          <Redirect to="/user/join/:email/send-email?result=success"/>
+          <Redirect to={`/user/join/${values.email}/send-email?result=success`}/>
         )  
       }
       {      
         !!sendAuthEmailError && (
-          <Redirect to="/user/join/:email/send-email?result=fail"/>
+          <Redirect to={`/user/join/${values.email}/send-email?result=fail`}/>
         )
       }
       <JoinForm

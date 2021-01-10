@@ -1,8 +1,9 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import Button from "@/components/atoms/Button";
+import Button from '@/components/atoms/Button';
 import Heading from '@/components/atoms/Heading';
+import NewLineText from '@/components/atoms/NewLineText';
 import Alert from '@/components/molecules/Alert';
 
 interface JoinResultProps {
@@ -74,11 +75,11 @@ function JoinResult ({
       </Wrapper>
       <Alert 
         isShown={isShownAlert}
-        title="메일 발송 완료"
+        title="메일 발송 결과"
         onClick={onToggleAlert}
         onClose={onToggleAlert}
       >
-        {alertMessage}
+        <NewLineText text={alertMessage} />
       </Alert>
     </>
   );
@@ -90,7 +91,12 @@ const StyledHeading = styled(Heading)`
   text-align: center;
 `;
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  p {
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+`;
 
 const ButtonWrapper = styled.div`
   width: 100%;

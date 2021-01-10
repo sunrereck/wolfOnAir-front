@@ -1,4 +1,3 @@
-import { MessageOptions } from 'child_process';
 import { useState } from 'react';
 
 interface AlertType {

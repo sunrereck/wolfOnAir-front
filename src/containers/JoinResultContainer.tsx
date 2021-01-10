@@ -24,7 +24,7 @@ function JoinResultContainer(): React.ReactElement {
   ] = useAlert();
   const [
     sendJoinAuthEmailData,
-    sendAuthEmailError,
+    sendJoinAuthEmailError,
     isLoadingSendJoinAuthEmail,
     onSendJoinAuthEmail,
     onResetSendJoinAuthEmail
@@ -46,6 +46,7 @@ function JoinResultContainer(): React.ReactElement {
     onSendJoinAuthHelpEmail(email);
   }
 
+  // componentDidUpdate - sendJoinAuthEmailData, sendJoinAuthHelpEmailData
   useEffect(() => {
     if (!sendJoinAuthEmailData && !sendJoinAuthHelpEmailData) {
       return;
@@ -64,10 +65,40 @@ function JoinResultContainer(): React.ReactElement {
       onResetSendJoinAuthHelpEmail();
     }
   }, [
+    email,
     sendJoinAuthEmailData,
     sendJoinAuthHelpEmailData,
     onResetSendJoinAuthEmail,
-    onResetSendJoinAuthHelpEmail
+    onResetSendJoinAuthHelpEmail,
+    onSetAlertMessage,
+    onToggleAlert
+  ]);
+
+  // componentDidUpdate - sendJoinAuthEmailData, sendJoinAuthHelpEmailData
+  useEffect(() => {
+    if (!sendJoinAuthEmailError && !sendJoinAuthHelpEmailError) {
+      return;
+    }
+
+    if (sendJoinAuthEmailError) {
+      onSetAlertMessage(`인증메일 전송에 실패하였습니다.\n잠시 후 다시 시도해주세요.`);
+      onToggleAlert();
+      onResetSendJoinAuthEmail();
+      return;
+    }
+
+    if (sendJoinAuthHelpEmailError) {
+      onSetAlertMessage(`문의메일 전송에 실패하였습니다.\n잠시 후 다시 시도해주세요.`);
+      onToggleAlert();
+      onResetSendJoinAuthHelpEmail();
+    }
+  }, [
+    sendJoinAuthEmailError,
+    sendJoinAuthHelpEmailError,
+    onResetSendJoinAuthEmail,
+    onResetSendJoinAuthHelpEmail,
+    onSetAlertMessage,
+    onToggleAlert
   ]);
 
   return (
