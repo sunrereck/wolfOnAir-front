@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 import Button from "@/components/atoms/Button";
 import Form from '@/components/atoms/Form';
-import Heading from '@/components/atoms/Heading';
 import Alert from "@/components/molecules/Alert";
+import JoinWrapper from '@/components/molecules/JoinWrapper';
 import ValidationInput from "@/components/molecules/ValidationInput";
 
 interface JoinFormProps {
@@ -46,7 +46,7 @@ function JoinForm({
 }: JoinFormProps): React.ReactElement {
   return (
     <>
-      <StyledHeading>회원가입</StyledHeading>
+    <JoinWrapper title="회원가입">
       <StyledForm onSubmit={onSubmit}>
         <ValidationInput
           errorMessage={emailError}
@@ -96,6 +96,7 @@ function JoinForm({
           회원가입
         </Button>
       </StyledForm>    
+    </JoinWrapper>
       <Alert
         isShown={isShownAlert}
         title="회원가입 실패"
@@ -107,12 +108,6 @@ function JoinForm({
     </>
   );
 }
-
-const StyledHeading = styled(Heading)`
-  margin-top: 2rem;
-  font-size: 1.25rem;
-  text-align: center;
-`;
 
 const StyledForm = styled(Form)`
   button {

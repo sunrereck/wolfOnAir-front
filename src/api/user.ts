@@ -21,8 +21,17 @@ export function sendJoinAuthEmail(email: string) {
   return axios.post('/user/join/auth', {email});
 }
 
-export function updateUserAuth(email: string) {
-  return axios.put('/user/join/auth', {email});
+export function updateUserAuth({
+  email,
+  code
+}: {
+  email: string,
+  code: string
+}) {
+  return axios.put('/user/join/auth', {
+    email,
+    code
+  });
 }
 
 export function login({email, password}: {

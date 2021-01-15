@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { sendJoinAuthEmail } from '@/api/user';
 import { sendJoinAuthHelpEmail } from '@/api/help';
@@ -12,10 +12,12 @@ import useRequest from "@/hooks/useRequest";
 import JoinResult from '@/components/organisms/JoinResult';
 
 function JoinResultContainer(): React.ReactElement {
+  const history = useHistory();
   const location = useLocation();
   const { email }: {
     email: string;
   } = useParams();
+  const query = getUrlQuery(location.search);
   const [
     isShownAlert,
     alertMessage,
@@ -36,7 +38,6 @@ function JoinResultContainer(): React.ReactElement {
     onSendJoinAuthHelpEmail,
     onResetSendJoinAuthHelpEmail
   ] = useRequest(sendJoinAuthHelpEmail, '' as string, true);
-  const query = getUrlQuery(location.search);
 
   const onClickSendJoinAuthEmail = () => {
     onSendJoinAuthEmail(email);
@@ -53,19 +54,22 @@ function JoinResultContainer(): React.ReactElement {
     }
 
     if (sendJoinAuthEmailData) {
-      onSetAlertMessage(`가입하신 이메일 주소 ${email}로 인증메일을 보내드렸습니다.\n이메일 인증을 완료해주세요.`);
-      onToggleAlert();
       onResetSendJoinAuthEmail();
+
+      history.replace(`${location.pathname}?result=success`);
+
       return;
     }
 
     if (sendJoinAuthHelpEmailData) {
-      onSetAlertMessage(`관리자에게 문의메일을 보냈습니다.\n빨리 문제가 해결될 수 있도록 처리하겠습니다.`);
+      onSetAlertMessage(`관리자에게 문의메일을 발송했습니다.\n빨리 문제가 해결될 수 있도록 처리하겠습니다.`);
       onToggleAlert();
       onResetSendJoinAuthHelpEmail();
     }
   }, [
     email,
+    history,
+    location.pathname,
     sendJoinAuthEmailData,
     sendJoinAuthHelpEmailData,
     onResetSendJoinAuthEmail,
