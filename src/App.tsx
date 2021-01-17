@@ -18,47 +18,7 @@ import Login from '@/pages/Login';
 // import Room from '@/pages/Room';
 import NotFound from '@/pages/NotFound';
 
-const App: React.FC = () => {
-  const dispatch = useDispatch();
-  const prevUser = useSelector((state: RootState) => state.user);
-  const [currentUser, error, isFetchingUser] = useRequest(checkStatus, {}, false);
-
-  const onSetUser = useCallback((uid: number, userName: string) => {
-    dispatch(setUser({
-        uid, 
-        userName
-    }));
-  }, [dispatch]);
-
-  const onRemoveUser = useCallback(() => {
-    dispatch(removeUser());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (isFetchingUser) {
-      return;
-    }
-    
-    if (error || !currentUser) {
-      onRemoveUser();
-
-      return;
-    }
-
-    if (prevUser.uid === currentUser.uid) {
-      return;
-    }
-
-    onSetUser(currentUser.uid, currentUser.userName);
-  }, [
-    error,
-    currentUser,
-    isFetchingUser,
-    prevUser.uid,
-    onRemoveUser,
-    onSetUser
-  ]);
-
+function App(): React.ReactElement {
   return (
     <Switch>
       <Route exact path="/" component={Home} />

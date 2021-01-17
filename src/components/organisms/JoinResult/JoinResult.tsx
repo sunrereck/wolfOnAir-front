@@ -90,7 +90,7 @@ const JoinResultText = styled.p`
 const ButtonWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
-  max-width: 400px;
+  max-width: 25rem;
 
   button {
     width: 100%;

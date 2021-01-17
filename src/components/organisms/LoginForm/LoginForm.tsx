@@ -1,83 +1,69 @@
 import React from "react";
 import styled from "styled-components";
-
-import useForm from '@/hooks/useForm';
+import { AxiosError } from 'axios';
+import { getErrorMessage } from '@/utils/errors';
 
 import Button from "@/components/atoms/Button";
 import Form from '@/components/atoms/Form';
 import JoinWrapper from '@/components/molecules/JoinWrapper';
 import ValidationInput from "@/components/molecules/ValidationInput";
-import Alert from '@/components/molecules/Alert';
-
-interface ValidateLoginParams {
-  email?: string;
-  password?: string;
-}
 
 interface LoginFormProps {
   email: string;
+  emailError: string;
+  isSubmitting: boolean;
+  loginUserError: AxiosError | null;
   password: string;
-}
-
-function validate(values: ValidateLoginParams): ValidateLoginParams {
-  const errors = {} as ValidateLoginParams;
-
-  if (!values.email) {
-    errors.email = "필수 항목 입니다";
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,8}$/i.test(values.email)) {
-    errors.email = "이메일 형식이 아닙니다";
-  }
-
-  if (!values.password) {
-    errors.password = '필수 항목 입니다'
-  }
-
-  return errors;
+  passwordError: string;
+  onBlur: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onRef: (ref: any) => void;
+  onSubmit: () => void;
 }
 
 function LoginForm({
   email,
-  password
+  emailError,
+  isSubmitting,
+  loginUserError,
+  password,
+  passwordError,
+  onBlur,
+  onChange,
+  onRef,
+  onSubmit
 }: LoginFormProps): React.ReactElement {
-  const [
-    values,
-    errors,
-    onChange,
-    onBlur,
-    onSubmit,
-    onRef
-  ] = useForm({
-    initialValues: {
-      email: '',
-      password: ''
-    },
-    // @ts-ignore
-    validate
-  });
-
   return (
     <>
       <JoinWrapper title="로그인">
-        <StyledForm onSubmit={onSubmit(() => {console.log(123)})}>
+        <StyledForm onSubmit={onSubmit}>
           <ValidationInput 
+            type="email"
             name="email"
             placeholder="이메일" 
-            errorMessage={errors.email}
-            value={values.email || ''}
+            errorMessage={emailError}
+            value={email || ''}
             onChange={onChange}
             onBlur={onBlur}
-            inputEl={onRef}
-            />
+            inputEl={onRef} />
           <ValidationInput 
+            type="password"
             name="password"
             placeholder="패스워드" 
-            errorMessage={errors.password}          
-            value={values.password}
+            errorMessage={passwordError}          
+            value={password || ''}
             onChange={onChange}
             onBlur={onBlur}
-            inputEl={onRef}
-            />
-          <Button type="submit">
+            inputEl={onRef} />
+          {
+            !!loginUserError && (
+              <ErrorMessage>{getErrorMessage(loginUserError)}</ErrorMessage>
+            )
+          }
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) => e.preventDefault()}>
             로그인
           </Button>
         </StyledForm>
@@ -94,6 +80,11 @@ const StyledForm = styled(Form)`
   > div {
     margin-bottom: 1rem;
   }
+`;
+
+const ErrorMessage = styled.p`
+  margin-bottom: 1rem;
+  color: ${({theme}) => theme.redColor};
 `;
 
 export default LoginForm;

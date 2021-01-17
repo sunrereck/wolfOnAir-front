@@ -20,13 +20,18 @@ const BackGround = styled.div`
 const Modal = styled.div`
   position: fixed;
   z-index: 1001;
-  width: 300px;
+  width: calc(100% - 2rem);
   padding: 1rem;
   border-radius: 5px;
   background-color: ${({ theme }) => theme.whiteColor};
+  max-width: 19.5rem;
   left: 50%;
   transform: translate(-50%, -50%);
   top: 50%;
+
+  @media only screen and (min-width: ${({theme}) => theme.medium}) {
+    max-width: 25rem;
+  }
 `;
 
 const Title = styled.h1`

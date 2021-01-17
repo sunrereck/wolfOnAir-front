@@ -6,9 +6,9 @@ export function getErrorMessage(error: AxiosError | null): string {
         return '';
     }
 
-    if (!error.response || !error.response.data.message) {
+    if (!error.response || !error.response.data.reason) {
         return '알수없는 오류가 발생하였습니다';
     }
 
-    return error.response.data.message;
+    return error.response.data.reason;
 }

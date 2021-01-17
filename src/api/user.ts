@@ -34,14 +34,14 @@ export function updateUserAuth({
   });
 }
 
-export function login({email, password}: {
+export function loginUser({email, password}: {
   email: string;
   password: string;
 }) {
   return axios.post('/user/login', { email, password });
 }
 
-export function logout() {
+export function logoutUser() {
   return axios.post('/user/logout');
 }
 

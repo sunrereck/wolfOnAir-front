@@ -36,11 +36,13 @@ function JoinUserAuthResult ({
             <JoinUserAuthResultText>
               이메일 인증에 성공하였습니다.
             </JoinUserAuthResultText>
-            <StyledButton
-              color="primary"
-              variant="contained">
-              로그인하러 가기
-            </StyledButton>
+            <ButtonWrapper>
+              <StyledButton
+                color="primary"
+                variant="contained">
+                로그인하러 가기
+              </StyledButton>
+            </ButtonWrapper>
           </>
         )
       }
@@ -64,6 +66,12 @@ function JoinUserAuthResult ({
 const JoinUserAuthResultText = styled.p`
   line-height: 1.5;
   text-align: center;
+`;
+
+const ButtonWrapper = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  max-width: 400px;
 `;
 
 const StyledButton = styled(Button)`

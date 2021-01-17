@@ -23,7 +23,7 @@ interface JoinFormProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onCloseAlert: () => void;
   onRef: (ref: any) => void;
-  onSubmit: any;
+  onSubmit: () => void;
 }
 
 function JoinForm({
@@ -90,9 +90,8 @@ function JoinForm({
         />
         <Button
           type="submit"
-          onMouseDown={(e: any) => e.preventDefault()}
           disabled={isSubmitting}
-        >
+          onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) => e.preventDefault()}>
           회원가입
         </Button>
       </StyledForm>    

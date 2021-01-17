@@ -173,9 +173,9 @@ function useForm<Tvalues extends Record<string, unknown>>({
     }
   };
 
-  const onRef = useCallback((ref) => {
+  const onRef = useCallback((ref: any) => {
     if (ref) {
-      const {name} = ref;
+      const { name } = ref;
 
       fields.current[name] = ref;  
     } 

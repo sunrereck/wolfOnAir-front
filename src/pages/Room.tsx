@@ -1,7 +1,6 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import RedirectHome from '@/components/atoms/RedirectHome';
 import Room from '@/components/molecules/Room';
 import PageTemplate from '@/components/templates/PageTemplate';
 
@@ -14,7 +13,6 @@ const Lobby = ({
 }: RoomProps): JSX.Element => {
   return (
     <PageTemplate>
-      <RedirectHome />
       <Room />
     </PageTemplate>
   );
