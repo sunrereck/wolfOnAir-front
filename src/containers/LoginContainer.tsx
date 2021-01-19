@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { loginUser } from "@/api/user";
 
 import { setUser } from '@/modules/user';
+
+import { getUrlQuery } from '@/utils/commons';
 
 import useForm from '@/hooks/useForm';
 import useRequest from "@/hooks/useRequest";
@@ -35,6 +37,7 @@ function validate(values: FormTypes): FormTypes {
 function LoginContainer (): React.ReactElement {
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
   const [
     values,
     errors,
@@ -56,6 +59,8 @@ function LoginContainer (): React.ReactElement {
     email: string;
     password: string;
   }, true);
+  const query = getUrlQuery(location.search);
+
 
   const onSubmitLoginUser = () => {
     onLoginUser({
@@ -72,15 +77,23 @@ function LoginContainer (): React.ReactElement {
 
     dispatch(setUser({
       uid: loginUserData.uid,
-      userName: loginUserData.usrName
+      userName: loginUserData.userName
     }));
     onResetLoginUser();
 
-    history.push('/');
+    if (!!query?.from) {
+      history.replace(`${query.from}`);
+
+      return;
+    }
+
+    history.replace('/');
   }, [
     dispatch,
     history,
     loginUserData,
+    query?.from,
+    onResetLoginUser,
   ]);
 
   return (

@@ -1,16 +1,14 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import { RootState } from "@/modules";
+import { RootState } from '@/modules';
 
 import Home from "@/components/molecules/home/Home";
 
 const HomeContainer = (): React.ReactElement => {
   const history = useHistory();
-  const { isLoggedIn } = useSelector(
-    (state: RootState) => state.user
-  );
+  const { isLoggedIn } = useSelector((state: RootState) => state.user);
 
   const onRedirectLobby = () => {
     if (isLoggedIn) {
@@ -19,7 +17,7 @@ const HomeContainer = (): React.ReactElement => {
       return;
     }
 
-    history.push('/user/login?redirect=/lobby');
+    history.push('/user/login?from=/lobby');
   }
 
   return (

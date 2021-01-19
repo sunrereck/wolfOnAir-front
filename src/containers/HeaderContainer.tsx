@@ -1,6 +1,6 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { logoutUser } from '@/api/user';
 
@@ -13,8 +13,10 @@ import Header from '@/components/molecules/Header';
 
 const HeaderContainer = () => {
   const history = useHistory();
-  const isLoggedIn = useSelector((state: RootState) => (state.user.isLoggedIn));
-  const userName = useSelector((state: RootState) => (state.user.userName));
+  const {
+    isLoggedIn,
+    userName
+  } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const [,,,onLogout] = useRequest(logoutUser, null, true);
 
