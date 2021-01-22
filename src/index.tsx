@@ -9,7 +9,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import theme from "@/styles/theme";
 
-import rootReducer, { rootSaga } from "@/modules";
+import rootReducer from "@/modules";
 
 import GlobalStyles from "@/styles/GlobalStyles";
 
@@ -24,8 +24,6 @@ const store = configureStore({
   middleware: [sagaMiddleware],
   devTools: process.env.NODE_ENV !== 'production'
 });
-
-sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <>
