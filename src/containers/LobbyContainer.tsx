@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import SocketIOClient, { connect } from "socket.io-client";
+import { io } from "socket.io-client";
 
 
 import { Chat } from "@/interface/chat";
@@ -18,8 +18,7 @@ function LobbyContainer(): React.ReactElement {
   const socket = useRef<any>(null);
 
   useEffect(() => {
-     socket.current = connect(`${process.env.REACT_APP_CHAT}/chat`, { path: "/socket.io" });
-
+     socket.current = io(`${process.env.REACT_APP_CHAT}/chat`);
   })
 
   return (

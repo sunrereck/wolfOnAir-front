@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import createSagaMiddleware from "redux-saga";
 import { ThemeProvider } from "styled-components";
 import { configureStore } from "@reduxjs/toolkit";
 
@@ -16,12 +15,8 @@ import GlobalStyles from "@/styles/GlobalStyles";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-// saga 미들웨어 생성
-const sagaMiddleware = createSagaMiddleware();
-
 const store = configureStore({
   reducer: rootReducer,
-  middleware: [sagaMiddleware],
   devTools: process.env.NODE_ENV !== 'production'
 });
 
