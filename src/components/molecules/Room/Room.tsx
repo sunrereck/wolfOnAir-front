@@ -12,11 +12,11 @@ function Room() {
         <UserList />
         <ChatList chatList={[]} />
       </RoomWrapper>
-      <ChatInput
+      {/* <ChatInput
         message=""
         onChangeMessage={() => {}}
         onSendMessage={() => {}}
-      />
+      /> */}
     </Wrapper>
   );
 }

@@ -21,7 +21,7 @@ function DelayUnmount({children, isMounted}: DelayUnmountProps): React.ReactElem
         if (!isMounted && shouldRender) {
             prevIsMounted.current = setTimeout(() => {
                 setShouldRender(false);
-            }, 5000);
+            }, 1000);
         }
         
         return () => clearTimeout(prevIsMounted.current);
@@ -60,7 +60,7 @@ const bounceOut = keyframes`
 `;
 
   const Wrapper = styled.div<{isMounted: boolean}>`
-      animation: ${({isMounted}) => isMounted ? css`${bounceIn}`: css`${bounceOut} 7s`};
+      animation: ${({isMounted}) => isMounted ? css`${bounceIn}`: css`${bounceOut} 2s`};
   `;
   
 export default DelayUnmount;

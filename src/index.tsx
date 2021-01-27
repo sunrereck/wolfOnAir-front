@@ -10,7 +10,7 @@ import theme from "@/styles/theme";
 
 import rootReducer from "@/modules";
 
-import GlobalStyles from "@/styles/GlobalStyles";
+import GlobalStyles from "@/GlobalStyles";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";

@@ -12,17 +12,6 @@ export interface ThemeProps {
   borderColor: string;
   primaryColor: string;
   textColor: string;
-
-  // 레이아웃
-  headerHeight: string;
-  footerHeight: string;
-
-  // media query
-  xSmall: string;
-  small: string;
-  medium: string;
-  large: string;
-  xLarge: string;
 }
 
 const theme: ThemeProps = {
@@ -39,17 +28,6 @@ const theme: ThemeProps = {
   borderColor: '#dcdbe4',
   primaryColor: '#c3c2cc',
   textColor: '#1E1D29',
-
-  // 레이아웃
-  headerHeight: '50px',
-  footerHeight: '50px',
-
-  // 미디어쿼리
-  xSmall:'320px',
-  small:'375px',
-  medium: '768px',
-  large: '992px',
-  xLarge: '1200px'
 };
 
 export default theme;

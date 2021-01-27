@@ -24,51 +24,51 @@ function AuthRoute({
 
   useEffect(() => {
     if (!isFetchingUserAuth) {
-        setIsLoading(false);
+      setIsLoading(false);
     }
   }, [isFetchingUserAuth]);
 
   return (
-      <Route
-        {...others}
-        render={({ location }) => (
-          <>                  
-            <DelayUnmount isMounted={isFetchingUserAuth as boolean}>
-              <LoadingScreen />
-            </DelayUnmount>
-            {
-              !isLoading && (
-                <>
-                  <Maybe condition={type === 'guest'}>
-                    {
-                      isLoggedIn ? (
-                        <Redirect to="/" />      
-                      ) : (
+    <Route
+      {...others}
+      render={({ location }) => (
+        <>
+          <DelayUnmount isMounted={isFetchingUserAuth as boolean}>
+            <LoadingScreen />
+          </DelayUnmount>
+          {
+            !isLoading && (
+              <>
+                <Maybe condition={type === 'guest'}>
+                  {
+                    isLoggedIn ? (
+                      <Redirect to="/" />
+                    ) : (
                         children
                       )
-                    }
-                  </Maybe>
-                  <Maybe condition={type === 'private'}>
-                    {
-                      isLoggedIn ? (
-                        children
-                      ) : (
+                  }
+                </Maybe>
+                <Maybe condition={type === 'private'}>
+                  {
+                    isLoggedIn ? (
+                      children
+                    ) : (
                         <Redirect to={{
                           pathname: '/user/login',
                           search: `?from=${location.pathname}${location.search}`
                         }} />
                       )
-                    }
-                  </Maybe>
-                  <Maybe condition={type === 'public'}>
-                    {children}
-                  </Maybe>
-                </>
-              )
-            }
-          </>
-        )}
-      />
+                  }
+                </Maybe>
+                <Maybe condition={type === 'public'}>
+                  {children}
+                </Maybe>
+              </>
+            )
+          }
+        </>
+      )}
+    />
   );
 }
 
