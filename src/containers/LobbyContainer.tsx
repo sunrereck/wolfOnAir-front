@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
 
-import { Chat } from "@/interface/chat";
+import { Chat } from "@/models/chat";
+import { RoomModeTypes } from "@/models/room";
 
 import { createRoom, connectLobby } from "@/api/chat";
 
@@ -15,6 +16,9 @@ import chatColors from '@/styles/chatColors';
 import Lobby from '@/components/organisms/Lobby';
 
 function LobbyContainer(): React.ReactElement {
+  const [isSowingNewRoomModal, setIsShowingNewRoomModal] = useState(false);
+  const [peopleCount, setPeopleCount] = useState(0);
+  const [roomType, setRoomType] = useState<RoomModeTypes | ''>('');
   const [color, setColor] = useState(chatColors.black);
   const [chats, setChats] = useState<Chat[]>([]);
   const { userName } = useSelector((state: RootState) => state.user); 
@@ -65,10 +69,23 @@ function LobbyContainer(): React.ReactElement {
     });
   }
 
+  const onSetRoomType = (roomType: string) => {
+    setRoomType(roomType);
+  }
+
+  const onSetPeopleCount = (peopleCount: number) => {
+    setPeopleCount(peopleCount);
+  }
+
   return (
     <Lobby 
       chats={chats}
-      onSendMessage={onSendMessage} />
+      isSowingNewRoomModal={isSowingNewRoomModal}
+      roomType={roomType}
+      peopleCount={peopleCount}
+      onSendMessage={onSendMessage} 
+      onSetRoomType={onSetRoomType}
+      onSetPeopleCount={onSetPeopleCount} />
   );
 };
 

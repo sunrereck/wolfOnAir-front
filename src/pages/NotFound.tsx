@@ -27,7 +27,12 @@ const NotFound = () => {
         앗, 없는 페이지 입니다. X_X
         <br/>
         <br/>
-        <Button to="/" variant="outlined">첫 페이지로 돌아가기</Button>
+        <Button 
+          to="/" 
+          color="primary" 
+          variant="outlined"
+          width="13.125rem"
+          height="3rem">첫 페이지로 돌아가기</Button>
       </Error>
     </Wrapper>
   )

@@ -1,16 +1,9 @@
-import React, { memo } from 'react';
+import React from 'react';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  inputEl?: React.RefObject<HTMLInputElement>;
-}
+type InputPrpos = React.InputHTMLAttributes<HTMLInputElement>;
 
-function Input ({inputEl, value, ...props}: InputProps): React.ReactElement {
-  return (
-    <input 
-      ref={inputEl}
-      value={value || ''}
-      {...props}
-    />
-  );
-}
-export default memo(Input);
+const Input = React.forwardRef<HTMLInputElement, InputPrpos>((props, ref): React.ReactElement => (
+  <input ref={ref} {...props} />
+));
+
+export default Input;

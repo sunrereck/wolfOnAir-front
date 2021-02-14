@@ -90,14 +90,18 @@ function JoinForm({
         />
         <Button
           type="submit"
+          color="primary"
+          variant="contained"
+          width="100%"
+          height="3rem"
           disabled={isSubmitting}
-          onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) => e.preventDefault()}>
+          onMouseDown={(e: React.MouseEvent<HTMLElement>) => e.preventDefault()}>
           회원가입
         </Button>
       </StyledForm>    
     </JoinWrapper>
       <Alert
-        isShown={isShownAlert}
+        isShowing={isShownAlert}
         title="회원가입 실패"
         onClick={onCloseAlert}
         onClose={onCloseAlert}

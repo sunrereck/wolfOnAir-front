@@ -62,8 +62,12 @@ function LoginForm({
           }
           <Button
             type="submit"
+            color="primary"
+            variant="contained"
+            width="100%"
+            height="3rem"
             disabled={isSubmitting}
-            onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) => e.preventDefault()}>
+            onMouseDown={(e: React.MouseEvent<HTMLElement>) => e.preventDefault()}>
             로그인
           </Button>
         </StyledForm>

@@ -1,29 +1,45 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Chat } from "@/interface/chat";
+import { Chat } from "@/models/chat";
+import { RoomModeTypes } from "@/models/room";
 
 import mediaQuerys from '@/styles/mediaQuerys';
 
-import RoomList from "@/components/organisms/RoomList";
+import NewRoomModal from '@/components/molecules/NewRoomModal';
 import ChatMessages from '@/components/molecules/ChatMessages';
 import ChatInput from '@/components/molecules/ChatInput';
+import RoomList from "@/components/organisms/RoomList";
 
 interface LobbyProps {
   chats: Chat[];
+  isSowingNewRoomModal: boolean;
+  peopleCount: number;
+  roomMode: RoomModeTypes;
   onSendMessage: (message: string) => void;
+  onSetRoomType: (roomType: string) => void;
+  onSetPeopleCount: (peopleCount: number) => void;
 }
 
 function Lobby({
   chats,
+  isSowingNewRoomModal,
+  peopleCount,
+  roomMode,
   onSendMessage
 }: LobbyProps): React.ReactElement {
   return (
-    <Wrapper>
-      <RoomList rooms={[]} />
-      <ChatMessages chats={chats} />
-      <ChatInput onSendMessage={onSendMessage} />
-    </Wrapper>
+    <>
+      <Wrapper>
+        <RoomList rooms={[]} />
+        <ChatMessages chats={chats} />
+        <ChatInput onSendMessage={onSendMessage} />
+      </Wrapper>
+      <NewRoomModal 
+        isShowing={isSowingNewRoomModal}
+        peopleCount={peopleCount} 
+        roomMode={roomMode} />
+    </>
   );
 };
 

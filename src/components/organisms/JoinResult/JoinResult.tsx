@@ -58,20 +58,27 @@ function JoinResult ({
       <ButtonWrapper>
         <Button
           type="button"
+          color="primary"
+          variant="contained"
+          width="100%"
+          height="3.125rem"
           onClick={onClickSendJoinAuthEmail}
           disabled={isLoadingSendJoinAuthEmail}>
           {isLoadingSendJoinAuthEmail ? "인증메일 전송 중..." : "인증메일 재전송"}
         </Button>
         <Button
           type="button"
+          color="primary"
+          variant="outlined"
+          width="100%"
+          height="3.125rem"
           onClick={onClickSendJoinAuthHelpEmail}
-          disabled={isLoadingSendJoinAuthHelpEmail}
-          variant="outlined">
+          disabled={isLoadingSendJoinAuthHelpEmail}>
           {isLoadingSendJoinAuthHelpEmail ? '관리자에게 문의 메일 전송 중...' : '관리자에게 문의메일 보내기'}
         </Button>
       </ButtonWrapper>
       <Alert 
-        isShown={isShownAlert}
+        isShowing={isShownAlert}
         title="메일 발송 결과"
         onClick={onToggleAlert}
         onClose={onToggleAlert}>

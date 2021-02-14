@@ -7,7 +7,7 @@ import Button from "@/components/atoms/Button";
 
 interface ConfirmProps {
   children: React.ReactNode;
-  isShown: boolean;
+  isShowing: boolean;
   title: string;
   onCancel: () => void;
   onClick: () => void;
@@ -16,7 +16,7 @@ interface ConfirmProps {
 
 function Confirm({
   children,
-  isShown,
+  isShowing,
   title,
   onCancel,
   onClick,
@@ -24,7 +24,7 @@ function Confirm({
 }: ConfirmProps): JSX.Element {
   return (
     <Portal>
-      <Fade isShown={isShown} timeout={200}>
+      <Fade isShowing={isShowing} timeout={200}>
         <Modal>
           <Title>{title}</Title>
           <Body>{children}</Body>

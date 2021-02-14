@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { AutoSizer, List } from "react-virtualized";
 import styled from 'styled-components';
 
-import { Chat } from "@/interface/chat";
+import { Chat } from "@/models/chat";
 
 import ChatMessage from '@/components/molecules/ChatMessage';
 
