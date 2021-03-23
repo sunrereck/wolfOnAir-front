@@ -2,6 +2,23 @@
 type ObjectType = Record<string, unknown>
 
 /**
+ * parameter로 받은 객체가 빈값인지 아닌지 확인한다.
+ * @param object 빈값인지 아닌지 확인할 객체
+ * @returns 객체가 빈값인지 아닌지 확인한 bool 결과
+ */
+export function checkEmptyObject(object: unknown): boolean {
+  if (!object) {
+    return true;
+  }
+
+  if (typeof object !== 'object') {
+    return true;
+  }
+
+  return !!object && Object.keys(object).length === 0;
+}
+
+/**
  * parameter로 받은 값이 객체인지 아닌지 확인한다.
  * @param object 객체인지 아닌지 확인할 값.
  * @returns 객체인지 아닌지 확인한 bool 결과
@@ -41,6 +58,8 @@ export function checkDeepEqualObject(
         ))
       || (!areObjects && value1 !== value2)
     ) {
+
+      console.log(123);
       return false;
     }
   }

@@ -7,23 +7,32 @@ interface HomeProps {
   onRedirectLobby: () => void;
 }
 
-const Home = ({
+function Home ({
   onRedirectLobby
-}: HomeProps) => (
-  <Wrapper>
-    <div>
-      <p>
-        <img src="/wolf.svg" alt="늑대온에어 메인" />
-      </p>
-      <Button type="button" onClick={onRedirectLobby}>게임 하러 가기</Button>
-    </div>
-  </Wrapper>
-);
+}: HomeProps): React.ReactElement {
+  return (
+    <Wrapper>
+      <div>
+        <p>
+          <img src="/wolf.svg" alt="늑대온에어 메인" />
+        </p>
+        <Button 
+          type="button" 
+          color="primary" 
+          width="8.125rem"
+          height="3rem"
+          onClick={onRedirectLobby}>게임 하러 가기</Button>
+      </div>
+    </Wrapper>
+  );
+}
 
 const Wrapper = styled.main`
   div {
     text-align: center;
-    padding: 1.5rem 0;
+  }
+  p {
+    text-align: center;
   }
 
   img {

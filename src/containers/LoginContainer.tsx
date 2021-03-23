@@ -1,109 +1,116 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory, useLocation  } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
-import { AxiosError } from 'axios';
-
-import { login } from "@/api/user";
+import { loginUser } from "@/api/user";
 
 import { setUser } from '@/modules/user';
 
 import { getUrlQuery } from '@/utils/commons';
 
-import useRequest from '@/hooks/useRequest';
-import useValidationInput from "@/hooks/useValidationInput";
+import useForm from '@/hooks/useForm';
+import useRequest from "@/hooks/useRequest";
 
 import LoginForm from "@/components/organisms/LoginForm";
 
-function validateEmail(email: string): string {
-  if (!email) {
-    return "필수 항목 입니다.";
-  }
-
-  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,8}$/i.test(email)) {
-    return "이메일 형식이 아닙니다.";
-  }
-
-  return "";
+type FormTypes = {
+  email?: string;
+  password?: string;
 }
 
-function validatePassword(password: string): string {
-  if (!password) {
-    return "필수 항목 입니다.";
+function validate(values: FormTypes): FormTypes {
+  const errors = {} as FormTypes;
+
+  if (!values.email) {
+    errors.email = '필수 항목 입니다.';
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,8}$/i.test(values.email)) {
+    errors.email = '이메일 형식이 아닙니다.';
   }
 
-  return "";
-}
-
-function getErrorMessage(err: AxiosError): string {
-  if (err.response && err.response.data) {
-    return err.response.data.reason;
+  if (!values.password) {
+    errors.password = '필수 항목 입니다.';
   }
-
-  return "통신이 불안정하여 로그인을 완료하지 못하였습니다.";
+  
+  return errors;
 }
 
-interface LoginParams {
-  email: string;
-  password: string;
-}
-
-const LoginContainer = (): JSX.Element => {
+function LoginContainer (): React.ReactElement {
+  const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const dispatch = useDispatch();
-  const [loginFailMessage, setFailMessage] = useState('');
-  const [state, onLogin, onReset] = useRequest(login, {} as LoginParams, true);
   const [
-    email,
-    emailError,
-    emailEl,
-    ,
-    onChangeEmail,
-    onBlurEmail,
-    onSetEmailError
-  ] = useValidationInput("", validateEmail);
+    values,
+    errors,
+    onChange,
+    onBlur,
+    onSubmit,
+    onRef
+  ] = useForm({
+    initialValues: {} as FormTypes,
+    validate
+  });
   const [
-    password,
-    passwordError,
-    passwordEl,
-    ,
-    onChangePassword,
-    onBlurPassword,
-    onSetPasswordError
-  ] = useValidationInput("", validatePassword);
+    loginUserData,
+    loginUserError,
+    isLoadingLoginUser,
+    onLoginUser,
+    onResetLoginUser
+  ] = useRequest(loginUser, {} as {
+    email: string;
+    password: string;
+  }, true);
+  const query = getUrlQuery(location.search);
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
 
-    const emailError = validateEmail(email);
-    const passwordError = validatePassword(password);
+  const onSubmitLoginUser = () => {
+    onLoginUser({
+      email: values.email,
+      password: values.password
+    })
+  }
 
-    if (!!emailError) {
-      onSetEmailError(emailError === '', emailError);
+  // componentDidUpdate - loginUserData
+  useEffect(() => {
+    if (!loginUserData) {
+      return;
+    }
+
+    dispatch(setUser({
+      uid: loginUserData.uid,
+      userName: loginUserData.userName
+    }));
+    onResetLoginUser();
+
+    if (!!query?.from) {
+      history.replace(`${query.from}`);
 
       return;
     }
 
-    if (!!passwordError) {
-
-      onSetPasswordError(passwordError === '', passwordError);
-
-      return;
-    }
-
-    try {
-      // 
-      
-    } catch (err) {
-      setFailMessage(getErrorMessage(err));
-    }
-  };
+    history.replace('/');
+  }, [
+    dispatch,
+    history,
+    loginUserData,
+    query?.from,
+    onResetLoginUser,
+  ]);
 
   return (
-    <LoginForm
-      email={email}
-      password={password} />
+    <>
+
+      <LoginForm
+        email={values.email}
+        emailError={errors.email}
+        isSubmitting={isLoadingLoginUser}
+        loginUserError={loginUserError}
+        password={values.password} 
+        passwordError={errors.password} 
+        onBlur={onBlur}
+        onChange={onChange} 
+        onRef={onRef} 
+        onSubmit={onSubmit(onSubmitLoginUser)} />
+    </>
   );
 };
 

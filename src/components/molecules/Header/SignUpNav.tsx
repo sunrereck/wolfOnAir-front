@@ -25,12 +25,12 @@ const SignupNav = () => {
     <Nav>
       <ul>
         <li>
-          <Button to="/user/login">
+          <Button color="primary" to="/user/login">
             로그인
           </Button>
         </li>
         <li>
-          <Button to="/user/join">
+          <Button color="primary" to="/user/join">
             회원가입
           </Button>
         </li>

@@ -1,8 +1,18 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
-function Textarea ({ width, onChange,  value, ...props }: any): React.ReactElement {
-  const DEFAULT_HEIGHT = 24;
+interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  textareaEl?: React.RefObject<HTMLInputElement>;
+  width?: string;
+}
+
+function Textarea ({ 
+  textareaEl,
+  value,
+  width, 
+  ...props 
+}: TextareaProps): React.ReactElement {
+  const DEFAULT_HEIGHT = 43;
   const textEl = useRef<HTMLTextAreaElement>(null);
   
   useEffect(() => {
@@ -33,21 +43,20 @@ function Textarea ({ width, onChange,  value, ...props }: any): React.ReactEleme
   };
 
   return (
-    <TextareaWrapper
+    <Wrapper
       width={width}
       ref={textEl}
-      value={value}
-      onChange={onChange}
+      value={value || ''}
       {...props}
     />
   );
 };
 
-const TextareaWrapper = styled.textarea<{ width: string }>`
-  overflow: hidden;
-  display: block;
-  width: ${({ width }) => width};
+const Wrapper = styled.textarea<{ width?: string }>`
+  overflow-y: hidden;
+  width: ${({ width }) => width || '100%'};
   border: 0;
+  padding: 1rem;
   font-size: 1rem;
   outline: none;
   line-height: 1.5;

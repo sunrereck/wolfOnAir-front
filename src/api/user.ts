@@ -16,23 +16,32 @@ export function joinUser(values: {
   return axios.post('/user/join', values);
 }
 
-export function sendAuthEmail(email: string) {
+export function sendJoinAuthEmail(email: string) {
 
   return axios.post('/user/join/auth', {email});
 }
 
-export function updateUserAuth(email: string) {
-  return axios.put('/user/join/auth', {email});
+export function updateUserAuth({
+  email,
+  code
+}: {
+  email: string,
+  code: string
+}) {
+  return axios.put('/user/join/auth', {
+    email,
+    code
+  });
 }
 
-export function login({email, password}: {
+export function loginUser({email, password}: {
   email: string;
   password: string;
 }) {
   return axios.post('/user/login', { email, password });
 }
 
-export function logout() {
+export function logoutUser() {
   return axios.post('/user/logout');
 }
 

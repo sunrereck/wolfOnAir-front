@@ -1,17 +1,12 @@
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
 import JoinResultContainer from '@/containers/JoinResultContainer';
 import PageTemplate from '@/components/templates/PageTemplate';
 
-interface MatchParams {
-  email: string;
-}
-
-const JoinResult = ({ match }: RouteComponentProps<MatchParams>): JSX.Element => {
+function JoinResult(): React.ReactElement {
   return (
     <PageTemplate>
-      <JoinResultContainer email={match.params.email} />
+      <JoinResultContainer />
     </PageTemplate>
   )
 }

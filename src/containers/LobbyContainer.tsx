@@ -1,145 +1,91 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { io } from "socket.io-client";
 
-import { Chat } from "@/interface/chat";
+import { Chat } from "@/models/chat";
+import { RoomModeTypes } from "@/models/room";
 
 import { createRoom, connectLobby } from "@/api/chat";
 
 import { RootState } from "@/modules";
-import { join, leave, sendMessage } from "@/modules/chat";
 
-import useInput from "@/hooks/useInput";
 import useRequest from "@/hooks/useRequest";
 
-import Lobby from "@/components/molecules/Lobby";
+import chatColors from '@/styles/chatColors';
 
-const LobbyContainer = (): JSX.Element => {
-  const dispatch = useDispatch();
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isShownConfirm, setConfirm] = useState(false);
-  const [chatList, setChatList] = useState<Chat[]>([]);
-  const { isLoggedIn, chat, uid, userName } = useSelector(
-    (state: RootState) => ({
-      isLoggedIn: state.user.isLoggedIn,
-      uid: state.user.uid,
-      userName: state.user.userName,
-      chat: state.chat.chat,
+import Lobby from '@/components/organisms/Lobby';
+
+function LobbyContainer(): React.ReactElement {
+  const [isSowingNewRoomModal, setIsShowingNewRoomModal] = useState(false);
+  const [peopleCount, setPeopleCount] = useState(0);
+  const [roomType, setRoomType] = useState<RoomModeTypes | ''>('');
+  const [color, setColor] = useState(chatColors.black);
+  const [chats, setChats] = useState<Chat[]>([]);
+  const { userName } = useSelector((state: RootState) => state.user); 
+  const socket = useRef<any>(null);
+
+  useEffect(() => {
+    socket.current = io(`${process.env.REACT_APP_CHAT}/chat`, {
+      withCredentials: true,
+      query: {
+        room: 'lobby',
+        userName
+      }
+    });
+
+    socket.current.on('join', (chat: Chat) => {
+      setChats((prevState) => ([
+        ...prevState,
+        chat
+      ]))
+    });
+
+    socket.current.on('getMessage', (chat: Chat) => {
+      setChats((prevState) => ([
+        ...prevState,
+        chat
+      ]))
     })
-  );
-  const [message, onChangeMessage, onResetMessage] = useInput();
-  const [roomTitle, onChangeRoomTitle, onResetRoomTitle] = useInput();
-  // const [state, onConnectLobby, onResetLobbyState] = useRequest(
-  //   () => connectLobby(uid),
-  //   [],
-  //   true
-  // );
-  // const [roomState, onCreateRoom, onResetRoomState] = useRequest(
-  //   createRoom,
-  //   [],
-  //   true
-  // );
 
-  const onOpenNewRoom = () => {
-    setConfirm(true);
-  };
-
-  const onCloseNewRoom = () => {
-    onResetRoomTitle();
-    setConfirm(false);
-  };
-
-  const onClickNewRoom = async () => {
-    // try {
-    //   await onCreateRoom(roomTitle, userName);
-    // } catch (err) {
-    //   let message = "서버와의 연결에 실패하였습니다.";
-
-    //   if (err.response && err.response.status === 400) {
-    //     message = "필수값이 누락되어 방생성을 완료하지 못하였습니다.";
-    //   }
-
-    //   setErrorMessage(message);
-    // }
-  };
-
-  const onSendMessage = useCallback(() => {
-    if (!message) {
-      return;
+    return () => {
+      socket.current.disconnect();
     }
-
-    dispatch(sendMessage(message));
-    onResetMessage();
-  }, [dispatch, message, onResetMessage]);
-
-  // const onResetError = useCallback(() => {
-  //   onResetLobbyState();
-  //   onResetRoomState();
-  // }, [onResetLobbyState, onResetRoomState]);
+  }, [userName]);
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      return;
-    }
+    const chatColorList = Object.keys(chatColors);
+    const random = Math.floor(Math.random() * chatColorList.length);
+    const color = chatColorList[random];
 
-    // const initialize = async () => {
-    //   try {
-    //     await onConnectLobby();
-    //   } catch (err) {
-    //     let message = "서버와의 연결에 실패하였습니다.";
+    setColor(color);
+  }, []);
 
-    //     if (err.response && err.response.status === 401) {
-    //       message = "로그인 상태가 아닙니다.";
-    //     }
+  const onSendMessage = (message: string) => {
+    socket.current.emit('sendMessage', {
+      color,
+      message,
+      userName,
+      room: 'lobby'
+    });
+  }
 
-    //     setErrorMessage(message);
-    //   }
-    // };
+  const onSetRoomType = (roomType: string) => {
+    setRoomType(roomType);
+  }
 
-    // initialize();
-
-    // eslint-disable-next-line
-  }, [isLoggedIn]);
-
-  // useEffect(() => {
-  //   if (state && state.data) {
-  //     dispatch(join());
-  //   }
-  // }, [dispatch, state]);
-
-  useEffect(() => {
-    if (!chat) {
-      return;
-    }
-
-    setChatList((prevState) => prevState.concat(chat));
-  }, [chat]);
-
-  // useEffect(() => {
-  //   if (roomState && roomState.data) {
-  //     dispatch(leave());
-  //     window.location.href = `/room/${roomState.data.roomId}`;
-  //   }
-  // }, [dispatch, roomState]);
+  const onSetPeopleCount = (peopleCount: number) => {
+    setPeopleCount(peopleCount);
+  }
 
   return (
-    <>
-      <Lobby
-        chatList={chatList}
-        errorMessage={errorMessage}
-        isError={false}
-        isShownNewRoom={isShownConfirm}
-        message={message}
-        roomList={[]}
-        roomTitle={roomTitle}
-        onChangeMessage={onChangeMessage}
-        onChangeRoomTitle={onChangeRoomTitle}
-        onCloseNewRoom={onCloseNewRoom}
-        onCreateRoom={onClickNewRoom}
-        onOpenNewRoom={onOpenNewRoom}
-        onResetError={() => {}}
-        onSendMessage={onSendMessage}
-      />
-    </>
+    <Lobby 
+      chats={chats}
+      isSowingNewRoomModal={isSowingNewRoomModal}
+      roomType={roomType}
+      peopleCount={peopleCount}
+      onSendMessage={onSendMessage} 
+      onSetRoomType={onSetRoomType}
+      onSetPeopleCount={onSetPeopleCount} />
   );
 };
 

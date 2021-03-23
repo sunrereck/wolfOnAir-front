@@ -42,21 +42,21 @@ function useRequest<T>(
     try {
       const response = await callback(newParams);
 
-      setData(response.data);
       setError(null);
+      setData(response.data);
     } catch (err) {
-      setError(err);
       setData(null);
+      setError(err);
     } finally {
       setIsLoading(false);
     }
   }, [callback]);
 
-  const onReset = () => {
+  const onReset = useCallback(() => {
     setData(null);
     setError(null);
     setIsLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     if (isSkip) {

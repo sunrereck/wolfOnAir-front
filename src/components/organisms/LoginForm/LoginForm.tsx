@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
+import { AxiosError } from 'axios';
+import { getErrorMessage } from '@/utils/errors';
 
 import useForm from '@/hooks/useForm';
 
 import Button from "@/components/atoms/Button";
 import Form from '@/components/atoms/Form';
+import JoinWrapper from '@/components/molecules/JoinWrapper';
 import ValidationInput from "@/components/molecules/ValidationInput";
-import Alert from '@/components/molecules/Alert';
 
 interface ValidateLoginParams {
   email?: string;
@@ -31,13 +33,30 @@ function validateLogin({ email, password }: ValidateLoginParams): ValidateLoginP
 
 interface LoginFormProps {
   email: string;
+  emailError: string;
+  isSubmitting: boolean;
+  loginUserError: AxiosError | null;
   password: string;
+  passwordError: string;
+  onBlur: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onRef: (ref: any) => void;
+  onSubmit: () => void;
 }
 
 function LoginForm({
   email,
-  password
+  emailError,
+  isSubmitting,
+  loginUserError,
+  password,
+  passwordError,
+  onBlur,
+  onChange,
+  onRef,
+  onSubmit
 }: LoginFormProps): React.ReactElement {
+<<<<<<< HEAD
   const [
     values,
     errors,
@@ -68,104 +87,64 @@ function LoginForm({
           onChange={onChange}
           />
           <Button type="submit" onMouseDown={onIgnoreBlurEvent}>
+=======
+  return (
+    <>
+      <JoinWrapper title="로그인">
+        <StyledForm onSubmit={onSubmit}>
+          <ValidationInput 
+            type="email"
+            name="email"
+            placeholder="이메일" 
+            errorMessage={emailError}
+            value={email || ''}
+            onChange={onChange}
+            onBlur={onBlur}
+            inputEl={onRef} />
+          <ValidationInput 
+            type="password"
+            name="password"
+            placeholder="패스워드" 
+            errorMessage={passwordError}          
+            value={password || ''}
+            onChange={onChange}
+            onBlur={onBlur}
+            inputEl={onRef} />
+          {
+            !!loginUserError && (
+              <ErrorMessage>{getErrorMessage(loginUserError)}</ErrorMessage>
+            )
+          }
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            width="100%"
+            height="3rem"
+            disabled={isSubmitting}
+            onMouseDown={(e: React.MouseEvent<HTMLElement>) => e.preventDefault()}>
+>>>>>>> 7e6266b3434e343b93847e35faed3653f455c3d8
             로그인
           </Button>
-      </Form>
-    </Wrapper>
+        </StyledForm>
+      </JoinWrapper>
+    </>
   );
 }
 
-const Wrapper = styled.div`
-  padding-top: 2rem;
-
-  h2 {
-    margin-bottom: 1.5rem;
-    font-size: 1.25rem;
-    text-align: center;
-  }
-
-  form {
-    margin: 0 auto;
-  }
-
-  input {
-    margin-bottom: 0.5rem;
-  }
-
+const StyledForm = styled(Form)`
   button {
-    width: 100%;
+    width: 100%; 
+  }
+
+  > div {
+    margin-bottom: 1rem;
   }
 `;
 
-// const LoginForm = ({
-//   email,
-//   emailEl,
-//   emailError,
-//   isFailedLogin,
-//   isFetching,
-//   loginFailMessage,
-//   onBlurEmail,
-//   onBlurPassword,
-//   onChangeEmail,
-//   onChangePassword,
-//   onSubmit,
-//   onToggleFailAlert,
-//   password,
-//   passwordEl,
-//   passwordError
-// }: LoginFormProps): JSX.Element => {
-//   const onIgnoreBlurEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
-//     e.preventDefault();
-//   };
-  
-//   return (
-//     <>
-//       <UserTitle>로그인</UserTitle>
-//       <Form onSubmit={onSubmit}>
-//         <ValidationInput
-//           type="email"
-//           name="email"
-//           inputEl={emailEl}
-//           errorMessage={emailError}
-//           onBlur={onBlurEmail}
-//           onChange={onChangeEmail}
-//           placeholder="이메일"
-//           value={email}
-//         />
-//         <ValidationInput
-//           type="password"
-//           name="password"
-//           errorMessage={passwordError}
-//           onBlur={onBlurPassword}
-//           onChange={onChangePassword}
-//           inputEl={passwordEl}
-//           placeholder="비밀번호"
-//           value={password}
-//         />
-//         <Button type="submit" onMouseDown={onIgnoreBlurEvent}>
-//           { isFetching ? '로그인 중...' : '로그인' }
-//         </Button>
-//         <Button
-//          style={{
-//            display: "block",
-//            width: "100",
-//            height: "3rem",
-//            lineHeight: "3rem"
-//          }}
-//          variant="outlined" to="/user/join">
-//           회원가입
-//         </Button>
-//       </Form>
-//       <Alert 
-//         title="로그인 실패"
-//         isShown={isFailedLogin}
-//         onClick={onToggleFailAlert}
-//         onClose={onToggleFailAlert}
-//       >
-//         {loginFailMessage}
-//       </Alert>
-//     </>
-//   );
-// };
+const ErrorMessage = styled.p`
+  margin-bottom: 1rem;
+  color: ${({theme}) => theme.redColor};
+`;
 
 export default LoginForm;

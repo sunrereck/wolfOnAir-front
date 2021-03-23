@@ -20,13 +20,18 @@ const BackGround = styled.div`
 const Modal = styled.div`
   position: fixed;
   z-index: 1001;
-  width: 300px;
+  width: calc(100% - 2rem);
   padding: 1rem;
   border-radius: 5px;
   background-color: ${({ theme }) => theme.whiteColor};
+  max-width: 19.5rem;
   left: 50%;
   transform: translate(-50%, -50%);
   top: 50%;
+
+  @media only screen and (min-width: ${({theme}) => theme.medium}) {
+    max-width: 25rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -55,7 +60,7 @@ const ButtonWrap = styled.div`
 
 interface AlertProps {
   children: React.ReactNode;
-  isShown: boolean;
+  isShowing: boolean;
   onClick: () => void;
   onClose: () => void;
   title: string;
@@ -63,14 +68,14 @@ interface AlertProps {
 
 const Alert = ({
   children,
-  isShown,
+  isShowing,
   onClick,
   onClose,
   title,
 }: AlertProps): JSX.Element | null => {
   return (
     <Portal>
-      <Fade isShown={isShown} timeout={200}>
+      <Fade isShowing={isShowing} timeout={200}>
         <Modal>
           <Title>{title}</Title>
           <Body>

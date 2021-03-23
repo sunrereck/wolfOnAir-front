@@ -29,7 +29,7 @@ const Header = ({
 const Wrapper = styled.header`
   display: flex;
   width: 100%;
-  height: ${props => props.theme.headerHeight};
+  height: 3.125rem;
   padding: 0 1.125rem;
   border-bottom: 1px solid ${props => props.theme.borderColor};
   background-color:${({theme}) => theme.primaryColor};
